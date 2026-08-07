@@ -4,7 +4,9 @@ import type { ConnectedAPI, InitialAPI } from '@midnight-ntwrk/dapp-connector-ap
 
 export type WalletStatus = 'detecting' | 'no-wallet' | 'ready' | 'connecting' | 'connected';
 
-const NETWORK_ID = import.meta.env.VITE_NETWORK_ID ?? 'preview';
+// `VITE_NETWORK` is the canonical setting required by the bootcamp; the legacy
+// `VITE_NETWORK_ID` remains supported for backwards compatibility.
+const NETWORK_ID = import.meta.env.VITE_NETWORK ?? import.meta.env.VITE_NETWORK_ID ?? 'preview';
 const COMPATIBLE_CONNECTOR_API_VERSION = '4.x';
 
 function findWallet(): InitialAPI | undefined {
@@ -19,7 +21,7 @@ function findWallet(): InitialAPI | undefined {
   );
 }
 
-export function useWallet() {
+export function useMidnight() {
   const [status, setStatus] = useState<WalletStatus>('detecting');
   const [walletAPI, setWalletAPI] = useState<InitialAPI | undefined>();
   const [wallet, setWallet] = useState<ConnectedAPI | null>(null);
