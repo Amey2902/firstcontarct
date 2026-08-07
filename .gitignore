@@ -22,6 +22,9 @@ contracts/managed/
 frontend/public/keys/
 frontend/public/zkir/
 
+# Vite dev-server cache
+frontend/.vite/
+
 # Deployment info
 deployment.json
 
