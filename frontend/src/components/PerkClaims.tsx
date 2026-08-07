@@ -73,8 +73,9 @@ export default function PerkClaims({
         ))}
       </div>
       <p className="dim small">
-        The contract records only <em>that</em> a perk was claimed — never which balance proved the
-        right to claim it.
+        <span className="privacy-label">Proved without revealing your input.</span> The contract
+        records only <em>that</em> a perk was claimed — never which balance proved the right to
+        claim it.
       </p>
     </section>
   );

@@ -100,8 +100,9 @@ export default function MembershipActions({
         </button>
       </form>
       <p className="dim small">
-        Your balance is read inside the circuit and proven to the chain with a ZK proof — the
-        number never leaves this page.
+        <span className="privacy-label">Proved without revealing your input.</span> Your balance is
+        read inside the circuit and proven to the chain with a ZK proof — the number never leaves
+        this page.
       </p>
 
       <form className="action-row" onSubmit={handleUpgrade}>
@@ -120,11 +121,18 @@ export default function MembershipActions({
           {busy ? 'Proving & submitting…' : 'Upgrade tier'}
         </button>
       </form>
+      <p className="dim small">
+        <span className="privacy-label">Proved without revealing your input.</span> The chain learns
+        only your commitment's new tier — never the balance that unlocked it.
+      </p>
 
       <div className="action-row">
         <div className="field">
           <label>Leave the club</label>
-          <span className="dim small">Removes your commitment from the public registry.</span>
+          <span className="dim small">
+            <span className="privacy-label">Proved without revealing your input.</span> Removes your
+            commitment from the public registry.
+          </span>
         </div>
         <button className="btn-danger" type="button" disabled={busy} onClick={() => void handleLeave()}>
           {confirmLeave ? 'Click again to confirm' : 'Resign'}

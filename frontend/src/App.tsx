@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useWallet } from './hooks/useWallet';
+import { useMidnight } from './hooks/useMidnight';
 import { useClubState } from './hooks/useClubState';
 import { MembershipClubAPI } from './club-api';
 import { createProviders } from './providers';
@@ -12,7 +12,7 @@ import PerkClaims from './components/PerkClaims';
 const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS ?? '';
 
 export default function App() {
-  const { status: walletStatus, wallet, address, networkId } = useWallet();
+  const { status: walletStatus, wallet, address, networkId } = useMidnight();
   const connected = walletStatus === 'connected' && !!wallet && !!address;
 
   const [clubApi, setClubApi] = useState<MembershipClubAPI | null>(null);

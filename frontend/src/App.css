@@ -176,6 +176,17 @@ h3 {
   font-size: 13px;
 }
 
+.privacy-label {
+  display: inline-block;
+  margin-right: 4px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--privacy-bg, rgba(126, 87, 194, 0.18));
+  color: var(--privacy-fg, #d5b6ff);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
 .mono {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 13px;

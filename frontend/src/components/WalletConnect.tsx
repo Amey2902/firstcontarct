@@ -1,4 +1,4 @@
-import { useWallet } from '../hooks/useWallet';
+import { useMidnight } from '../hooks/useMidnight';
 
 const LACE_CHROME_URL = 'https://chromewebstore.google.com/detail/lace/gafhhkghbfjjkeiendhlofajokpaflmk';
 
@@ -7,7 +7,7 @@ function truncAddr(addr: string): string {
 }
 
 export default function WalletConnect() {
-  const { status, address, error, connect, disconnect, networkId } = useWallet();
+  const { status, address, error, connect, disconnect, networkId } = useMidnight();
 
   return (
     <div className="wallet-bar">
