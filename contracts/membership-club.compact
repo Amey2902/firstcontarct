@@ -1,0 +1,99 @@
+pragma language_version >= 0.23;
+import CompactStandardLibrary;
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  MIDNIGHT MEMBERSHIP CLUB
+//  Token-gated membership with tiered perks.
+//
+//  PUBLIC (on-chain, visible to everyone):
+//    - thresholds:  the minimum token balance that unlocks each tier
+//                    [0]=Bronze, [1]=Silver, [2]=Gold, [3]=Diamond
+//    - members:     the club registry, a pseudonymous "commitment" -> tier
+//                   mapping. On-chain you can see THAT a commitment holds a
+//                   tier, but NEVER the token balance behind it.
+//    - memberCount: how many members are in the club (public stat)
+//    - perkClaims:  how many perks have been claimed (public stat)
+//
+//  PRIVATE (witness, never on-chain):
+//    - balanceOf(): the member's actual membership-token balance.
+//                   Read inside the circuit, used only to derive constraints.
+//
+//  PRIVACY STORY
+//    Every circuit proves "my balance is high enough for tier X / perk Y"
+//    using a zero-knowledge proof. The balance itself never crosses a public
+//    boundary: it is never returned, never stored in the ledger, and never
+//    part of the transaction transcript. Only the deliberately disclosed
+//    tier / commitment / perkId become public — the "disclose()" calls below
+//    are the ONLY pieces of member data that leave the circuit.
+// ═══════════════════════════════════════════════════════════════════════════
+
+witness balanceOf(): Uint<64>;
+
+export ledger thresholds: Vector<4, Uint<64>>;
+export ledger members: Map<Opaque<"string">, Uint<8>>;
+export ledger memberCount: Counter;
+export ledger perkClaims: Counter;
+
+constructor() {
+    thresholds = [1, 3, 10, 25];
+}
+
+// Compute the highest tier unlocked by a given (private) balance.
+// The branch conditions compare the secret balance against public thresholds,
+// so Compact requires us to declare that comparison result public — this is
+// exactly the tier, which is public anyway. The balance amount stays hidden.
+circuit tierFor(balance: Uint<64>): Uint<8> {
+    if (disclose(balance >= thresholds[3])) {
+        return 3;
+    } else if (disclose(balance >= thresholds[2])) {
+        return 2;
+    } else if (disclose(balance >= thresholds[1])) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+// Join the club. Requires holding at least one membership token.
+// On-chain: members[commitment] = tier. The balance is proved, not revealed.
+export circuit register(commitment: Opaque<"string">): [] {
+    const pubCommitment = disclose(commitment);
+    const balance = balanceOf();
+    assert(!members.member(pubCommitment), "already a member");
+    const tier = tierFor(balance);
+    assert(balance >= thresholds[0], "must hold at least one token to join");
+    members.insert(pubCommitment, disclose(tier));
+    memberCount.increment(1);
+}
+
+// Upgrade to a higher tier by proving a higher (still private) balance.
+export circuit upgrade(commitment: Opaque<"string">): [] {
+    const pubCommitment = disclose(commitment);
+    assert(members.member(pubCommitment), "not a member");
+    const balance = balanceOf();
+    const newTier = tierFor(balance);
+    const currentTier = members.lookup(pubCommitment);
+    assert(newTier > currentTier, "not an upgrade");
+    members.insert(pubCommitment, disclose(newTier));
+}
+
+// Claim a perk. requiredTier is the tier the perk demands; the circuit proves
+// the (private) balance unlocks a tier >= requiredTier and only records that
+// the perk was claimed. The balance is never revealed.
+export circuit claimPerk(commitment: Opaque<"string">, perkId: Uint<8>, requiredTier: Uint<8>): [] {
+    const pubCommitment = disclose(commitment);
+    assert(members.member(pubCommitment), "not a member");
+    const balance = balanceOf();
+    const tier = tierFor(balance);
+    assert(tier >= requiredTier, "tier too low for this perk");
+    perkClaims.increment(1);
+    disclose(perkId);
+}
+
+// Resign membership.
+export circuit leave(commitment: Opaque<"string">): [] {
+    const pubCommitment = disclose(commitment);
+    assert(members.member(pubCommitment), "not a member");
+    members.remove(pubCommitment);
+    memberCount.decrement(1);
+}
