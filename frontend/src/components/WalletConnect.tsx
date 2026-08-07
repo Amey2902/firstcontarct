@@ -1,4 +1,4 @@
-import { useMidnight } from '../hooks/useMidnight';
+import type { WalletStatus } from '../hooks/useMidnight';
 
 const LACE_CHROME_URL = 'https://chromewebstore.google.com/detail/lace/gafhhkghbfjjkeiendhlofajokpaflmk';
 
@@ -6,9 +6,21 @@ function truncAddr(addr: string): string {
   return addr.length <= 24 ? addr : `${addr.slice(0, 14)}…${addr.slice(-8)}`;
 }
 
-export default function WalletConnect() {
-  const { status, address, error, connect, disconnect, networkId } = useMidnight();
-
+export default function WalletConnect({
+  status,
+  address,
+  error,
+  connect,
+  disconnect,
+  networkId,
+}: {
+  status: WalletStatus;
+  address: string | null;
+  error: string | null;
+  connect: () => void;
+  disconnect: () => void;
+  networkId: string;
+}) {
   return (
     <div className="wallet-bar">
       {status === 'connected' && address ? (
@@ -33,7 +45,7 @@ export default function WalletConnect() {
         </a>
       ) : (
         <>
-          <button className="btn-primary" onClick={connect}>
+          <button className="btn-primary" onClick={() => void connect()}>
             Connect Wallet
           </button>
           {error && <span className="chip warn">{error}</span>}

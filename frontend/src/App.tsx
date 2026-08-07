@@ -12,11 +12,20 @@ import PerkClaims from './components/PerkClaims';
 const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS ?? '';
 
 export default function App() {
-  const { status: walletStatus, wallet, address, networkId } = useMidnight();
+  const {
+    status: walletStatus,
+    wallet,
+    address,
+    networkId,
+    error: walletError,
+    connect,
+    disconnect,
+  } = useMidnight();
   const connected = walletStatus === 'connected' && !!wallet && !!address;
 
   const [clubApi, setClubApi] = useState<MembershipClubAPI | null>(null);
   const [connecting, setConnecting] = useState(false);
+  const [autoJoinAttempted, setAutoJoinAttempted] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [lastTx, setLastTx] = useState<string | null>(null);
@@ -49,15 +58,18 @@ export default function App() {
   }, [wallet, address]);
 
   useEffect(() => {
-    if (connected && !clubApi && !connecting) {
+    if (connected && !clubApi && !connecting && !autoJoinAttempted) {
+      setAutoJoinAttempted(true);
       void joinContract();
     }
-  }, [connected, clubApi, connecting, joinContract]);
+  }, [connected, clubApi, connecting, autoJoinAttempted, joinContract]);
 
   // Reset the contract handle whenever the connected identity changes so a
   // disconnect/reconnect (possibly with a different wallet) rejoins cleanly.
   useEffect(() => {
     setClubApi(null);
+    setAutoJoinAttempted(false);
+    setConnecting(false);
   }, [address]);
 
   const handleTxComplete = useCallback(() => {
@@ -77,7 +89,14 @@ export default function App() {
           <p className="dim small">Token-gated membership with tiered perks — your balance stays private.</p>
         </div>
         <div className="header-right">
-          <WalletConnect />
+          <WalletConnect
+            status={walletStatus}
+            address={address}
+            error={walletError}
+            connect={connect}
+            disconnect={disconnect}
+            networkId={networkId}
+          />
         </div>
       </header>
 
@@ -158,6 +177,13 @@ export default function App() {
                 <p className="dim">{connecting ? 'Connecting to contract…' : 'Reconnecting…'}</p>
               ) : (
                 <p className="dim">Connect your wallet to join the club and claim perks.</p>
+              )}
+              {connected && !clubApi && !connecting && (
+                <div className="action-row">
+                  <button className="btn-secondary" type="button" onClick={() => void joinContract()}>
+                    Retry connection
+                  </button>
+                </div>
               )}
             </section>
           )}
