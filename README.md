@@ -6,7 +6,7 @@ Built in Compact (Midnight's zero-knowledge smart contract language), a React + 
 
 ## Live Demo
 
-[PASTE LIVE URL AFTER DEPLOYING THE FRONTEND — e.g. https://<your-project>.vercel.app]
+https://grand-marshmallow-0af42f.netlify.app/
 
 ## Contract Address
 
