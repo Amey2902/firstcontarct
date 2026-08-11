@@ -16,7 +16,10 @@ build/
 .env.production.local
 
 # Contract artifacts
-contracts/managed/
+# membership-club is committed so static hosts (Netlify/Vercel) can build the
+# frontend without the compact toolchain; everything else stays ignored.
+contracts/managed/*
+!contracts/managed/membership-club/
 
 # Frontend ZK artifacts (copied from contracts/managed by copy-assets)
 frontend/public/keys/
