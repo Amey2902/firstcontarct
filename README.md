@@ -130,7 +130,7 @@ The frontend ships hosting config for Vercel (`frontend/vercel.json`) and Netlif
 
 ## Demo Video
 
-[PASTE DEMO VIDEO LINK AFTER RECORDING — see the checklist below]
+https://grand-marshmallow-0af42f.netlify.app/
 
 - [ ] Connect Lace wallet and load the ledger
 - [ ] Join as Bronze with a balance of 1
@@ -196,3 +196,17 @@ my-first-contract/
 - [ ] Manual browser check: ledger renders with Lace installed; join/claim flow exercised end-to-end from the UI
 - [ ] Frontend deployed to Vercel or Netlify and the Live Demo URL pasted above
 - [ ] Demo video recorded and linked above
+
+
+
+
+https://github.com/user-attachments/assets/800193c9-36bf-4dce-aa7a-6a3dbd471901
+
+
+
+
+
+
+
+
+
