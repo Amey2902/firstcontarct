@@ -6,7 +6,7 @@
  * browser-safe: no Node built-ins (fs/path/ws) are pulled in.
  */
 import { CompiledContract } from '@midnight-ntwrk/midnight-js-protocol/compact-js';
-import * as MembershipClub from '../../contracts/managed/membership-club/contract/index.js';
+import * as MembershipClub from '../contracts/membership-club/contract/index.js';
 
 export const CONTRACT_NAME = 'membership-club';
 

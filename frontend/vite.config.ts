@@ -2,9 +2,6 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import wasm from 'vite-plugin-wasm';
 import topLevelAwait from 'vite-plugin-top-level-await';
-import { fileURLToPath } from 'node:url';
-
-const repoRoot = fileURLToPath(new URL('..', import.meta.url));
 
 export default defineConfig({
   cacheDir: './.vite',
@@ -66,10 +63,5 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    // The compiled contract is imported from ../contracts/managed/..., which
-    // lives outside the frontend workspace root. Allow Vite to read it.
-    fs: {
-      allow: [repoRoot],
-    },
   },
 });

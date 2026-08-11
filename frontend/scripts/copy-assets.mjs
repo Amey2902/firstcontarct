@@ -3,7 +3,7 @@ import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const managed = path.resolve(__dirname, '..', '..', 'contracts', 'managed', 'membership-club');
+const managed = path.resolve(__dirname, '..', 'contracts', 'membership-club');
 const publicDir = path.resolve(__dirname, '..', 'public');
 
 const sources = [
