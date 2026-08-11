@@ -4,20 +4,29 @@ Token-based Membership Club: a Midnight Network dApp that grants exclusive perks
 
 Built in Compact (Midnight's zero-knowledge smart contract language), a React + Vite browser DApp, and the Midnight Lace wallet.
 
-## Project Vision
+## Live Demo
 
-Most membership apps force members to prove they belong — by showing their balance, their wallet, or a centralized database — which reveals far more than necessary. This project flips that: membership is granted by a zero-knowledge proof that you hold enough tokens, while **the token balance itself never leaves your device**. An on-chain observer can see that a pseudonymous commitment holds a tier and that perks get claimed, but can never learn the underlying balance, nor link the activity to a real identity.
+[PASTE LIVE URL AFTER DEPLOYING THE FRONTEND — e.g. https://<your-project>.vercel.app]
 
-Midnight's privacy model is the core of the design. The contract keeps only two kinds of public data: the public `thresholds` that define each tier, and a registry mapping a **pseudonymous commitment** (a one-way SHA-256 hash of the member's key) to a tier. Everything else — the membership-token balance — lives only inside a circuit witness and is proved, not revealed. Every action carries a zero-knowledge proof of a statement about that private balance, so the chain verifies the claim without ever seeing the number.
+## Contract Address
 
-## Smart Contract Deployment
+| Network  | Address                                                          |
+|----------|------------------------------------------------------------------|
+| Preview  | `35e00dbf117486cc633aaf663cdebeaedf61939289c2c68282d6aa0a99cc4933` |
+| Preprod  | not deployed                                                     |
 
-- **Network:** Preview
-- **Deployed contract ID:** `35e00dbf117486cc633aaf663cdebeaedf61939289c2c68282d6aa0a99cc4933`
+## What This Does
 
-Verified with `npm run test:e2e` (reads the on-chain thresholds `1 · 3 · 10 · 25` back from the live preview ledger).
+Membership is granted by a zero-knowledge proof that you hold enough membership tokens — **the token balance itself never leaves your device**. The club has four tiers (Bronze 1 · Silver 3 · Gold 10 · Diamond 25); each tier unlocks a perk claim. An on-chain observer can see that a pseudonymous commitment holds a tier and that perks get claimed, but can never learn the underlying balance, nor link the activity to a real identity.
 
-### The privacy story in plain English
+Actions:
+
+- **Join the club** — prove (in ZK) a balance ≥ 1 token; a pseudonymous commitment + tier is disclosed on-chain.
+- **Upgrade tier** — prove a higher balance; the commitment's tier updates publicly.
+- **Claim a perk** — prove the tier that unlocks a perk; `perkClaims` increments publicly.
+- **Leave the club** — the commitment is removed from the public registry.
+
+## Privacy Model
 
 | What | Public (on-chain) | Private (never leaves the circuit) |
 | --- | --- | --- |
@@ -26,27 +35,11 @@ Verified with `npm run test:e2e` (reads the on-chain thresholds `1 · 3 · 10 ·
 | Claim a perk | `perkClaims` incremented + a `perkId` | the balance/tier that unlocked it |
 | Leave the club | the commitment removed | anything else |
 
-The `disclose()` calls in the contract are the **only** member data that ever leaves the circuit. Every other action is **"proved without revealing your input."**
+The contract keeps only two kinds of public data: the public `thresholds` that define each tier, and a registry mapping a **pseudonymous commitment** (a one-way SHA-256 hash of the member's key) to a tier. Everything else — the membership-token balance — lives only inside a circuit witness and is proved, not revealed. Every action carries a zero-knowledge proof of a statement about that private balance, so the chain verifies the claim without ever seeing the number.
 
-## Key Features
+## Privacy Claim
 
-- **Tiered membership levels** — Bronze (1), Silver (3), Gold (10), Diamond (25) tokens; holding more tokens unlocks additional benefits.
-- **Private balance proofs** — the balance is a circuit witness, proved with zero-knowledge, never revealed.
-- **Pseudonymous identity** — commitments, never addresses, reach the ledger.
-- **Token-gated perks** — four tiers of perks (Community Badge → Personal Concierge), each claim proved against a private balance.
-- **Headless test suite** — 10 vitest tests including a privacy assertion that raw balances never appear in the serialized public state.
-- **Interactive CLI** — register / upgrade / claim / leave / inspect the ledger from the terminal.
-- **Browser DApp** — React + Vite frontend wired to the Midnight Lace wallet through the DApp Connector; stateless ledger reads need no wallet at all.
-- **"Proved without revealing your input" labels** on every privacy-sensitive action in the UI.
-
-## Future Scope
-
-- **Membership NFTs** — switch the token-balance witness for proof of ownership of specific (rarer) NFTs, so rarer tokens unlock higher tiers.
-- **Exclusive content gating** — deliver encrypted content; members get a decryption key proved only to members at or above a tier.
-- **Airdrops & rewards** — privately claim token rewards with a Sybil-resistant proof (one commitment per key).
-- **Private voting / community governance** — tier-weighted votes where votes and balances stay hidden.
-- **Multiple clubs** — reusable contract instance per community with per-club thresholds and perks.
-- **Mainnet path** — migrate from the Preview testnet to Midnight Mainnet once live.
+The `disclose()` calls in the contract are the **only** member data that ever leaves the circuit. Every other action is **"proved without revealing your input"** — the balance is a private witness, never revealed, never logged, never persisted. The frontend feeds the typed balance only into the `balanceOf` witness for a single proven transaction and discards it immediately.
 
 ## Tech Stack
 
@@ -57,16 +50,31 @@ The `disclose()` calls in the contract are the **only** member data that ever le
 | Backend tooling | Node 22, tsx, vitest |
 | Frontend | React 19 + Vite 7, vite-plugin-wasm, DApp Connector (Lace) |
 | Local devnet | Docker Compose (node + indexer + proof-server) |
+| CI | GitHub Actions (compile, test, build) |
 
-## Local Development
+## Prerequisites
 
-Requirements: Node 22, Docker (Compose v2), and the Compact compiler version pinned by the project.
+- Node 22 (npm 10+)
+- Docker with Compose v2 (for the bundled local devnet + proof server)
+- The Compact compiler version pinned by the project (install per the [Midnight docs](https://docs.midnight.network/developers/tutorials/compact/install))
+- Midnight Lace wallet browser extension (for the browser DApp)
+
+## Run Locally
 
 ```bash
 npm install
 npm run setup          # start local devnet, compile, deploy
 npm run test           # headless contract tests (10 tests)
 npm run cli            # interactive CLI against the deployed contract
+```
+
+Browser DApp (points at the Preview deployment out of the box):
+
+```bash
+cd frontend
+cp .env.example .env.local   # defaults already point at the preview deployment
+npm install
+npm run dev                  # http://localhost:3000
 ```
 
 The active network is **sticky** — the project defaults to the bundled local devnet (`undeployed`), and switches with `npm run network preview` / `npm run network preprod`. See the available scripts below.
@@ -104,13 +112,6 @@ The `frontend/` workspace is a React + Vite app that talks to the deployed contr
 1. **Stateless reads** — the club ledger (thresholds, members, counters) is fetched from the preview indexer with a plain GraphQL `fetch`. No wallet.
 2. **On-chain writes** — join, upgrade, claim perks, and resign go through the **Midnight Lace wallet** via the DApp Connector. The wallet balances and submits the proven transaction.
 
-```bash
-cd frontend
-cp .env.example .env.local   # defaults already point at the preview deployment
-npm install
-npm run dev                  # http://localhost:3000
-```
-
 Environment variables (`frontend/.env.example`):
 
 | Variable | Purpose |
@@ -123,16 +124,35 @@ Environment variables (`frontend/.env.example`):
 
 `npm run dev` and `npm run build` first copy the compiled ZK artifacts (`keys/`, `zkir/`) from `contracts/managed/membership-club/` into `frontend/public/`, so the browser can fetch prover/verifier keys and zkIR from the DApp's own origin.
 
-The simulated balance a member types into the UI is fed to the `balanceOf` witness for a single transaction, proved with ZK, and **never leaves the page, is never logged, and is never persisted**.
-
 ### SPA hosting
 
 The frontend ships hosting config for Vercel (`frontend/vercel.json`) and Netlify (`frontend/netlify.toml` + `frontend/public/_redirects`) with SPA rewrites to `index.html`. Deploy the `frontend/` directory to either platform; set the `VITE_*` environment variables in the platform's dashboard.
+
+## Demo Video
+
+[PASTE DEMO VIDEO LINK AFTER RECORDING — see the checklist below]
+
+- [ ] Connect Lace wallet and load the ledger
+- [ ] Join as Bronze with a balance of 1
+- [ ] Claim a perk
+- [ ] Upgrade to Diamond and claim the top-tier perk
+- [ ] Show a ledger read-back (commitment, tier, `perkClaims`)
+- [ ] Show the ZK prove step / wallet transaction approval
+
+## Future Scope
+
+- **Membership NFTs** — switch the token-balance witness for proof of ownership of specific (rarer) NFTs, so rarer tokens unlock higher tiers.
+- **Exclusive content gating** — deliver encrypted content; members get a decryption key proved only to members at or above a tier.
+- **Airdrops & rewards** — privately claim token rewards with a Sybil-resistant proof (one commitment per key).
+- **Private voting / community governance** — tier-weighted votes where votes and balances stay hidden.
+- **Multiple clubs** — reusable contract instance per community with per-club thresholds and perks.
+- **Mainnet path** — migrate from the Preview testnet to Midnight Mainnet once live.
 
 ## Project structure
 
 ```
 my-first-contract/
+├── .github/workflows/ci.yml      # GitHub Actions: compile, test, build
 ├── contracts/
 │   └── membership-club.compact      # Compact source
 ├── contracts/managed/membership-club/  # compiled contract + keys + zkIR
@@ -172,4 +192,7 @@ my-first-contract/
 - [x] Frontend dev server serves the compiled contract, keys, and zkIR
 - [x] Indexer read path verified against the live preview indexer
 - [x] SPA hosting config present for Vercel and Netlify
+- [x] GitHub Actions CI workflow (`.github/workflows/ci.yml`)
 - [ ] Manual browser check: ledger renders with Lace installed; join/claim flow exercised end-to-end from the UI
+- [ ] Frontend deployed to Vercel or Netlify and the Live Demo URL pasted above
+- [ ] Demo video recorded and linked above
