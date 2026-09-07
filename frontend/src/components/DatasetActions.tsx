@@ -41,6 +41,7 @@ export default function DatasetActions({
   onError,
   setSimulatedDatasetContentHash,
   setSimulatedLicenseProof,
+  setSimulatedCurrentTimestamp,
   computeDatasetId,
   licenseTypeName,
   authStatusName,
@@ -51,15 +52,15 @@ export default function DatasetActions({
 
   // Register form state
   const [regName, setRegName] = useState('');
-  const [regLicenseType, setRegLicenseType] = useState(LICENSE_TYPES.COMMERCIAL);
-  const [regAuthStatus, setRegAuthStatus] = useState(AUTH_STATUS.AUTHORIZED);
+  const [regLicenseType, setRegLicenseType] = useState<number>(LICENSE_TYPES.COMMERCIAL);
+  const [regAuthStatus, setRegAuthStatus] = useState<number>(AUTH_STATUS.AUTHORIZED);
   const [regValidFrom, setRegValidFrom] = useState('');
   const [regValidUntil, setRegValidUntil] = useState('');
   const [regMetadataHash, setRegMetadataHash] = useState('');
 
   // Update/Revoke/View form state
   const [datasetId, setDatasetId] = useState('');
-  const [newAuthStatus, setNewAuthStatus] = useState(AUTH_STATUS.AUTHORIZED);
+  const [newAuthStatus, setNewAuthStatus] = useState<number>(AUTH_STATUS.AUTHORIZED);
 
   const handleRegister = async () => {
     if (!regName.trim()) {

@@ -8,9 +8,9 @@
 import { dappConnectorProofProvider } from '@midnight-ntwrk/midnight-js-dapp-connector-proof-provider';
 import { indexerPublicDataProvider } from '@midnight-ntwrk/midnight-js-indexer-public-data-provider';
 import { FetchZkConfigProvider } from '@midnight-ntwrk/midnight-js-fetch-zk-config-provider';
-import type { Wallet, WalletConnectedAPI } from '@midnight-ntwrk/dapp-connector-api';
+import type { ConnectedAPI } from '@midnight-ntwrk/dapp-connector-api';
 import { zkConfigPath } from './contract';
-import type { CostModel, ProofProvider } from '@midnight-ntwrk/midnight-js-types';
+import type { ProofProvider } from '@midnight-ntwrk/midnight-js-types';
 import { browserPrivateStateProvider } from './browserPrivateStateProvider';
 
 const INDEXER_URL = import.meta.env.VITE_INDEXER_URL ?? 'https://indexer.preview.midnight.network/api/v4/graphql';
@@ -20,17 +20,17 @@ const PRIVATE_STATE_PASSWORD = import.meta.env.VITE_PRIVATE_STATE_PASSWORD ?? 'L
 export interface BlackBoxProviders {
   privateStateProvider: ReturnType<typeof browserPrivateStateProvider>;
   publicDataProvider: ReturnType<typeof indexerPublicDataProvider>;
-  zkConfigProvider: ReturnType<typeof FetchZkConfigProvider>;
-  proofProvider: ProofProvider<'blackbox-ai'>;
-  walletProvider: Wallet;
-  midnightProvider: Wallet;
+  zkConfigProvider: InstanceType<typeof FetchZkConfigProvider<string>>;
+  proofProvider: ProofProvider;
+  walletProvider: ConnectedAPI;
+  midnightProvider: ConnectedAPI;
 }
 
-export async function createProviders(wallet: Wallet): Promise<BlackBoxProviders> {
+export async function createProviders(wallet: ConnectedAPI): Promise<BlackBoxProviders> {
   // Private state provider - uses IndexedDB in browser
   const privateStateProvider = browserPrivateStateProvider({
     privateStateStoreName: 'blackbox-ai-state',
-    accountId: wallet.getAccountId(),
+    accountId: 'default',
     privateStoragePasswordProvider: () => PRIVATE_STATE_PASSWORD,
   });
 
@@ -38,11 +38,10 @@ export async function createProviders(wallet: Wallet): Promise<BlackBoxProviders
   const publicDataProvider = indexerPublicDataProvider(INDEXER_URL, INDEXER_WS_URL);
 
   // ZK config provider - fetches verifier keys and zkIR from the deployed contract
-  const zkConfigProvider = new FetchZkConfigProvider(zkConfigPath);
+  const zkConfigProvider = new FetchZkConfigProvider<string>(zkConfigPath);
 
   // Proof provider - uses the DApp Connector's proof provider
-  const connectedWallet = wallet as WalletConnectedAPI;
-  const proofProvider = await dappConnectorProofProvider(connectedWallet, zkConfigProvider, {} as CostModel);
+  const proofProvider = await dappConnectorProofProvider(wallet, zkConfigProvider, {});
 
   return {
     privateStateProvider,

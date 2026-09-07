@@ -23,6 +23,7 @@ export default function TrainingActions({
   onError,
   setSimulatedTrainingDataHashes,
   setSimulatedDatasetLicenses,
+  setSimulatedCurrentTimestamp,
   computeCommitmentId,
 }: Props) {
   const [tab, setTab] = useState<'commit' | 'view'>('commit');

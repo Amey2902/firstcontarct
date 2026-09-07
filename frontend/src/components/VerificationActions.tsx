@@ -10,9 +10,8 @@ interface Props {
   onError: (e: string) => void;
   setSimulatedTrainingDataHashes: (v: string[]) => void;
   setSimulatedDatasetLicenses: (v: string[]) => void;
+  setSimulatedCurrentTimestamp: (v: bigint) => void;
   computeVerificationId: (commitmentId: string, policyId: string) => Promise<string>;
-  licenseTypeName: (type: number) => string;
-  authStatusName: (status: number) => string;
 }
 
 export default function VerificationActions({
@@ -24,9 +23,8 @@ export default function VerificationActions({
   onError,
   setSimulatedTrainingDataHashes,
   setSimulatedDatasetLicenses,
+  setSimulatedCurrentTimestamp,
   computeVerificationId,
-  licenseTypeName,
-  authStatusName,
 }: Props) {
   const [commitmentId, setCommitmentId] = useState('');
   const [policyId, setPolicyId] = useState('');

@@ -3,6 +3,7 @@
  * Replaces level-based provider which has issues with Vite/browser bundling.
  */
 import type { PrivateStateProvider } from '@midnight-ntwrk/midnight-js-types';
+import type { ContractAddress } from '@midnight-ntwrk/midnight-js-protocol/compact-runtime';
 
 const DB_NAME = 'blackbox-ai-private-state';
 const STORE_NAME = 'private-states';
@@ -22,57 +23,109 @@ function openDB(): Promise<IDBDatabase> {
   });
 }
 
-export function browserPrivateStateProvider(config: {
+export function browserPrivateStateProvider(_config: {
   privateStateStoreName: string;
   accountId: string;
   privateStoragePasswordProvider: () => string;
-}): PrivateStateProvider<Record<string, unknown>> {
-  const storeName = config.privateStateStoreName;
-  const accountId = config.accountId;
+}): PrivateStateProvider<string> {
+  let contractAddress: string | undefined;
 
-  async function getState(): Promise<Record<string, unknown>> {
+  function scopedKey(key: string): string {
+    return contractAddress ? `${contractAddress}:${key}` : key;
+  }
+
+  async function idbGet(key: string): Promise<any> {
     const db = await openDB();
     return new Promise((resolve, reject) => {
       const tx = db.transaction(STORE_NAME, 'readonly');
       const store = tx.objectStore(STORE_NAME);
-      const request = store.get(`${storeName}-${accountId}`);
-      request.onsuccess = () => resolve(request.result?.data ?? {});
-      request.onerror = () => reject(request.error);
+      const req = store.get(key);
+      req.onsuccess = () => resolve(req.result ?? null);
+      req.onerror = () => reject(req.error);
     });
   }
 
-  async function setState(state: Record<string, unknown>): Promise<void> {
+  async function idbSet(key: string, value: any): Promise<void> {
     const db = await openDB();
     return new Promise((resolve, reject) => {
       const tx = db.transaction(STORE_NAME, 'readwrite');
       const store = tx.objectStore(STORE_NAME);
-      const request = store.put({ data: state }, `${storeName}-${accountId}`);
-      request.onsuccess = () => resolve();
-      request.onerror = () => reject(request.error);
+      const req = store.put(value, key);
+      req.onsuccess = () => resolve();
+      req.onerror = () => reject(req.error);
     });
   }
 
-  return {
-    get: async (key: string) => {
-      const state = await getState();
-      return state[key];
+  async function idbDelete(key: string): Promise<void> {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(STORE_NAME, 'readwrite');
+      const store = tx.objectStore(STORE_NAME);
+      const req = store.delete(key);
+      req.onsuccess = () => resolve();
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  const provider: PrivateStateProvider<string> = {
+    setContractAddress(address: ContractAddress): void {
+      contractAddress = typeof address === 'string' ? address : (address as any).toString();
     },
-    set: async (key: string, value: unknown) => {
-      const state = await getState();
-      state[key] = value;
-      await setState(state);
+
+    async get(privateStateId: string): Promise<any> {
+      return idbGet(scopedKey(privateStateId));
     },
-    delete: async (key: string) => {
-      const state = await getState();
-      delete state[key];
-      await setState(state);
+
+    async set(privateStateId: string, state: any): Promise<void> {
+      return idbSet(scopedKey(privateStateId), state);
     },
-    clear: async () => {
-      await setState({});
+
+    async remove(privateStateId: string): Promise<void> {
+      return idbDelete(scopedKey(privateStateId));
     },
-    keys: async () => {
-      const state = await getState();
-      return Object.keys(state);
+
+    async clear(): Promise<void> {
+      const db = await openDB();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, 'readwrite');
+        tx.objectStore(STORE_NAME).clear();
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+      });
+    },
+
+    async setSigningKey(address: ContractAddress, signingKey: any): Promise<void> {
+      return idbSet(`signingKey:${String(address)}`, signingKey);
+    },
+
+    async getSigningKey(address: ContractAddress): Promise<any> {
+      return idbGet(`signingKey:${String(address)}`);
+    },
+
+    async removeSigningKey(address: ContractAddress): Promise<void> {
+      return idbDelete(`signingKey:${String(address)}`);
+    },
+
+    async clearSigningKeys(): Promise<void> {
+      // No-op for simplicity — full implementation would filter by prefix
+    },
+
+    async exportPrivateStates(): Promise<any> {
+      throw new Error('exportPrivateStates not implemented in browser provider');
+    },
+
+    async importPrivateStates(): Promise<any> {
+      throw new Error('importPrivateStates not implemented in browser provider');
+    },
+
+    async exportSigningKeys(): Promise<any> {
+      throw new Error('exportSigningKeys not implemented in browser provider');
+    },
+
+    async importSigningKeys(): Promise<any> {
+      throw new Error('importSigningKeys not implemented in browser provider');
     },
   };
+
+  return provider;
 }

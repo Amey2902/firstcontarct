@@ -46,7 +46,7 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const [lastTx, setLastTx] = useState<string | null>(null);
 
-  const { state, refresh } = useContractState(CONTRACT_ADDRESS || null);
+  const { refresh } = useContractState(CONTRACT_ADDRESS || null);
 
   useEffect(() => {
     if (connected && !api && !connecting && !autoJoinAttempted) {
@@ -186,9 +186,8 @@ export default function App() {
                 onError={setError}
                 setSimulatedTrainingDataHashes={setSimulatedTrainingDataHashes}
                 setSimulatedDatasetLicenses={setSimulatedDatasetLicenses}
+                setSimulatedCurrentTimestamp={setSimulatedCurrentTimestamp}
                 computeVerificationId={computeVerificationId}
-                licenseTypeName={licenseTypeName}
-                authStatusName={authStatusName}
               />
             </>
           ) : (
