@@ -81,6 +81,10 @@ export class BlackBoxAPI {
 
   /** Join an existing BlackBox AI contract. */
   static async join(providers: BlackBoxProviders, contractAddress: ContractAddress): Promise<BlackBoxAPI> {
+    // Sanity check — walletProvider must implement the WalletProvider interface
+    if (typeof (providers.walletProvider as any).getCoinPublicKey !== 'function') {
+      throw new Error('walletProvider.getCoinPublicKey is missing — providers were not built correctly. Please disconnect and reconnect your wallet.');
+    }
     const deployedContract = await findDeployedContract(providers as any, {
       contractAddress,
       compiledContract,
