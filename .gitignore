@@ -15,8 +15,11 @@ build/
 .env.test.local
 .env.production.local
 
-# Contract artifacts
-contracts/managed/
+# Contract artifacts — ignore everything except the compiled JS needed by Vercel
+contracts/managed/**
+!contracts/managed/blackbox-ai/
+!contracts/managed/blackbox-ai/contract/
+!contracts/managed/blackbox-ai/contract/**
 
 # Frontend ZK artifacts (copied from contracts/managed by copy-assets)
 frontend/public/keys/
