@@ -7,7 +7,7 @@ import { FetchZkConfigProvider } from '@midnight-ntwrk/midnight-js-fetch-zk-conf
 import type { ConnectedAPI } from '@midnight-ntwrk/dapp-connector-api';
 import { toHex, fromHex, parseCoinPublicKeyToHex, parseEncPublicKeyToHex } from '@midnight-ntwrk/midnight-js-utils';
 import { Transaction } from '@midnight-ntwrk/midnight-js-types';
-import { getNetworkId } from '@midnight-ntwrk/midnight-js-network-id';
+import { getNetworkId, setNetworkId } from '@midnight-ntwrk/midnight-js-network-id';
 import { zkConfigPath } from './contract';
 import type { PrivateStateProvider, WalletProvider, MidnightProvider, ProofProvider } from '@midnight-ntwrk/midnight-js-types';
 import { browserPrivateStateProvider } from './browserPrivateStateProvider';
@@ -15,6 +15,7 @@ import { browserPrivateStateProvider } from './browserPrivateStateProvider';
 const INDEXER_URL    = import.meta.env.VITE_INDEXER_URL    ?? 'https://indexer.preview.midnight.network/api/v4/graphql';
 const INDEXER_WS_URL = import.meta.env.VITE_INDEXER_WS_URL ?? 'wss://indexer.preview.midnight.network/api/v4/graphql/ws';
 const PRIVATE_STATE_PASSWORD = import.meta.env.VITE_PRIVATE_STATE_PASSWORD ?? 'Local-Devnet-Development-Placeholder-1';
+const NETWORK = import.meta.env.VITE_NETWORK ?? 'preview';
 
 export interface BlackBoxProviders {
   privateStateProvider: PrivateStateProvider<string>;
@@ -26,6 +27,9 @@ export interface BlackBoxProviders {
 }
 
 export async function createProviders(wallet: ConnectedAPI): Promise<BlackBoxProviders> {
+  // ── Set network ID (must be called before any SDK operation) ────────────
+  setNetworkId(NETWORK as any);
+
   // ── ZK config provider ──────────────────────────────────────────────────
   const zkBaseUrl = `${window.location.origin}${zkConfigPath}`;
   const zkConfigProvider = new FetchZkConfigProvider<string>(zkBaseUrl, fetch.bind(window));
