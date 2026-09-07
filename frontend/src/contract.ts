@@ -97,7 +97,8 @@ const make = CompiledContract.make as any;
 const withWitnesses = CompiledContract.withWitnesses as any;
 
 // Path to compiled contract artifacts (keys, zkir)
-export const zkConfigPath = '/contract';
+// Files live in frontend/public/keys/ and frontend/public/zkir/ → served at /keys/ and /zkir/
+export const zkConfigPath = '/';
 
 export const compiledContract = make(CONTRACT_NAME, BlackBoxAI.Contract).pipe(
   withWitnesses({
