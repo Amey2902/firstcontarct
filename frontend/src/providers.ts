@@ -1,57 +1,93 @@
 /**
- * Browser providers for the DApp Connector (Midnight Lace wallet).
- *
- * Builds the provider set the contract needs: wallet, proof server, indexer,
- * zk-config, and private state. Mirrors the Node-side `createProviders` but
- * uses browser-native fetch/WebSocket and the DApp Connector wallet API.
+ * Browser providers wired to the Midnight DApp Connector (Lace wallet).
  */
 import { dappConnectorProofProvider } from '@midnight-ntwrk/midnight-js-dapp-connector-proof-provider';
 import { indexerPublicDataProvider } from '@midnight-ntwrk/midnight-js-indexer-public-data-provider';
 import { FetchZkConfigProvider } from '@midnight-ntwrk/midnight-js-fetch-zk-config-provider';
 import type { ConnectedAPI } from '@midnight-ntwrk/dapp-connector-api';
+import { toHex, fromHex, parseCoinPublicKeyToHex, parseEncPublicKeyToHex } from '@midnight-ntwrk/midnight-js-utils';
+import { Transaction } from '@midnight-ntwrk/midnight-js-types';
+import { getNetworkId } from '@midnight-ntwrk/midnight-js-network-id';
 import { zkConfigPath } from './contract';
-import type { ProofProvider } from '@midnight-ntwrk/midnight-js-types';
+import type { PrivateStateProvider, WalletProvider, MidnightProvider, ProofProvider } from '@midnight-ntwrk/midnight-js-types';
 import { browserPrivateStateProvider } from './browserPrivateStateProvider';
 
-const INDEXER_URL = import.meta.env.VITE_INDEXER_URL ?? 'https://indexer.preview.midnight.network/api/v4/graphql';
+const INDEXER_URL    = import.meta.env.VITE_INDEXER_URL    ?? 'https://indexer.preview.midnight.network/api/v4/graphql';
 const INDEXER_WS_URL = import.meta.env.VITE_INDEXER_WS_URL ?? 'wss://indexer.preview.midnight.network/api/v4/graphql/ws';
 const PRIVATE_STATE_PASSWORD = import.meta.env.VITE_PRIVATE_STATE_PASSWORD ?? 'Local-Devnet-Development-Placeholder-1';
 
 export interface BlackBoxProviders {
-  privateStateProvider: ReturnType<typeof browserPrivateStateProvider>;
-  publicDataProvider: ReturnType<typeof indexerPublicDataProvider>;
-  zkConfigProvider: InstanceType<typeof FetchZkConfigProvider<string>>;
-  proofProvider: ProofProvider;
-  walletProvider: ConnectedAPI;
-  midnightProvider: ConnectedAPI;
+  privateStateProvider: PrivateStateProvider<string>;
+  publicDataProvider:   ReturnType<typeof indexerPublicDataProvider>;
+  zkConfigProvider:     InstanceType<typeof FetchZkConfigProvider<string>>;
+  proofProvider:        ProofProvider;
+  walletProvider:       WalletProvider;
+  midnightProvider:     MidnightProvider;
 }
 
 export async function createProviders(wallet: ConnectedAPI): Promise<BlackBoxProviders> {
-  // Private state provider - uses IndexedDB in browser
+  // ── ZK config provider ──────────────────────────────────────────────────
+  const zkBaseUrl = `${window.location.origin}${zkConfigPath}`;
+  const zkConfigProvider = new FetchZkConfigProvider<string>(zkBaseUrl, fetch.bind(window));
+
+  // ── Proof provider (delegates proving to the wallet) ────────────────────
+  const proofProvider = await dappConnectorProofProvider(wallet, zkConfigProvider, {});
+
+  // ── Shielded keys (fetched once, cached) ────────────────────────────────
+  const [shieldedAddr] = await wallet.getShieldedAddresses();
+  if (!shieldedAddr) throw new Error('No shielded address found in wallet');
+
+  const coinPublicKey = parseCoinPublicKeyToHex(shieldedAddr.shieldedCoinPublicKey, getNetworkId());
+  const encPublicKey  = parseEncPublicKeyToHex(shieldedAddr.shieldedEncryptionPublicKey, getNetworkId());
+
+  // ── WalletProvider adapter ───────────────────────────────────────────────
+  // The SDK calls getCoinPublicKey() / getEncryptionPublicKey() synchronously
+  // and balanceTx(unboundTx) to finalize a proved transaction.
+  const walletProvider: WalletProvider = {
+    getCoinPublicKey:        () => coinPublicKey as any,
+    getEncryptionPublicKey:  () => encPublicKey  as any,
+
+    async balanceTx(tx: any, _ttl?: Date): Promise<any> {
+      // Serialize the UnboundTransaction (Transaction<SignatureEnabled, Proof, PreBinding>)
+      // to hex, send to the wallet for balancing, then deserialize back.
+      const serialized  = toHex(tx.serialize());
+      const { tx: balanced } = await wallet.balanceUnsealedTransaction(serialized);
+      // Deserialize the balanced+finalized hex back to a FinalizedTransaction object
+      return (Transaction as any).deserialize(
+        'signature', 'proof', 'binding',
+        fromHex(balanced),
+      );
+    },
+  };
+
+  // ── MidnightProvider adapter ─────────────────────────────────────────────
+  const midnightProvider: MidnightProvider = {
+    async submitTx(tx: any): Promise<any> {
+      const serialized = toHex(tx.serialize());
+      await wallet.submitTransaction(serialized);
+      return serialized; // tx id is not returned by the DApp Connector
+    },
+  };
+
+  // ── Private state provider ───────────────────────────────────────────────
+  const unshieldedResult = await wallet.getUnshieldedAddress().catch(() => null) as any;
+  const accountId = unshieldedResult?.unshieldedAddress ?? shieldedAddr.shieldedAddress;
+
   const privateStateProvider = browserPrivateStateProvider({
     privateStateStoreName: 'blackbox-ai-state',
-    accountId: 'default',
+    accountId,
     privateStoragePasswordProvider: () => PRIVATE_STATE_PASSWORD,
   });
 
-  // Public data provider - reads from indexer
+  // ── Public data provider ─────────────────────────────────────────────────
   const publicDataProvider = indexerPublicDataProvider(INDEXER_URL, INDEXER_WS_URL);
-
-  // ZK config provider - fetches verifier keys and zkIR from the deployed contract
-  const zkBaseUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}${zkConfigPath}`
-    : zkConfigPath;
-  const zkConfigProvider = new FetchZkConfigProvider<string>(zkBaseUrl, fetch.bind(window));
-
-  // Proof provider - uses the DApp Connector's proof provider
-  const proofProvider = await dappConnectorProofProvider(wallet, zkConfigProvider, {});
 
   return {
     privateStateProvider,
     publicDataProvider,
     zkConfigProvider,
     proofProvider,
-    walletProvider: wallet,
-    midnightProvider: wallet,
+    walletProvider,
+    midnightProvider,
   };
 }
