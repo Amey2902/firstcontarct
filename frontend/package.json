@@ -1,9 +1,9 @@
 {
-  "name": "membership-club-frontend",
+  "name": "blackbox-ai-frontend",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Browser DApp for the Midnight Membership Club — token-gated membership with tiered perks",
+  "description": "Browser DApp for BlackBox AI — Privacy-Preserving Training Data Verification",
   "scripts": {
     "copy-assets": "node scripts/copy-assets.mjs",
     "dev": "node scripts/copy-assets.mjs && vite",

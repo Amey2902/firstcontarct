@@ -13,19 +13,12 @@ import type { WalletContext } from './wallet';
 import { zkConfigPath } from './contract';
 
 export async function createProviders(walletCtx: WalletContext, networkConfig: NetworkConfig) {
-  // The SDK requires the private-state password to be at least 16 characters.
-  // The default below is a placeholder for local devnet only — set a strong
-  // password via PRIVATE_STATE_PASSWORD when you move to a non-local target.
   const privateStatePassword = process.env.PRIVATE_STATE_PASSWORD?.trim() || 'Local-Devnet-Development-Placeholder-1';
 
   const walletProvider = {
-    // In Midnight.js 4.1.x the WalletProvider interface returns the key objects
-    // (CoinPublicKey / EncPublicKey) directly — no longer hex strings.
     getCoinPublicKey: () => walletCtx.shieldedSecretKeys.coinPublicKey,
     getEncryptionPublicKey: () => walletCtx.shieldedSecretKeys.encryptionPublicKey,
     async balanceTx(tx: any, ttl?: Date) {
-      // balanceUnboundTransaction -> finalizeRecipe is the complete balancing
-      // path in wallet-sdk 1.x; the earlier explicit signRecipe step is gone.
       const recipe = await walletCtx.wallet.balanceUnboundTransaction(
         tx,
         { shieldedSecretKeys: walletCtx.shieldedSecretKeys, dustSecretKey: walletCtx.dustSecretKey },
@@ -41,7 +34,7 @@ export async function createProviders(walletCtx: WalletContext, networkConfig: N
 
   return {
     privateStateProvider: levelPrivateStateProvider({
-      privateStateStoreName: 'membership-club-state',
+      privateStateStoreName: 'blackbox-ai-state',
       accountId,
       privateStoragePasswordProvider: () => privateStatePassword,
     }),

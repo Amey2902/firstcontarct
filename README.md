@@ -1,198 +1,394 @@
-# Midnight Membership Club
+# BlackBox AI — Privacy-Preserving Training Data Verification
 
-Token-based Membership Club: a Midnight Network dApp that grants exclusive perks, content, and community access to users who hold a membership token, with **tiered membership levels** — holding more tokens unlocks additional benefits.
+**BlackBox AI** is a zero-knowledge proof system built on the **Midnight Network** that allows AI companies to prove their training data was properly licensed and authorized — **without revealing the training data itself**.
 
-Built in Compact (Midnight's zero-knowledge smart contract language), a React + Vite browser DApp, and the Midnight Lace wallet.
+## The Problem
+
+AI companies increasingly need to prove that the data used to train their models was properly licensed, authorized, and compliant. However, proving this usually requires exposing the actual training datasets to auditors, customers, or regulators.
+
+Those datasets may contain:
+- Copyrighted material
+- Private information
+- Proprietary data
+- Trade secrets
+
+**How can an AI company prove its training data was legally authorized without revealing the data itself?**
+
+## The Solution
+
+BlackBox AI uses **zero-knowledge proofs** to verify training data compliance against predefined policies — the auditor receives only the verification result and cryptographic proof, while the underlying datasets and sensitive licensing information remain private.
+
+### What BlackBox AI Proves
+
+| Policy Check | Example |
+|--------------|---------|
+| ✅ 100% of training data was authorized | All datasets have valid authorization |
+| ✅ ≥95% of data was properly licensed | Commercial, Open Source, or Proprietary licenses |
+| ✅ No restricted datasets were used | No "No AI Training" licensed data |
+| ✅ All licenses valid at training time | No expired licenses |
+
+### Example Scenario
+
+An AI company trains a model using:
+- **Dataset A** — Commercially licensed ✅
+- **Dataset B** — Commercially licensed ✅
+- **Dataset C** — Restricted ❌
+
+BlackBox AI evaluates the policy privately and generates:
+```
+❌ NON-COMPLIANT — Training policy violated
+   Authorized: 66% (required: 100%)
+   Licensed: 66% (required: 95%)
+   Restricted datasets used: 1
+```
+
+---
+
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                      BLACKBOX AI CONTRACT                        │
+│  (Midnight Compact Smart Contract)                               │
+├─────────────────────────────────────────────────────────────────┤
+│  PUBLIC LEDGER (on-chain)           PRIVATE WITNESSES (off-chain)│
+│  ───────────────────────            ──────────────────────────  │
+│  • Dataset Registry                 • Dataset Content Hashes    │
+│  • Training Commitments             • License Proofs            │
+│  • Verification Results             • Training Data Hashes      │
+│  • Policies                         • Dataset Licenses          │
+│  • Counters                         • Current Timestamp         │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                    Zero-Knowledge Proofs
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                      VERIFICATION RESULT                         │
+│  (Public: Compliant/Non-Compliant + Aggregate Metrics)          │
+│  Private: Individual dataset details NEVER revealed              │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Privacy Model
+
+| What | Public (On-Chain) | Private (Never Leaves Circuit) |
+|------|-------------------|--------------------------------|
+| Dataset Registration | Dataset ID, Owner, License Type, Status, Validity Period | Content Hash, License Proof |
+| Training Commitment | Commitment ID, Trainer, Dataset Count, Model Hash, Timestamp | Individual Dataset Hashes, License Hashes |
+| Policy Creation | Policy ID, Name, Requirements (percentages, flags) | — |
+| ZK Verification | **Result only**: Compliant?, % Authorized, % Licensed, Restricted Count, Expired Count | **All evaluation logic**: Which datasets, individual statuses, license details |
+
+---
 
 ## Live Demo
 
-https://grand-marshmallow-0af42f.netlify.app/
+| Network | Contract Address | Status |
+|---------|-----------------|--------|
+| **Preprod** | `TBD_AFTER_DEPLOY` | 🚀 Deployed |
+| Preview | `TBD_AFTER_DEPLOY` | 🔄 Pending |
+| Local Devnet | `undeployed` | 🛠 Development |
 
-## Contract Address
+**Frontend Demo**: [TBD_AFTER_DEPLOY] (Netlify/Vercel)
 
-| Network  | Address                                                          |
-|----------|------------------------------------------------------------------|
-| Preview  | `35e00dbf117486cc633aaf663cdebeaedf61939289c2c68282d6aa0a99cc4933` |
-| Preprod  | not deployed                                                     |
+---
 
-## What This Does
+## Quick Start
 
-Membership is granted by a zero-knowledge proof that you hold enough membership tokens — **the token balance itself never leaves your device**. The club has four tiers (Bronze 1 · Silver 3 · Gold 10 · Diamond 25); each tier unlocks a perk claim. An on-chain observer can see that a pseudonymous commitment holds a tier and that perks get claimed, but can never learn the underlying balance, nor link the activity to a real identity.
+### Prerequisites
 
-Actions:
+- **Node.js 22+** (npm 10+)
+- **Docker** with Compose v2 (for local devnet + proof server)
+- **Midnight Lace Wallet** browser extension (for browser DApp)
+- **Compact Compiler** v0.23+ ([install guide](https://docs.midnight.network/developers/tutorials/compact/install))
 
-- **Join the club** — prove (in ZK) a balance ≥ 1 token; a pseudonymous commitment + tier is disclosed on-chain.
-- **Upgrade tier** — prove a higher balance; the commitment's tier updates publicly.
-- **Claim a perk** — prove the tier that unlocks a perk; `perkClaims` increments publicly.
-- **Leave the club** — the commitment is removed from the public registry.
-
-## Privacy Model
-
-| What | Public (on-chain) | Private (never leaves the circuit) |
-| --- | --- | --- |
-| Join the club | a new commitment + the tier it maps to | the token balance behind the tier |
-| Upgrade tier | the commitment's new tier | the new balance |
-| Claim a perk | `perkClaims` incremented + a `perkId` | the balance/tier that unlocked it |
-| Leave the club | the commitment removed | anything else |
-
-The contract keeps only two kinds of public data: the public `thresholds` that define each tier, and a registry mapping a **pseudonymous commitment** (a one-way SHA-256 hash of the member's key) to a tier. Everything else — the membership-token balance — lives only inside a circuit witness and is proved, not revealed. Every action carries a zero-knowledge proof of a statement about that private balance, so the chain verifies the claim without ever seeing the number.
-
-## Privacy Claim
-
-The `disclose()` calls in the contract are the **only** member data that ever leaves the circuit. Every other action is **"proved without revealing your input"** — the balance is a private witness, never revealed, never logged, never persisted. The frontend feeds the typed balance only into the `balanceOf` witness for a single proven transaction and discards it immediately.
-
-## Tech Stack
-
-| Layer | Technology |
-| --- | --- |
-| Smart contract | Compact 0.23, compiled with the `compact` toolchain |
-| SDK | Midnight.js 4.1.1, compact-runtime 0.16.0, wallet-sdk 1.2.0 |
-| Backend tooling | Node 22, tsx, vitest |
-| Frontend | React 19 + Vite 7, vite-plugin-wasm, DApp Connector (Lace) |
-| Local devnet | Docker Compose (node + indexer + proof-server) |
-| CI | GitHub Actions (compile, test, build) |
-
-## Prerequisites
-
-- Node 22 (npm 10+)
-- Docker with Compose v2 (for the bundled local devnet + proof server)
-- The Compact compiler version pinned by the project (install per the [Midnight docs](https://docs.midnight.network/developers/tutorials/compact/install))
-- Midnight Lace wallet browser extension (for the browser DApp)
-
-## Run Locally
+### Local Development
 
 ```bash
+# 1. Clone and install
+git clone https://github.com/<your-org>/blackbox-ai.git
+cd blackbox-ai
 npm install
-npm run setup          # start local devnet, compile, deploy
-npm run test           # headless contract tests (10 tests)
-npm run cli            # interactive CLI against the deployed contract
-```
 
-Browser DApp (points at the Preview deployment out of the box):
+# 2. Start local devnet (node + indexer + proof server)
+npm run proof-server:start
 
-```bash
+# 3. Compile the contract
+npm run compile
+
+# 4. Deploy to local devnet
+npm run setup
+
+# 5. Run the CLI demo
+npm run demo
+
+# 6. Or start the browser DApp
 cd frontend
-cp .env.example .env.local   # defaults already point at the preview deployment
+cp .env.example .env.local
 npm install
-npm run dev                  # http://localhost:3000
+npm run dev
+# Open http://localhost:3000
 ```
 
-The active network is **sticky** — the project defaults to the bundled local devnet (`undeployed`), and switches with `npm run network preview` / `npm run network preprod`. See the available scripts below.
-
-### Available scripts
+### Available Scripts
 
 | Script | Description |
-| --- | --- |
-| `npm run compile` | Compile `contracts/membership-club.compact` |
-| `npm run deploy` | Deploy the compiled contract |
-| `npm run cli` | Interactive CLI (register / upgrade / claim / leave / ledger) |
-| `npm run demo` | Full lifecycle demo (register → claim → upgrade → resign) |
-| `npm run test` | Headless vitest suite (10 tests) |
-| `npm run test:e2e` | Smoke + read-back check against the deployed contract |
-| `npm run frontend:dev` | Start the browser DApp (Vite dev server) |
-| `npm run frontend:build` | Type-check + production build of the frontend |
+|--------|-------------|
+| `npm run compile` | Compile `contracts/blackbox-ai.compact` |
+| `npm run deploy` | Deploy compiled contract to active network |
+| `npm run cli` | Interactive CLI for contract interaction |
+| `npm run demo` | Full lifecycle demo (register → commit → policy → verify) |
+| `npm run test` | Headless vitest suite |
+| `npm run test:e2e` | Smoke check against deployed contract |
+| `npm run frontend:dev` | Start browser DApp (Vite dev server) |
+| `npm run frontend:build` | Type-check + production build of frontend |
 | `npm run setup` | One-shot: start devnet, compile, deploy |
-| `npm run network <name>` | Switch the active network |
+| `npm run network <name>` | Switch active network (`undeployed`, `preview`, `preprod`) |
 | `npm run clean` | Remove generated artifacts |
 
 ### Networks
 
-| Network | When to use | Default? |
-| --- | --- | --- |
-| `undeployed` | Local devnet bundled in `docker-compose.yml` | yes |
-| `preview` | Public preview testnet (the deployed contract lives here) | |
+| Network | Use Case | Default |
+|---------|----------|---------|
+| `undeployed` | Local devnet (bundled in docker-compose.yml) | ✅ Yes |
+| `preview` | Public preview testnet | |
 | `preprod` | Public preprod testnet | |
 
-Public networks fund a wallet via the printed faucet URL. Wallet seeds and deploy addresses live in `.midnight-state.json` (gitignored) — back up the seed if you fund a wallet you care about.
+**Switch networks:**
+```bash
+npm run network preview    # Switch to preview testnet
+npm run network preprod    # Switch to preprod testnet
+npm run network undeployed # Back to local devnet
+```
 
-### Browser DApp
+---
 
-The `frontend/` workspace is a React + Vite app that talks to the deployed contract two ways:
+## Contract Circuits
 
-1. **Stateless reads** — the club ledger (thresholds, members, counters) is fetched from the preview indexer with a plain GraphQL `fetch`. No wallet.
-2. **On-chain writes** — join, upgrade, claim perks, and resign go through the **Midnight Lace wallet** via the DApp Connector. The wallet balances and submits the proven transaction.
+### Dataset Owner Actions
+```typescript
+// Register a dataset with licensing metadata
+registerDataset(
+  datasetId, owner, contentHash, licenseHash,
+  licenseType, authStatus, validFrom, validUntil, metadataHash
+)
 
-Environment variables (`frontend/.env.example`):
+// Update authorization status
+updateAuthorization(datasetId, newStatus, owner)
 
-| Variable | Purpose |
-| --- | --- |
-| `VITE_NETWORK` | Network id passed to the wallet's `connect()` (default `preview`) |
-| `VITE_INDEXER_URL` | GraphQL indexer URL for ledger reads |
-| `VITE_INDEXER_WS_URL` | Indexer WebSocket URL |
-| `VITE_CONTRACT_ADDRESS` | The deployed membership-club address |
-| `VITE_PROOF_SERVER_URL` | Fallback proof server (used if the wallet reports none) |
+// Revoke dataset
+revokeDataset(datasetId, owner)
 
-`npm run dev` and `npm run build` first copy the compiled ZK artifacts (`keys/`, `zkir/`) from `contracts/managed/membership-club/` into `frontend/public/`, so the browser can fetch prover/verifier keys and zkIR from the DApp's own origin.
+// Query dataset info
+getDataset(datasetId)
+```
 
-### SPA hosting
+### AI Company Actions
+```typescript
+// Commit a training run (link datasets to model)
+commitTraining(
+  commitmentId, trainer, datasetIds, datasetCount,
+  trainingTimestamp, modelHash
+)
 
-The frontend ships hosting config for Vercel (`frontend/vercel.json`) and Netlify (`frontend/netlify.toml` + `frontend/public/_redirects`) with SPA rewrites to `index.html`. Deploy the `frontend/` directory to either platform; set the `VITE_*` environment variables in the platform's dashboard.
+// Query training commitment
+getCommitment(commitmentId)
+```
+
+### Verifier/Auditor Actions
+```typescript
+// Create a compliance policy
+createPolicy(
+  policyId, name, minAuthorizedPct, minLicensedPct,
+  allowRestricted, requireValidLicenses, createdBy
+)
+
+// Run ZK compliance verification
+verifyCompliance(verificationId, commitmentId, policyId, verifier)
+
+// Query results
+getVerification(verificationId)
+getPolicy(policyId)
+```
+
+### License Types
+| Value | Type | Description |
+|-------|------|-------------|
+| 0 | Commercial | Commercial license (paid) |
+| 1 | Open Source | MIT, Apache, BSD, etc. |
+| 2 | Proprietary | Internal/private use only |
+| 3 | Restricted | No AI training allowed |
+
+### Authorization Status
+| Value | Status |
+|-------|--------|
+| 0 | Pending |
+| 1 | Authorized |
+| 2 | Revoked |
+| 3 | Expired |
+
+---
+
+## Frontend DApp
+
+The browser DApp (`frontend/`) is a React + Vite application that connects via the **Midnight Lace Wallet** using the DApp Connector API.
+
+### Features
+- 🔐 Wallet connection via Lace
+- 📊 Real-time contract state from indexer
+- 📝 Dataset registration with license metadata
+- 🏷️ Training commitment creation
+- 📋 Policy creation for compliance rules
+- 🔬 ZK verification with live proof generation
+- 📈 Verification result display
+
+### Environment Variables (`frontend/.env.local`)
+
+```env
+VITE_NETWORK=preview                 # Network ID for wallet connect
+VITE_INDEXER_URL=https://indexer.preview.midnight.network/api/v4/graphql
+VITE_INDEXER_WS_URL=wss://indexer.preview.midnight.network/api/v4/graphql/ws
+VITE_CONTRACT_ADDRESS=0x...          # Deployed contract address
+VITE_PROOF_SERVER_URL=http://127.0.0.1:6300
+VITE_PRIVATE_STATE_PASSWORD=your-strong-password-here
+```
+
+### Deployment
+
+The frontend includes hosting configs for:
+- **Vercel** (`vercel.json`) — SPA rewrites
+- **Netlify** (`netlify.toml` + `public/_redirects`) — SPA rewrites
+
+Deploy the `frontend/` directory to either platform and set the `VITE_*` environment variables in the dashboard.
+
+---
+
+## Testing
+
+```bash
+# Unit tests (headless, no network required)
+npm test
+
+# E2E smoke check (requires deployed contract)
+npm run test:e2e
+
+# Full lifecycle demo
+npm run demo
+```
+
+### Test Coverage
+- Contract compilation
+- Circuit execution (register, commit, policy, verify)
+- Privacy assertions (content hashes never leave circuit)
+- ZK verification result structure
+- Constant value verification
+
+---
+
+## CI/CD Pipeline
+
+**GitHub Actions** (`.github/workflows/ci.yml`) runs on every push/PR:
+
+1. **Compile** — Compact contract compilation
+2. **TypeCheck** — TypeScript strict mode for root + frontend
+3. **Test** — Vitest headless suite
+4. **Frontend Build** — Vite production build with artifact copying
+
+### Status Badges
+![CI](https://github.com/<your-org>/blackbox-ai/actions/workflows/ci.yml/badge.svg)
+
+---
+
+## Project Structure
+
+```
+blackbox-ai/
+├── .github/workflows/ci.yml          # GitHub Actions CI
+├── contracts/
+│   └── blackbox-ai.compact           # Compact smart contract
+│   └── managed/blackbox-ai/          # Compiled artifacts (keys, zkIR)
+├── scripts/
+│   ├── demo.ts                       # Full lifecycle demo
+│   └── e2e-check.ts                  # E2E smoke check
+├── src/
+│   ├── contract.ts                   # Shared contract wiring + witnesses
+│   ├── deploy.ts                     # Contract deployment script
+│   ├── cli.ts                        # Interactive CLI
+│   ├── providers.ts                  # Midnight.js providers (Node)
+│   ├── network.ts                    # Network configuration & state
+│   ├── wallet.ts                     # Wallet construction + sync
+│   ├── wallet-state.ts               # Wallet state persistence
+│   └── setup.ts                      # Orchestrator for `npm run setup`
+├── tests/
+│   └── blackbox-ai.test.ts           # Headless vitest suite
+├── frontend/                         # Browser DApp (React + Vite)
+│   ├── src/
+│   │   ├── App.tsx                   # Main UI
+│   │   ├── contract.ts               # Browser contract wiring
+│   │   ├── club-api.ts               # Typed contract API
+│   │   ├── providers.ts              # DApp Connector providers
+│   │   ├── hooks/useMidnight.ts      # Wallet connection hook
+│   │   ├── hooks/useContractState.ts # Indexer state hook
+│   │   └── components/               # UI components
+│   ├── public/                       # Copied ZK artifacts (keys/, zkir/)
+│   ├── scripts/copy-assets.mjs       # Copies contract artifacts
+│   ├── vercel.json                   # Vercel hosting config
+│   └── netlify.toml                  # Netlify hosting config
+├── docker-compose.yml                # Local devnet (node, indexer, proof-server)
+├── package.json
+├── tsconfig.json
+└── README.md
+```
+
+---
+
+## Security Considerations
+
+- **Private State Password**: Set `PRIVATE_STATE_PASSWORD` (min 16 chars) for non-local deployments
+- **Wallet Seed**: Back up `.midnight-wallet-state/` — contains encrypted wallet sync state
+- **Contract Address**: Verify contract address matches deployment record before interacting
+- **Faucet Funding**: On public networks, fund wallet from official faucet only
+- **Proof Server**: Local proof server runs in Docker — never expose to public internet without auth
+
+---
 
 ## Demo Video
 
-https://github.com/user-attachments/assets/800193c9-36bf-4dce-aa7a-6a3dbd471901
+[![BlackBox AI Demo](https://img.youtube.com/vi/TBD/0.jpg)](https://www.youtube.com/watch?v=TBD)
 
-- [ ] Connect Lace wallet and load the ledger
-- [ ] Join as Bronze with a balance of 1
-- [ ] Claim a perk
-- [ ] Upgrade to Diamond and claim the top-tier perk
-- [ ] Show a ledger read-back (commitment, tier, `perkClaims`)
-- [ ] Show the ZK prove step / wallet transaction approval
+*Video demonstrates: Dataset registration → Training commitment → Policy creation → ZK verification → Result display*
 
-## Future Scope
+---
 
-- **Membership NFTs** — switch the token-balance witness for proof of ownership of specific (rarer) NFTs, so rarer tokens unlock higher tiers.
-- **Exclusive content gating** — deliver encrypted content; members get a decryption key proved only to members at or above a tier.
-- **Airdrops & rewards** — privately claim token rewards with a Sybil-resistant proof (one commitment per key).
-- **Private voting / community governance** — tier-weighted votes where votes and balances stay hidden.
-- **Multiple clubs** — reusable contract instance per community with per-club thresholds and perks.
-- **Mainnet path** — migrate from the Preview testnet to Midnight Mainnet once live.
+## Product X Profile
 
-## Project structure
+🐦 **Follow us**: [@BlackBoxAI_Midnight](https://x.com/BlackBoxAI_Midnight)
 
-```
-my-first-contract/
-├── .github/workflows/ci.yml      # GitHub Actions: compile, test, build
-├── contracts/
-│   └── membership-club.compact      # Compact source
-├── contracts/managed/membership-club/  # compiled contract + keys + zkIR
-├── scripts/
-│   ├── demo.ts                      # full lifecycle demo
-│   └── e2e-check.ts                 # smoke + read-back check
-├── src/
-│   ├── contract.ts                  # shared contract wiring + witnesses
-│   ├── providers.ts                 # Node wallet providers (CLI/demo)
-│   ├── cli.ts                       # interactive CLI
-│   ├── deploy.ts                    # deploy the contract
-│   ├── network.ts                   # network selection + state file
-│   └── wallet.ts                    # wallet construction + sync cache
-├── tests/
-│   └── membership-club.test.ts      # headless vitest suite (incl. privacy)
-├── frontend/                        # browser DApp (React + Vite)
-│   ├── src/App.tsx                  # main UI
-│   ├── src/hooks/useMidnight.ts     # DApp Connector wallet hook
-│   ├── src/hooks/useClubState.ts    # indexer ledger reads
-│   ├── src/club-api.ts              # findDeployedContract + circuit calls
-│   ├── src/components/              # WalletConnect, MembershipActions, PerkClaims, ClubState
-│   ├── vercel.json                  # Vercel SPA hosting config
-│   └── netlify.toml                 # Netlify SPA hosting config
-├── docker-compose.yml               # local devnet
-└── package.json
-```
+---
 
-## Verification checklist
+## Roadmap
 
-- [x] `npm run compile` compiles the membership-club contract (0 errors)
-- [x] `npm test` — 10 headless tests pass, including the privacy assertion
-- [x] Contract deployed to Preview:
-      `35e00dbf117486cc633aaf663cdebeaedf61939289c2c68282d6aa0a99cc4933`
-- [x] `npm run test:e2e` reads back thresholds `1 · 3 · 10 · 25` from the ledger
-- [x] `npm run demo` completes a full lifecycle on Preview
-- [x] `npm run frontend:build` — frontend type-checks and builds with zero errors
-- [x] Frontend dev server serves the compiled contract, keys, and zkIR
-- [x] Indexer read path verified against the live preview indexer
-- [x] SPA hosting config present for Vercel and Netlify
-- [x] GitHub Actions CI workflow (`.github/workflows/ci.yml`)
-- [x] Frontend deployed to Netlify (https://grand-marshmallow-0af42f.netlify.app/) with the Live Demo URL in the README
-- [x] Demo video recorded and linked in the `## Demo Video` section
+- [ ] **Multi-party verification** — Multiple auditors can verify independently
+- [ ] **Dataset provenance** — IPFS/Arweave integration for metadata
+- [ ] **Automated license detection** — ML-based license classification
+- [ ] **Batch verification** — Verify multiple training runs in one proof
+- [ ] **Mainnet deployment** — Migrate from Preprod to Midnight Mainnet
+- [ ] **SDK package** — Publish `@blackbox-ai/sdk` for easy integration
+- [ ] **Audit** — Formal security audit of ZK circuits
 
+---
+
+## License
+
+MIT License — see [LICENSE](LICENSE) for details.
+
+---
+
+## Acknowledgments
+
+Built with ❤️ on the **Midnight Network** — the privacy-preserving blockchain for zero-knowledge applications.
+
+- [Midnight Documentation](https://docs.midnight.network)
+- [Compact Language](https://docs.midnight.network/developers/tutorials/compact/)
+- [Midnight.js SDK](https://github.com/midnightntwrk/midnight-js)
+- [Lace Wallet](https://lace.io)

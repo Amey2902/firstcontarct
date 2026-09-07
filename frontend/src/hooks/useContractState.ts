@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { ContractState } from '@midnight-ntwrk/midnight-js-protocol/compact-runtime';
-import { contractModule, tierName } from '../contract';
+import { contractModule } from '../contract';
 
 const INDEXER_URL = import.meta.env.VITE_INDEXER_URL ?? 'https://indexer.preview.midnight.network/api/v4/graphql';
 
@@ -12,16 +12,11 @@ const CONTRACT_STATE_QUERY = `
   }
 `;
 
-export interface MemberEntry {
-  commitment: string;
-  tier: bigint;
-}
-
-export interface ClubState {
-  thresholds: bigint[];
-  members: MemberEntry[];
-  memberCount: bigint;
-  perkClaims: bigint;
+export interface ContractStateData {
+  datasetCount: bigint;
+  commitmentCount: bigint;
+  verificationCount: bigint;
+  policyCount: bigint;
 }
 
 function hexToBytes(hex: string): Uint8Array {
@@ -33,11 +28,10 @@ function hexToBytes(hex: string): Uint8Array {
 }
 
 /**
- * Reads the club's public ledger state straight from the indexer via a simple
- * fetch — no wallet or proof server required.
+ * Reads the BlackBox AI contract's public ledger state straight from the indexer.
  */
-export function useClubState(contractAddress: string | null, refreshInterval = 15_000) {
-  const [state, setState] = useState<ClubState | null>(null);
+export function useContractState(contractAddress: string | null, refreshInterval = 15_000) {
+  const [state, setState] = useState<ContractStateData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -59,16 +53,11 @@ export function useClubState(contractAddress: string | null, refreshInterval = 1
       const contractState = ContractState.deserialize(hexToBytes(stateHex));
       const ledgerState = contractModule.ledger(contractState.data);
 
-      const members: MemberEntry[] = [];
-      for (const [commitment, tier] of ledgerState.members) {
-        members.push({ commitment, tier });
-      }
-
       setState({
-        thresholds: Array.from(ledgerState.thresholds),
-        members,
-        memberCount: ledgerState.memberCount,
-        perkClaims: ledgerState.perkClaims,
+        datasetCount: ledgerState.datasetCount,
+        commitmentCount: ledgerState.commitmentCount,
+        verificationCount: ledgerState.verificationCount,
+        policyCount: ledgerState.policyCount,
       });
       setError(null);
     } catch (e: any) {
@@ -89,8 +78,4 @@ export function useClubState(contractAddress: string | null, refreshInterval = 1
   }, [contractAddress, refreshInterval, fetchState]);
 
   return { state, loading, error, refresh: fetchState };
-}
-
-export function tierLabel(tier: bigint): string {
-  return tierName(tier);
 }

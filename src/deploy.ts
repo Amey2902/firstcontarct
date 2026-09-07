@@ -1,5 +1,5 @@
 /**
- * Deploy my-first-contract contract to a Midnight network (undeployed by default; use --network preview|preprod for public networks).
+ * Deploy BlackBox AI contract to a Midnight network (undeployed by default; use --network preview|preprod for public networks).
  *
  * Non-interactive: scaffold → npm run setup runs straight through.
  * No readline prompts, no .midnight-seed file.
@@ -20,9 +20,7 @@ import { NodeZkConfigProvider } from '@midnight-ntwrk/midnight-js-node-zk-config
 // @ts-expect-error Required for wallet sync
 globalThis.WebSocket = WebSocket;
 
-// Identifier under which this contract's private state is stored. The
-// membership-club contract has an empty private state ({}): all member data
-// flows through the balanceOf witness at proof time, never into storage.
+// Identifier under which this contract's private state is stored.
 const PRIVATE_STATE_ID = `${CONTRACT_NAME}PrivateState`;
 
 // ─── Network configuration ─────────────────────────────────────────────────────
@@ -34,10 +32,6 @@ const { network, config: networkConfig } = resolveNetwork();
 const SEED = getOrCreateSeed(network);
 
 // ─── Proof server readiness ────────────────────────────────────────────────────
-//
-// The proof-server image is distroless and has no shell, so it can't run a
-// container-side healthcheck. Poll it from the host before we submit anything
-// that needs proofs.
 
 async function waitForProofServer(maxAttempts = 60, delayMs = 2000): Promise<boolean> {
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
@@ -65,22 +59,15 @@ async function waitForProofServer(maxAttempts = 60, delayMs = 2000): Promise<boo
 
 const compiledContract = await loadCompiledContract();
 
-// ─── Providers ─────────────────────────────────────────────────────────────────
+// ─── Providers ──────────────────────────────────────────────────────────────────
 
 async function createProviders(walletCtx: WalletContext) {
-  // The SDK requires the private-state password to be at least 16 characters.
-  // The default below is a placeholder for local devnet only — set a strong
-  // password via PRIVATE_STATE_PASSWORD when you move to a non-local target.
   const privateStatePassword = process.env.PRIVATE_STATE_PASSWORD?.trim() || 'Local-Devnet-Development-Placeholder-1';
 
   const walletProvider = {
-    // In Midnight.js 4.1.x the WalletProvider interface returns the key objects
-    // (CoinPublicKey / EncPublicKey) directly — no longer hex strings.
     getCoinPublicKey: () => walletCtx.shieldedSecretKeys.coinPublicKey,
     getEncryptionPublicKey: () => walletCtx.shieldedSecretKeys.encryptionPublicKey,
     async balanceTx(tx: any, ttl?: Date) {
-      // balanceUnboundTransaction -> finalizeRecipe is the complete balancing
-      // path in wallet-sdk 1.x; the earlier explicit signRecipe step is gone.
       const recipe = await walletCtx.wallet.balanceUnboundTransaction(
         tx,
         { shieldedSecretKeys: walletCtx.shieldedSecretKeys, dustSecretKey: walletCtx.dustSecretKey },
@@ -96,7 +83,7 @@ async function createProviders(walletCtx: WalletContext) {
 
   return {
     privateStateProvider: levelPrivateStateProvider({
-      privateStateStoreName: 'membership-club-state',
+      privateStateStoreName: 'blackbox-ai-state',
       accountId,
       privateStoragePasswordProvider: () => privateStatePassword,
     }),
@@ -111,9 +98,9 @@ async function createProviders(walletCtx: WalletContext) {
 // ─── Main ──────────────────────────────────────────────────────────────────────
 
 async function main() {
-  console.log('\n╔══════════════════════════════════════════════════════════════╗');
-  console.log(`║  Deploy membership-club to ${network}`);
-  console.log('╚══════════════════════════════════════════════════════════════╝\n');
+  console.log('\n╔════════════════════════════════════════════════════════════════════════════╗');
+  console.log(`║  Deploy BlackBox AI to ${network.padEnd(20)}║`);
+  console.log('╚════════════════════════════════════════════════════════════════════════════╝\n');
 
   const seed = SEED;
 
@@ -154,13 +141,8 @@ async function main() {
     process.exit(1);
   }
 
-  // Faucet poll for public networks. The wallet has 0 tNIGHT until the user
-  // funds the address from the network's faucet. The display balance is
-  // authoritative here (unlike DUST, tNIGHT shows up immediately once the
-  // faucet tx lands).
+  // Faucet poll for public networks
   if (network !== 'undeployed' && networkConfig.faucet) {
-    // Same balance idiom used by check-balance.ts:
-    //   state.unshielded.balances[unshieldedToken().raw] ?? 0n
     const initialBalance = await Rx.firstValueFrom(walletCtx.wallet.state().pipe(
       Rx.filter((s) => s.isSynced),
     ));
@@ -205,10 +187,6 @@ async function main() {
   );
   if (unregisteredUtxos.length > 0) {
     console.log(`  Registering ${unregisteredUtxos.length} NIGHT UTXOs for DUST generation...`);
-    // The signDustRegistration callback (3rd arg) already produces a recipe
-    // with N signatures matching N inputs. Do NOT call signRecipe again — that
-    // would double-sign and the chain rejects with InputsSignaturesLengthMismatch
-    // (Custom error 192). Matches upstream example-counter and example-bboard.
     const recipe = await walletCtx.wallet.registerNightUtxosForDustGeneration(
       unregisteredUtxos,
       walletCtx.unshieldedKeystore.getPublicKey(),
@@ -245,39 +223,23 @@ async function main() {
   console.log('  Setting up providers...');
   const providers = await createProviders(walletCtx);
 
-  // The wallet's reported DUST balance is a *time-projection* of what its
-  // registered NIGHT will eventually generate; the tx-builder spends only
-  // what the next block's timestamp accounts for, which lags wall-clock by
-  // ~1 block on a fresh devnet. Sleeping ~1 block-time before attempt 1
-  // closes that gap in the common case; the retry loop covers outliers.
   process.stdout.write('  Generating DUST...');
   await new Promise((r) => setTimeout(r, 6000));
   process.stdout.write(' done.\n');
 
   console.log('  Deploying contract...\n');
 
-  // Fallback timing. The 6s pre-pause above handles the common case; this
-  // loop covers genuine outliers (slow blocks, proof-server worker-pool
-  // settling). Earlier 2s retries caused CI flakes where attempt 2's /prove
-  // hit the proof-server before it had drained attempt 1's state — 5s gives
-  // it room to settle between attempts. 20 × 5 = 100s total budget.
   const MAX_RETRIES = 20;
   const RETRY_DELAY_MS = 5000;
   let deployed: Awaited<ReturnType<typeof deployContract>> | undefined;
 
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
-      // Midnight.js 4.1.x supplies private state via privateStateId +
-      // initialPrivateState (empty here — the membership-club contract keeps an
-      // empty private state). args is the contract constructor's arguments:
-      // empty for the no-arg constructor. (Statically-typed contracts can omit
-      // args entirely; this script loads the contract dynamically, so the
-      // conditional args type widens to any[] and an explicit [] is required.)
       deployed = await deployContract(providers, {
         compiledContract: compiledContract as any,
         args: [],
         privateStateId: PRIVATE_STATE_ID,
-        initialPrivateState: {},
+        initialPrivateState: { datasetSecrets: [], trainingSecrets: [] },
       });
       break;
     } catch (err: any) {
@@ -285,19 +247,11 @@ async function main() {
       const errCause = err?.cause?.message || err?.cause?.toString() || '';
       const fullError = `${errMsg} ${errCause}`;
 
-      // DUST shortage is the most common transient failure on a fresh devnet —
-      // check it BEFORE proof-server connectivity, because dust-balancing errors
-      // can surface through proof-server-shaped messages (the wallet talks to
-      // the proof-server while building the dust portion of the tx).
       const isDustShortage =
         fullError.includes('Not enough Dust') ||
         fullError.includes('Insufficient Funds') ||
         fullError.includes('could not balance dust');
 
-      // Quiet the first DUST-shortage retry: it's the expected race between
-      // wall-clock projection and block-timestamp accounting and the loud
-      // `Insufficient Funds: <huge number>` message scares first-time users.
-      // Real failures still get the full diagnostic from attempt 2 onward.
       if (!(isDustShortage && attempt === 1)) {
         console.error(`\n  Attempt ${attempt} error: ${errMsg}`);
         if (errCause && errCause !== errMsg) console.error(`  Cause: ${errCause}`);

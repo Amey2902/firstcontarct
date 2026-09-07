@@ -1,12 +1,12 @@
 {
-  "name": "my-first-contract",
+  "name": "blackbox-ai",
   "version": "1.0.0",
   "type": "module",
-  "description": "A Midnight Network application created with create-mn-app",
+  "description": "BlackBox AI — Privacy-Preserving Training Data Verification on Midnight Network",
   "author": "",
   "license": "MIT",
   "scripts": {
-    "compile": "compact compile contracts/membership-club.compact contracts/managed/membership-club",
+    "compile": "compact compile contracts/blackbox-ai.compact contracts/managed/blackbox-ai",
     "build": "npx tsc --noEmit || true",
     "setup": "npx tsx src/setup.ts",
     "deploy": "npx tsx src/deploy.ts",
