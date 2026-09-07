@@ -34,9 +34,8 @@ export async function createProviders(wallet: ConnectedAPI): Promise<BlackBoxPro
   const proofProvider = await dappConnectorProofProvider(wallet, zkConfigProvider, {});
 
   // ── Shielded keys (fetched once, cached) ────────────────────────────────
-  const [shieldedAddr] = await wallet.getShieldedAddresses();
+  const shieldedAddr = await wallet.getShieldedAddresses();
   if (!shieldedAddr) throw new Error('No shielded address found in wallet');
-
   const coinPublicKey = parseCoinPublicKeyToHex(shieldedAddr.shieldedCoinPublicKey, getNetworkId());
   const encPublicKey  = parseEncPublicKeyToHex(shieldedAddr.shieldedEncryptionPublicKey, getNetworkId());
 
