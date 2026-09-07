@@ -10,9 +10,43 @@ import type { ContractAddress } from '@midnight-ntwrk/midnight-js-protocol/compa
 import { compiledContract, CONTRACT_NAME, contractModule } from './contract';
 import { type BlackBoxProviders } from './providers';
 
-// Must match the privateStateId used at deploy time so the DApp reconnects to
-// the same private state.
 const PRIVATE_STATE_ID = `${CONTRACT_NAME}PrivateState`;
+
+// ── Type conversion helpers ────────────────────────────────────────────────
+
+/** hex string (with or without 0x) → Uint8Array of exactly `len` bytes */
+function toBytes(hex: string, len: number): Uint8Array {
+  const clean = hex.startsWith('0x') ? hex.slice(2) : hex;
+  const buf = new Uint8Array(len);
+  for (let i = 0; i < len; i++) {
+    buf[i] = parseInt(clean.slice(i * 2, i * 2 + 2) || '00', 16);
+  }
+  return buf;
+}
+
+/** UTF-8 string → Uint8Array of exactly `len` bytes (zero-padded / truncated) */
+function toFixedStr(s: string, len: number): Uint8Array {
+  const buf = new Uint8Array(len);
+  const enc = new TextEncoder().encode(s);
+  buf.set(enc.slice(0, len));
+  return buf;
+}
+
+/** hex → Bytes<32> */
+const b32 = (hex: string) => toBytes(hex, 32);
+/** hex → Bytes<64> */
+const b64 = (hex: string) => toBytes(hex, 64);
+/** string → Bytes<64> (for policy name) */
+const s64 = (s: string) => toFixedStr(s, 64);
+
+/** Bytes<32> Uint8Array → hex string */
+function fromBytes(buf: Uint8Array): string {
+  return Array.from(buf).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+/** Read back a Uint8Array field as hex */
+const toHex = (v: Uint8Array | string): string =>
+  v instanceof Uint8Array ? fromBytes(v) : v;
 
 export interface DatasetInfo {
   datasetId: string;
@@ -108,29 +142,45 @@ export class BlackBoxAPI {
     metadataHash: string
   ): Promise<void> {
     await (this.deployedContract as any).callTx.registerDataset(
-      datasetId,
-      owner,
-      contentHash,
-      licenseHash,
-      licenseType,
-      authorizationStatus,
+      b32(datasetId),
+      b32(owner),
+      b32(contentHash),
+      b32(licenseHash),
+      BigInt(licenseType),
+      BigInt(authorizationStatus),
       validFrom,
       validUntil,
-      metadataHash
+      b32(metadataHash),
     );
   }
 
   async updateAuthorization(datasetId: string, newStatus: number, owner: string): Promise<void> {
-    await (this.deployedContract as any).callTx.updateAuthorization(datasetId, newStatus, owner);
+    await (this.deployedContract as any).callTx.updateAuthorization(
+      b32(datasetId),
+      BigInt(newStatus),
+      b32(owner),
+    );
   }
 
   async revokeDataset(datasetId: string, owner: string): Promise<void> {
-    await (this.deployedContract as any).callTx.revokeDataset(datasetId, owner);
+    await (this.deployedContract as any).callTx.revokeDataset(b32(datasetId), b32(owner));
   }
 
   async getDataset(datasetId: string): Promise<DatasetInfo> {
-    const result = await (this.deployedContract as any).callTx.getDataset(datasetId);
-    return result.returnValue;
+    const result = await (this.deployedContract as any).callTx.getDataset(b32(datasetId));
+    const r = result.result ?? result.returnValue;
+    return {
+      datasetId:           toHex(r.datasetId),
+      owner:               toHex(r.owner),
+      contentHash:         toHex(r.contentHash),
+      licenseHash:         toHex(r.licenseHash),
+      licenseType:         Number(r.licenseType),
+      authorizationStatus: Number(r.authorizationStatus),
+      validFrom:           BigInt(r.validFrom),
+      validUntil:          BigInt(r.validUntil),
+      registeredAt:        BigInt(r.registeredAt),
+      metadataHash:        toHex(r.metadataHash),
+    };
   }
 
   // ─── AI Company Actions ────────────────────────────────────────────────────
@@ -143,23 +193,30 @@ export class BlackBoxAPI {
     trainingTimestamp: bigint,
     modelHash: string
   ): Promise<void> {
-    // Pad datasetIds to 32 elements
-    const paddedIds = [...datasetIds];
-    while (paddedIds.length < 32) paddedIds.push('0x' + '0'.repeat(64));
-    
+    const padded = [...datasetIds];
+    while (padded.length < 32) padded.push('0'.repeat(64));
     await (this.deployedContract as any).callTx.commitTraining(
-      commitmentId,
-      trainer,
-      paddedIds,
+      b32(commitmentId),
+      b32(trainer),
+      padded.map(id => b32(id)),
       datasetCount,
       trainingTimestamp,
-      modelHash
+      b32(modelHash),
     );
   }
 
   async getCommitment(commitmentId: string): Promise<TrainingCommitment> {
-    const result = await (this.deployedContract as any).callTx.getCommitment(commitmentId);
-    return result.returnValue;
+    const result = await (this.deployedContract as any).callTx.getCommitment(b32(commitmentId));
+    const r = result.result ?? result.returnValue;
+    return {
+      commitmentId:       toHex(r.commitmentId),
+      trainer:            toHex(r.trainer),
+      datasetIds:         Array.from(r.datasetIds as Uint8Array[]).map(toHex),
+      datasetCount:       BigInt(r.datasetCount),
+      trainingTimestamp:  BigInt(r.trainingTimestamp),
+      modelHash:          toHex(r.modelHash),
+      committedAt:        BigInt(r.committedAt),
+    };
   }
 
   // ─── Verifier/Auditor Actions ──────────────────────────────────────────────
@@ -174,13 +231,13 @@ export class BlackBoxAPI {
     createdBy: string
   ): Promise<void> {
     await (this.deployedContract as any).callTx.createPolicy(
-      policyId,
-      name,
+      b32(policyId),
+      s64(name),
       minAuthorizedPercentage,
       minLicensedPercentage,
       allowRestricted,
       requireValidLicenses,
-      createdBy
+      b32(createdBy),
     );
   }
 
@@ -191,21 +248,45 @@ export class BlackBoxAPI {
     verifier: string
   ): Promise<void> {
     await (this.deployedContract as any).callTx.verifyCompliance(
-      verificationId,
-      commitmentId,
-      policyId,
-      verifier
+      b32(verificationId),
+      b32(commitmentId),
+      b32(policyId),
+      b32(verifier),
     );
   }
 
   async getVerification(verificationId: string): Promise<VerificationResult> {
-    const result = await (this.deployedContract as any).callTx.getVerification(verificationId);
-    return result.returnValue;
+    const result = await (this.deployedContract as any).callTx.getVerification(b32(verificationId));
+    const r = result.result ?? result.returnValue;
+    return {
+      verificationId:       toHex(r.verificationId),
+      commitmentId:         toHex(r.commitmentId),
+      policyId:             toHex(r.policyId),
+      isCompliant:          Boolean(r.isCompliant),
+      authorizedPercentage: BigInt(r.authorizedPercentage),
+      licensedPercentage:   BigInt(r.licensedPercentage),
+      restrictedCount:      BigInt(r.restrictedCount),
+      expiredLicenseCount:  BigInt(r.expiredLicenseCount),
+      verifiedAt:           BigInt(r.verifiedAt),
+      verifiedBy:           toHex(r.verifiedBy),
+    };
   }
 
   async getPolicy(policyId: string): Promise<Policy> {
-    const result = await (this.deployedContract as any).callTx.getPolicy(policyId);
-    return result.returnValue;
+    const result = await (this.deployedContract as any).callTx.getPolicy(b32(policyId));
+    const r = result.result ?? result.returnValue;
+    return {
+      policyId:                toHex(r.policyId),
+      name:                    r.name instanceof Uint8Array
+                                 ? new TextDecoder().decode(r.name).replace(/\0/g, '')
+                                 : String(r.name),
+      minAuthorizedPercentage: BigInt(r.minAuthorizedPercentage),
+      minLicensedPercentage:   BigInt(r.minLicensedPercentage),
+      allowRestricted:         Boolean(r.allowRestricted),
+      requireValidLicenses:    Boolean(r.requireValidLicenses),
+      createdAt:               BigInt(r.createdAt),
+      createdBy:               toHex(r.createdBy),
+    };
   }
 
   // ─── Public State Queries ──────────────────────────────────────────────────
