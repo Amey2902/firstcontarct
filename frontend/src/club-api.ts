@@ -34,8 +34,6 @@ function toFixedStr(s: string, len: number): Uint8Array {
 
 /** hex → Bytes<32> */
 const b32 = (hex: string) => toBytes(hex, 32);
-/** hex → Bytes<64> */
-const b64 = (hex: string) => toBytes(hex, 64);
 /** string → Bytes<64> (for policy name) */
 const s64 = (s: string) => toFixedStr(s, 64);
 
