@@ -2,11 +2,12 @@
  * Membership-club contract tests.
  *
  * The membership-club contract has been superseded by BlackBox AI.
- * This file is kept as a placeholder so the test suite does not error
- * on a missing file reference.
+ * This file is kept as a placeholder — all active tests live in blackbox-ai.test.ts.
  */
-import { describe } from 'vitest';
+import { describe, it } from 'vitest';
 
 describe('membership-club contract', () => {
-  // Contract removed — all tests live in blackbox-ai.test.ts
+  it.skip('contract removed — superseded by BlackBox AI', () => {
+    // nothing to test
+  });
 });
