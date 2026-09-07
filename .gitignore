@@ -26,8 +26,9 @@ contracts/managed/**
 !contracts/managed/blackbox-ai/keys/*.verifier
 
 # Frontend ZK artifacts (copied from contracts/managed by copy-assets)
-frontend/public/keys/
-frontend/public/zkir/
+# Committing these so Vercel can serve them without needing the prover keys
+# frontend/public/keys/
+# frontend/public/zkir/
 
 # Vite dev-server cache
 frontend/.vite/
