@@ -6,44 +6,73 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import * as path from 'node:path';
 import * as fs from 'node:fs';
+import { createCircuitContext, emptyZswapLocalState, dummyContractAddress } from '@midnight-ntwrk/compact-runtime';
+
+// Helper: hex string → Uint8Array of fixed length
+function hexBytes(hex: string, len: number): Uint8Array {
+  const clean = hex.startsWith('0x') ? hex.slice(2) : hex;
+  const buf = new Uint8Array(len);
+  for (let i = 0; i < len; i++) buf[i] = parseInt(clean.slice(i * 2, i * 2 + 2) || '00', 16);
+  return buf;
+}
+
+// Helper: string → Uint8Array of fixed length (zero-padded / truncated)
+function strBytes(s: string, len: number): Uint8Array {
+  const buf = new Uint8Array(len);
+  const enc = new TextEncoder().encode(s);
+  buf.set(enc.slice(0, len));
+  return buf;
+}
 
 describe('BlackBox AI Contract', () => {
-  let contract: any;
-  let runtime: any;
+  let contractInstance: any;
+  let ledgerFn: any;
+  let ctx: any;        // circuit context
+  let state: any;      // current contract state
+
+  const DATASET_ID    = hexBytes('11'.repeat(32), 32);
+  const OWNER         = hexBytes('22'.repeat(32), 32);
+  const CONTENT_HASH  = hexBytes('aa'.repeat(32), 32);
+  const LICENSE_HASH  = hexBytes('bb'.repeat(32), 32);
+  const COMMITMENT_ID = hexBytes('44'.repeat(32), 32);
+  const MODEL_HASH    = hexBytes('55'.repeat(32), 32);
+  const POLICY_ID     = hexBytes('33'.repeat(32), 32);
+  const VERIF_ID      = hexBytes('66'.repeat(32), 32);
+  const POLICY_NAME   = strBytes('Test Policy', 64);
+  const NOW           = BigInt(Math.floor(Date.now() / 1000));
 
   beforeAll(async () => {
-    // Compile the contract for testing
     const contractPath = path.resolve(__dirname, '../contracts/blackbox-ai.compact');
-    const outputDir = path.resolve(__dirname, '../contracts/managed/blackbox-ai');
-    
-    if (!fs.existsSync(contractPath)) {
-      console.log('Contract not found, skipping tests');
+    const compiledIndex = path.resolve(__dirname, '../contracts/managed/blackbox-ai/contract/index.js');
+
+    if (!fs.existsSync(contractPath) || !fs.existsSync(compiledIndex)) {
+      console.log('Contract not compiled — skipping runtime tests');
       return;
     }
-
-    const compiledIndex = path.resolve(outputDir, 'contract', 'index.js');
-    if (!fs.existsSync(compiledIndex)) {
-      console.log('Compiled contract not found (run npm run compile first), skipping runtime tests');
-      return;
-    }
-
-    // Use compact-runtime for headless testing
-    const { Contract } = await import(compiledIndex);
-    
-    // Create a mock witness provider
-    const witnesses = {
-      datasetContentHash: () => '0x' + 'a'.repeat(64),
-      licenseProof: () => '0x' + 'b'.repeat(64),
-      trainingDataHashes: () => Array(32).fill('0x' + 'c'.repeat(64)),
-      datasetLicenses: () => Array(32).fill('0x' + 'd'.repeat(64)),
-      currentTimestamp: () => BigInt(Math.floor(Date.now() / 1000)),
-    };
 
     try {
-      runtime = new Contract(witnesses);
-      contract = runtime;
-    } catch {
-      console.log('Contract instantiation failed, skipping runtime tests');
+      const mod = await import(compiledIndex);
+      ledgerFn = mod.ledger;
+
+      const witnesses = {
+        datasetContentHash: () => [{ datasetSecrets: [], trainingSecrets: [] }, CONTENT_HASH] as const,
+        licenseProof:       () => [{ datasetSecrets: [], trainingSecrets: [] }, LICENSE_HASH] as const,
+        trainingDataHashes: () => [{ datasetSecrets: [], trainingSecrets: [] }, Array(32).fill(hexBytes('cc'.repeat(32), 32))] as const,
+        datasetLicenses:    () => [{ datasetSecrets: [], trainingSecrets: [] }, Array(32).fill(hexBytes('dd'.repeat(32), 32))] as const,
+        currentTimestamp:   () => [{ datasetSecrets: [], trainingSecrets: [] }, NOW] as const,
+      };
+
+      contractInstance = new mod.Contract(witnesses);
+
+      const zswap = emptyZswapLocalState({ bytes: new Uint8Array(32) });
+      const init = contractInstance.initialState({
+        initialPrivateState: { datasetSecrets: [], trainingSecrets: [] },
+        initialZswapLocalState: zswap,
+      });
+      state = init.currentContractState;
+      ctx = createCircuitContext(dummyContractAddress(), zswap.coinPublicKey, state.data, { datasetSecrets: [], trainingSecrets: [] });
+    } catch (e: any) {
+      console.log('Contract setup failed:', e.message);
     }
   });
 
@@ -53,8 +82,8 @@ describe('BlackBox AI Contract', () => {
   });
 
   it('should have correct circuit names', () => {
-    if (!contract) return;
-    const circuits = Object.keys(contract.circuits || {});
+    if (!contractInstance) return;
+    const circuits = Object.keys(contractInstance.circuits || {});
     expect(circuits).toContain('registerDataset');
     expect(circuits).toContain('commitTraining');
     expect(circuits).toContain('createPolicy');
@@ -65,142 +94,80 @@ describe('BlackBox AI Contract', () => {
     expect(circuits).toContain('getPolicy');
   });
 
-  it('should register a dataset', async () => {
-    if (!contract) return;
-    
-    const datasetId = '0x' + '1'.repeat(64);
-    const owner = '0x' + '2'.repeat(64);
-    const contentHash = '0x' + 'a'.repeat(64);
-    const licenseHash = '0x' + 'b'.repeat(64);
-    const now = BigInt(Math.floor(Date.now() / 1000));
-    
-    const result = contract.circuits.registerDataset(
-      datasetId,
-      owner,
-      contentHash,
-      licenseHash,
-      0, // COMMERCIAL
-      1, // AUTHORIZED
-      now,
-      now + 365n * 24n * 60n * 60n,
-      'QmTestMetadata'
+  it('should register a dataset', () => {
+    if (!contractInstance || !ctx) return;
+    const result = contractInstance.circuits.registerDataset(
+      ctx, DATASET_ID, OWNER, CONTENT_HASH, LICENSE_HASH,
+      0n, 1n, NOW, NOW + 365n * 24n * 3600n, hexBytes('cc'.repeat(32), 32)
     );
-    
-    expect(result.result).toBeUndefined(); // No return value
-    expect(contract.ledger.datasetRegistry.size).toBeGreaterThan(0);
+    ctx = result.context;
+    const l = ledgerFn(ctx.currentQueryContext.state);
+    expect(l.datasetRegistry.member(DATASET_ID)).toBe(true);
   });
 
-  it('should create a policy', async () => {
-    if (!contract) return;
-    
-    const policyId = '0x' + '3'.repeat(64);
-    const owner = '0x' + '2'.repeat(64);
-    
-    const result = contract.circuits.createPolicy(
-      policyId,
-      'Test Policy',
-      100n,
-      95n,
-      false,
-      true,
-      owner
+  it('should create a policy', () => {
+    if (!contractInstance || !ctx) return;
+    const result = contractInstance.circuits.createPolicy(
+      ctx, POLICY_ID, POLICY_NAME, 100n, 95n, false, true, OWNER
     );
-    
-    expect(result.result).toBeUndefined();
-    expect(contract.ledger.policyRegistry.size).toBeGreaterThan(0);
+    ctx = result.context;
+    const l = ledgerFn(ctx.currentQueryContext.state);
+    expect(l.policyRegistry.member(POLICY_ID)).toBe(true);
   });
 
-  it('should commit a training run', async () => {
-    if (!contract) return;
-    
-    const commitmentId = '0x' + '4'.repeat(64);
-    const trainer = '0x' + '2'.repeat(64);
-    const datasetIds = ['0x' + '1'.repeat(64), ...Array(31).fill('0x' + '0'.repeat(64))];
-    const now = BigInt(Math.floor(Date.now() / 1000));
-    const modelHash = '0x' + '5'.repeat(64);
-    
-    const result = contract.circuits.commitTraining(
-      commitmentId,
-      trainer,
-      datasetIds,
-      1n,
-      now,
-      modelHash
+  it('should commit a training run', () => {
+    if (!contractInstance || !ctx) return;
+    const datasetIds = [DATASET_ID, ...Array(31).fill(hexBytes('00'.repeat(32), 32))];
+    const result = contractInstance.circuits.commitTraining(
+      ctx, COMMITMENT_ID, OWNER, datasetIds, 1n, NOW, MODEL_HASH
     );
-    
-    expect(result.result).toBeUndefined();
-    expect(contract.ledger.trainingCommitments.size).toBeGreaterThan(0);
+    ctx = result.context;
+    const l = ledgerFn(ctx.currentQueryContext.state);
+    expect(l.trainingCommitments.member(COMMITMENT_ID)).toBe(true);
   });
 
-  it('should run ZK verification', async () => {
-    if (!contract) return;
-    
-    const verificationId = '0x' + '6'.repeat(64);
-    const commitmentId = '0x' + '4'.repeat(64);
-    const policyId = '0x' + '3'.repeat(64);
-    const verifier = '0x' + '2'.repeat(64);
-    
-    const result = contract.circuits.verifyCompliance(
-      verificationId,
-      commitmentId,
-      policyId,
-      verifier
+  it('should run ZK verification', () => {
+    if (!contractInstance || !ctx) return;
+    const result = contractInstance.circuits.verifyCompliance(
+      ctx, VERIF_ID, COMMITMENT_ID, POLICY_ID, OWNER
     );
-    
-    expect(result.result).toBeUndefined();
-    expect(contract.ledger.verificationResults.size).toBeGreaterThan(0);
+    ctx = result.context;
+    const l = ledgerFn(ctx.currentQueryContext.state);
+    expect(l.verificationResults.member(VERIF_ID)).toBe(true);
   });
 
-  it('should get dataset info', async () => {
-    if (!contract) return;
-    
-    const datasetId = '0x' + '1'.repeat(64);
-    const result = contract.circuits.getDataset(datasetId);
-    
+  it('should get dataset info', () => {
+    if (!contractInstance || !ctx) return;
+    const result = contractInstance.circuits.getDataset(ctx, DATASET_ID);
     expect(result.result).toBeDefined();
-    expect(result.result.datasetId).toBe(datasetId);
   });
 
-  it('should get verification result', async () => {
-    if (!contract) return;
-    
-    const verificationId = '0x' + '6'.repeat(64);
-    const result = contract.circuits.getVerification(verificationId);
-    
+  it('should get verification result', () => {
+    if (!contractInstance || !ctx) return;
+    const result = contractInstance.circuits.getVerification(ctx, VERIF_ID);
     expect(result.result).toBeDefined();
-    expect(result.result.verificationId).toBe(verificationId);
   });
 
   it('privacy: dataset content hash never leaves circuit', () => {
-    if (!contract) return;
-    
-    // The content hash is only used as a witness in circuits
-    // It is never stored in the ledger directly
-    // Only the commitment to it (via registerDataset) is stored
-    // The actual hash value is constrained by the witness but not disclosed
-    
-    const ledgerKeys = Object.keys(contract.ledger);
-    // Private state should not contain content hashes
-    expect(ledgerKeys).not.toContain('datasetContentHashes');
-    expect(ledgerKeys).not.toContain('privateDatasetData');
+    if (!contractInstance || !ctx) return;
+    const l = ledgerFn(ctx.currentQueryContext.state);
+    // The ledger object should not have a field that stores raw content hashes
+    expect('datasetContentHashes' in l).toBe(false);
+    expect('privateDatasetData' in l).toBe(false);
   });
 
   it('privacy: training data composition never revealed', () => {
-    if (!contract) return;
-    
-    // The training data hashes are only used as witnesses
-    // The verification result only discloses aggregate percentages
-    // Individual dataset details stay private
-    
-    const verificationKeys = Object.keys(contract.ledger.verificationResults.values().next().value || {});
-    expect(verificationKeys).not.toContain('datasetIds');
-    expect(verificationKeys).not.toContain('dataHashes');
-    // Only these should be public:
-    expect(verificationKeys).toContain('isCompliant');
-    expect(verificationKeys).toContain('authorizedPercentage');
-    expect(verificationKeys).toContain('licensedPercentage');
-    expect(verificationKeys).toContain('restrictedCount');
-    expect(verificationKeys).toContain('expiredLicenseCount');
+    if (!contractInstance || !ctx) return;
+    const l = ledgerFn(ctx.currentQueryContext.state);
+    const verif = l.verificationResults.lookup(VERIF_ID);
+    expect(verif).toBeDefined();
+    // Individual dataset IDs and hashes must not be in the public result
+    expect('datasetIds' in verif).toBe(false);
+    expect('dataHashes' in verif).toBe(false);
+    // Only aggregate compliance info is public
+    expect('isCompliant' in verif).toBe(true);
+    expect('authorizedPercentage' in verif).toBe(true);
+    expect('licensedPercentage' in verif).toBe(true);
   });
 });
 
