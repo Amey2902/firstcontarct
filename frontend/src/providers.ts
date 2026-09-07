@@ -38,7 +38,10 @@ export async function createProviders(wallet: ConnectedAPI): Promise<BlackBoxPro
   const publicDataProvider = indexerPublicDataProvider(INDEXER_URL, INDEXER_WS_URL);
 
   // ZK config provider - fetches verifier keys and zkIR from the deployed contract
-  const zkConfigProvider = new FetchZkConfigProvider<string>(zkConfigPath);
+  const zkBaseUrl = typeof window !== 'undefined'
+    ? `${window.location.origin}${zkConfigPath}`
+    : zkConfigPath;
+  const zkConfigProvider = new FetchZkConfigProvider<string>(zkBaseUrl);
 
   // Proof provider - uses the DApp Connector's proof provider
   const proofProvider = await dappConnectorProofProvider(wallet, zkConfigProvider, {});
