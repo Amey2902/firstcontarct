@@ -3,9 +3,7 @@
  *
  * Run with: npm test
  */
-import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
-import { Compact } from '@midnight-ntwrk/compact-runtime';
-import { compile } from '@midnight-ntwrk/compact-runtime';
+import { describe, it, expect, beforeAll } from 'vitest';
 import * as path from 'node:path';
 import * as fs from 'node:fs';
 
@@ -35,7 +33,7 @@ describe('BlackBox AI Contract', () => {
       currentTimestamp: () => BigInt(Math.floor(Date.now() / 1000)),
     };
 
-    runtime = Compact(Contract, { witnesses });
+    runtime = (Contract as any)(Contract, { witnesses });
     contract = runtime.contract;
   });
 
@@ -197,24 +195,24 @@ describe('BlackBox AI Contract', () => {
 });
 
 describe('BlackBox AI Constants', () => {
-  it('should have correct license type constants', () => {
-    const { LICENSE_TYPES } = require('../src/contract');
+  it('should have correct license type constants', async () => {
+    const { LICENSE_TYPES } = await import('../src/contract-constants.js');
     expect(LICENSE_TYPES.COMMERCIAL).toBe(0);
     expect(LICENSE_TYPES.OPEN_SOURCE).toBe(1);
     expect(LICENSE_TYPES.PROPRIETARY).toBe(2);
     expect(LICENSE_TYPES.RESTRICTED).toBe(3);
   });
 
-  it('should have correct auth status constants', () => {
-    const { AUTH_STATUS } = require('../src/contract');
+  it('should have correct auth status constants', async () => {
+    const { AUTH_STATUS } = await import('../src/contract-constants.js');
     expect(AUTH_STATUS.PENDING).toBe(0);
     expect(AUTH_STATUS.AUTHORIZED).toBe(1);
     expect(AUTH_STATUS.REVOKED).toBe(2);
     expect(AUTH_STATUS.EXPIRED).toBe(3);
   });
 
-  it('should have correct license type names', () => {
-    const { LICENSE_TYPE_NAMES } = require('../src/contract');
+  it('should have correct license type names', async () => {
+    const { LICENSE_TYPE_NAMES } = await import('../src/contract-constants.js');
     expect(LICENSE_TYPE_NAMES[0]).toBe('Commercial');
     expect(LICENSE_TYPE_NAMES[1]).toBe('Open Source');
     expect(LICENSE_TYPE_NAMES[2]).toBe('Proprietary');
