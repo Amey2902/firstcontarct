@@ -2,6 +2,7 @@
  * Browser providers wired to the Midnight DApp Connector (Lace wallet).
  */
 import { dappConnectorProofProvider } from '@midnight-ntwrk/midnight-js-dapp-connector-proof-provider';
+import { httpClientProofProvider } from '@midnight-ntwrk/midnight-js-http-client-proof-provider';
 import { indexerPublicDataProvider } from '@midnight-ntwrk/midnight-js-indexer-public-data-provider';
 import { FetchZkConfigProvider } from '@midnight-ntwrk/midnight-js-fetch-zk-config-provider';
 import type { ConnectedAPI } from '@midnight-ntwrk/dapp-connector-api';
@@ -15,7 +16,7 @@ import { browserPrivateStateProvider } from './browserPrivateStateProvider';
 const INDEXER_URL    = import.meta.env.VITE_INDEXER_URL    ?? 'https://indexer.preview.midnight.network/api/v4/graphql';
 const INDEXER_WS_URL = import.meta.env.VITE_INDEXER_WS_URL ?? 'wss://indexer.preview.midnight.network/api/v4/graphql/ws';
 const PRIVATE_STATE_PASSWORD = import.meta.env.VITE_PRIVATE_STATE_PASSWORD ?? 'Local-Devnet-Development-Placeholder-1';
-const NETWORK = import.meta.env.VITE_NETWORK ?? 'preview';
+const PROOF_SERVER_URL = import.meta.env.VITE_PROOF_SERVER_URL ?? 'http://localhost:6300';
 
 export interface BlackBoxProviders {
   privateStateProvider: PrivateStateProvider<string>;
@@ -34,8 +35,9 @@ export async function createProviders(wallet: ConnectedAPI): Promise<BlackBoxPro
   const zkBaseUrl = `${window.location.origin}${zkConfigPath}`;
   const zkConfigProvider = new FetchZkConfigProvider<string>(zkBaseUrl, fetch.bind(window));
 
-  // ── Proof provider (delegates proving to the wallet) ────────────────────
-  const proofProvider = await dappConnectorProofProvider(wallet, zkConfigProvider, undefined as any);
+  // ── Proof provider — use httpClientProofProvider to talk directly to proof server
+  // This avoids the wallet's getProvingProvider() which uses a different check format
+  const proofProvider = httpClientProofProvider(PROOF_SERVER_URL, zkConfigProvider);
 
   // ── Shielded keys (fetched once, cached) ────────────────────────────────
   const shieldedAddr = await wallet.getShieldedAddresses();
