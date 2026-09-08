@@ -6,7 +6,6 @@ import { indexerPublicDataProvider } from '@midnight-ntwrk/midnight-js-indexer-p
 import { FetchZkConfigProvider } from '@midnight-ntwrk/midnight-js-fetch-zk-config-provider';
 import type { ConnectedAPI } from '@midnight-ntwrk/dapp-connector-api';
 import { toHex, fromHex, parseCoinPublicKeyToHex, parseEncPublicKeyToHex } from '@midnight-ntwrk/midnight-js-utils';
-import { CostModel } from '@midnight-ntwrk/compact-runtime';
 import { Transaction } from '@midnight-ntwrk/midnight-js-types';
 import { getNetworkId, setNetworkId } from '@midnight-ntwrk/midnight-js-network-id';
 import { zkConfigPath } from './contract';
@@ -36,7 +35,7 @@ export async function createProviders(wallet: ConnectedAPI): Promise<BlackBoxPro
   const zkConfigProvider = new FetchZkConfigProvider<string>(zkBaseUrl, fetch.bind(window));
 
   // ── Proof provider (delegates proving to the wallet) ────────────────────
-  const proofProvider = await dappConnectorProofProvider(wallet, zkConfigProvider, CostModel.initialCostModel());
+  const proofProvider = await dappConnectorProofProvider(wallet, zkConfigProvider, undefined as any);
 
   // ── Shielded keys (fetched once, cached) ────────────────────────────────
   const shieldedAddr = await wallet.getShieldedAddresses();
