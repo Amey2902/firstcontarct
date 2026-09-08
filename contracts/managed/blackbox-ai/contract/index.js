@@ -1,5 +1,5 @@
 import * as __compactRuntime from '@midnight-ntwrk/compact-runtime';
-__compactRuntime.checkRuntimeVersion('0.16.0');
+__compactRuntime.checkRuntimeVersion('0.19.0');
 
 const _descriptor_0 = new __compactRuntime.CompactTypeBytes(32);
 
@@ -146,6 +146,8 @@ class _ContractAddress_0 {
 
 const _descriptor_13 = new _ContractAddress_0();
 
+const _descriptor_14 = new __compactRuntime.CompactTypeUnsignedInteger(4294967295n, 4);
+
 export class Contract {
   witnesses;
   constructor(...args_0) {
@@ -173,7 +175,7 @@ export class Contract {
     }
     this.witnesses = witnesses_0;
     this.circuits = {
-      registerDataset: (...args_1) => {
+      registerDataset: async (...args_1) => {
         if (args_1.length !== 10) {
           throw new __compactRuntime.CompactError(`registerDataset: expected 10 arguments (as invoked from Typescript), received ${args_1.length}`);
         }
@@ -187,7 +189,7 @@ export class Contract {
         const validFrom_0 = args_1[7];
         const validUntil_0 = args_1[8];
         const metadataHash_0 = args_1[9];
-        if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
+        if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.callContext.currentQueryContext != undefined)) {
           __compactRuntime.typeError('registerDataset',
                                      'argument 1 (as invoked from Typescript)',
                                      'blackbox-ai.compact line 132 char 1',
@@ -257,7 +259,7 @@ export class Contract {
                                      'Bytes<32>',
                                      metadataHash_0)
         }
-        const context = { ...contextOrig_0, gasCost: __compactRuntime.emptyRunningCost() };
+        const context = __compactRuntime.copyCircuitContext(contextOrig_0);
         const partialProofData = {
           input: {
             value: _descriptor_0.toValue(datasetId_0).concat(_descriptor_0.toValue(owner_0).concat(_descriptor_0.toValue(contentHash_0).concat(_descriptor_0.toValue(licenseHash_0).concat(_descriptor_1.toValue(licenseType_0).concat(_descriptor_1.toValue(authorizationStatus_0).concat(_descriptor_2.toValue(validFrom_0).concat(_descriptor_2.toValue(validUntil_0).concat(_descriptor_0.toValue(metadataHash_0))))))))),
@@ -267,21 +269,22 @@ export class Contract {
           publicTranscript: [],
           privateTranscriptOutputs: []
         };
-        const result_0 = this._registerDataset_0(context,
-                                                 partialProofData,
-                                                 datasetId_0,
-                                                 owner_0,
-                                                 contentHash_0,
-                                                 licenseHash_0,
-                                                 licenseType_0,
-                                                 authorizationStatus_0,
-                                                 validFrom_0,
-                                                 validUntil_0,
-                                                 metadataHash_0);
+        const result_0 = await this._registerDataset_0(context,
+                                                       partialProofData,
+                                                       datasetId_0,
+                                                       owner_0,
+                                                       contentHash_0,
+                                                       licenseHash_0,
+                                                       licenseType_0,
+                                                       authorizationStatus_0,
+                                                       validFrom_0,
+                                                       validUntil_0,
+                                                       metadataHash_0);
         partialProofData.output = { value: [], alignment: [] };
-        return { result: result_0, context: context, proofData: partialProofData, gasCost: context.gasCost };
+        __compactRuntime.finalizeCallProofData(context, partialProofData);
+        return { result: result_0, context: context, gasCost: context.callContext.currentGasCost };
       },
-      commitTraining: (...args_1) => {
+      commitTraining: async (...args_1) => {
         if (args_1.length !== 7) {
           throw new __compactRuntime.CompactError(`commitTraining: expected 7 arguments (as invoked from Typescript), received ${args_1.length}`);
         }
@@ -292,7 +295,7 @@ export class Contract {
         const datasetCount_0 = args_1[4];
         const trainingTimestamp_0 = args_1[5];
         const modelHash_0 = args_1[6];
-        if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
+        if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.callContext.currentQueryContext != undefined)) {
           __compactRuntime.typeError('commitTraining',
                                      'argument 1 (as invoked from Typescript)',
                                      'blackbox-ai.compact line 186 char 1',
@@ -341,7 +344,7 @@ export class Contract {
                                      'Bytes<32>',
                                      modelHash_0)
         }
-        const context = { ...contextOrig_0, gasCost: __compactRuntime.emptyRunningCost() };
+        const context = __compactRuntime.copyCircuitContext(contextOrig_0);
         const partialProofData = {
           input: {
             value: _descriptor_0.toValue(commitmentId_0).concat(_descriptor_0.toValue(trainer_0).concat(_descriptor_7.toValue(datasetIds_0).concat(_descriptor_1.toValue(datasetCount_0).concat(_descriptor_2.toValue(trainingTimestamp_0).concat(_descriptor_0.toValue(modelHash_0)))))),
@@ -351,18 +354,19 @@ export class Contract {
           publicTranscript: [],
           privateTranscriptOutputs: []
         };
-        const result_0 = this._commitTraining_0(context,
-                                                partialProofData,
-                                                commitmentId_0,
-                                                trainer_0,
-                                                datasetIds_0,
-                                                datasetCount_0,
-                                                trainingTimestamp_0,
-                                                modelHash_0);
+        const result_0 = await this._commitTraining_0(context,
+                                                      partialProofData,
+                                                      commitmentId_0,
+                                                      trainer_0,
+                                                      datasetIds_0,
+                                                      datasetCount_0,
+                                                      trainingTimestamp_0,
+                                                      modelHash_0);
         partialProofData.output = { value: [], alignment: [] };
-        return { result: result_0, context: context, proofData: partialProofData, gasCost: context.gasCost };
+        __compactRuntime.finalizeCallProofData(context, partialProofData);
+        return { result: result_0, context: context, gasCost: context.callContext.currentGasCost };
       },
-      createPolicy: (...args_1) => {
+      createPolicy: async (...args_1) => {
         if (args_1.length !== 8) {
           throw new __compactRuntime.CompactError(`createPolicy: expected 8 arguments (as invoked from Typescript), received ${args_1.length}`);
         }
@@ -374,7 +378,7 @@ export class Contract {
         const allowRestricted_0 = args_1[5];
         const requireValidLicenses_0 = args_1[6];
         const createdBy_0 = args_1[7];
-        if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
+        if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.callContext.currentQueryContext != undefined)) {
           __compactRuntime.typeError('createPolicy',
                                      'argument 1 (as invoked from Typescript)',
                                      'blackbox-ai.compact line 238 char 1',
@@ -430,7 +434,7 @@ export class Contract {
                                      'Bytes<32>',
                                      createdBy_0)
         }
-        const context = { ...contextOrig_0, gasCost: __compactRuntime.emptyRunningCost() };
+        const context = __compactRuntime.copyCircuitContext(contextOrig_0);
         const partialProofData = {
           input: {
             value: _descriptor_0.toValue(policyId_0).concat(_descriptor_5.toValue(name_0).concat(_descriptor_1.toValue(minAuthorizedPercentage_0).concat(_descriptor_1.toValue(minLicensedPercentage_0).concat(_descriptor_4.toValue(allowRestricted_0).concat(_descriptor_4.toValue(requireValidLicenses_0).concat(_descriptor_0.toValue(createdBy_0))))))),
@@ -440,19 +444,20 @@ export class Contract {
           publicTranscript: [],
           privateTranscriptOutputs: []
         };
-        const result_0 = this._createPolicy_0(context,
-                                              partialProofData,
-                                              policyId_0,
-                                              name_0,
-                                              minAuthorizedPercentage_0,
-                                              minLicensedPercentage_0,
-                                              allowRestricted_0,
-                                              requireValidLicenses_0,
-                                              createdBy_0);
+        const result_0 = await this._createPolicy_0(context,
+                                                    partialProofData,
+                                                    policyId_0,
+                                                    name_0,
+                                                    minAuthorizedPercentage_0,
+                                                    minLicensedPercentage_0,
+                                                    allowRestricted_0,
+                                                    requireValidLicenses_0,
+                                                    createdBy_0);
         partialProofData.output = { value: [], alignment: [] };
-        return { result: result_0, context: context, proofData: partialProofData, gasCost: context.gasCost };
+        __compactRuntime.finalizeCallProofData(context, partialProofData);
+        return { result: result_0, context: context, gasCost: context.callContext.currentGasCost };
       },
-      verifyCompliance: (...args_1) => {
+      verifyCompliance: async (...args_1) => {
         if (args_1.length !== 5) {
           throw new __compactRuntime.CompactError(`verifyCompliance: expected 5 arguments (as invoked from Typescript), received ${args_1.length}`);
         }
@@ -461,7 +466,7 @@ export class Contract {
         const commitmentId_0 = args_1[2];
         const policyId_0 = args_1[3];
         const verifier_0 = args_1[4];
-        if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
+        if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.callContext.currentQueryContext != undefined)) {
           __compactRuntime.typeError('verifyCompliance',
                                      'argument 1 (as invoked from Typescript)',
                                      'blackbox-ai.compact line 272 char 1',
@@ -496,7 +501,7 @@ export class Contract {
                                      'Bytes<32>',
                                      verifier_0)
         }
-        const context = { ...contextOrig_0, gasCost: __compactRuntime.emptyRunningCost() };
+        const context = __compactRuntime.copyCircuitContext(contextOrig_0);
         const partialProofData = {
           input: {
             value: _descriptor_0.toValue(verificationId_0).concat(_descriptor_0.toValue(commitmentId_0).concat(_descriptor_0.toValue(policyId_0).concat(_descriptor_0.toValue(verifier_0)))),
@@ -506,22 +511,23 @@ export class Contract {
           publicTranscript: [],
           privateTranscriptOutputs: []
         };
-        const result_0 = this._verifyCompliance_0(context,
-                                                  partialProofData,
-                                                  verificationId_0,
-                                                  commitmentId_0,
-                                                  policyId_0,
-                                                  verifier_0);
+        const result_0 = await this._verifyCompliance_0(context,
+                                                        partialProofData,
+                                                        verificationId_0,
+                                                        commitmentId_0,
+                                                        policyId_0,
+                                                        verifier_0);
         partialProofData.output = { value: [], alignment: [] };
-        return { result: result_0, context: context, proofData: partialProofData, gasCost: context.gasCost };
+        __compactRuntime.finalizeCallProofData(context, partialProofData);
+        return { result: result_0, context: context, gasCost: context.callContext.currentGasCost };
       },
-      getDataset: (...args_1) => {
+      getDataset: async (...args_1) => {
         if (args_1.length !== 2) {
           throw new __compactRuntime.CompactError(`getDataset: expected 2 arguments (as invoked from Typescript), received ${args_1.length}`);
         }
         const contextOrig_0 = args_1[0];
         const datasetId_0 = args_1[1];
-        if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
+        if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.callContext.currentQueryContext != undefined)) {
           __compactRuntime.typeError('getDataset',
                                      'argument 1 (as invoked from Typescript)',
                                      'blackbox-ai.compact line 419 char 1',
@@ -535,7 +541,7 @@ export class Contract {
                                      'Bytes<32>',
                                      datasetId_0)
         }
-        const context = { ...contextOrig_0, gasCost: __compactRuntime.emptyRunningCost() };
+        const context = __compactRuntime.copyCircuitContext(contextOrig_0);
         const partialProofData = {
           input: {
             value: _descriptor_0.toValue(datasetId_0),
@@ -545,19 +551,20 @@ export class Contract {
           publicTranscript: [],
           privateTranscriptOutputs: []
         };
-        const result_0 = this._getDataset_0(context,
-                                            partialProofData,
-                                            datasetId_0);
+        const result_0 = await this._getDataset_0(context,
+                                                  partialProofData,
+                                                  datasetId_0);
         partialProofData.output = { value: _descriptor_3.toValue(result_0), alignment: _descriptor_3.alignment() };
-        return { result: result_0, context: context, proofData: partialProofData, gasCost: context.gasCost };
+        __compactRuntime.finalizeCallProofData(context, partialProofData);
+        return { result: result_0, context: context, gasCost: context.callContext.currentGasCost };
       },
-      getCommitment: (...args_1) => {
+      getCommitment: async (...args_1) => {
         if (args_1.length !== 2) {
           throw new __compactRuntime.CompactError(`getCommitment: expected 2 arguments (as invoked from Typescript), received ${args_1.length}`);
         }
         const contextOrig_0 = args_1[0];
         const commitmentId_0 = args_1[1];
-        if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
+        if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.callContext.currentQueryContext != undefined)) {
           __compactRuntime.typeError('getCommitment',
                                      'argument 1 (as invoked from Typescript)',
                                      'blackbox-ai.compact line 425 char 1',
@@ -571,7 +578,7 @@ export class Contract {
                                      'Bytes<32>',
                                      commitmentId_0)
         }
-        const context = { ...contextOrig_0, gasCost: __compactRuntime.emptyRunningCost() };
+        const context = __compactRuntime.copyCircuitContext(contextOrig_0);
         const partialProofData = {
           input: {
             value: _descriptor_0.toValue(commitmentId_0),
@@ -581,19 +588,20 @@ export class Contract {
           publicTranscript: [],
           privateTranscriptOutputs: []
         };
-        const result_0 = this._getCommitment_0(context,
-                                               partialProofData,
-                                               commitmentId_0);
+        const result_0 = await this._getCommitment_0(context,
+                                                     partialProofData,
+                                                     commitmentId_0);
         partialProofData.output = { value: _descriptor_8.toValue(result_0), alignment: _descriptor_8.alignment() };
-        return { result: result_0, context: context, proofData: partialProofData, gasCost: context.gasCost };
+        __compactRuntime.finalizeCallProofData(context, partialProofData);
+        return { result: result_0, context: context, gasCost: context.callContext.currentGasCost };
       },
-      getVerification: (...args_1) => {
+      getVerification: async (...args_1) => {
         if (args_1.length !== 2) {
           throw new __compactRuntime.CompactError(`getVerification: expected 2 arguments (as invoked from Typescript), received ${args_1.length}`);
         }
         const contextOrig_0 = args_1[0];
         const verificationId_0 = args_1[1];
-        if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
+        if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.callContext.currentQueryContext != undefined)) {
           __compactRuntime.typeError('getVerification',
                                      'argument 1 (as invoked from Typescript)',
                                      'blackbox-ai.compact line 431 char 1',
@@ -607,7 +615,7 @@ export class Contract {
                                      'Bytes<32>',
                                      verificationId_0)
         }
-        const context = { ...contextOrig_0, gasCost: __compactRuntime.emptyRunningCost() };
+        const context = __compactRuntime.copyCircuitContext(contextOrig_0);
         const partialProofData = {
           input: {
             value: _descriptor_0.toValue(verificationId_0),
@@ -617,19 +625,20 @@ export class Contract {
           publicTranscript: [],
           privateTranscriptOutputs: []
         };
-        const result_0 = this._getVerification_0(context,
-                                                 partialProofData,
-                                                 verificationId_0);
+        const result_0 = await this._getVerification_0(context,
+                                                       partialProofData,
+                                                       verificationId_0);
         partialProofData.output = { value: _descriptor_9.toValue(result_0), alignment: _descriptor_9.alignment() };
-        return { result: result_0, context: context, proofData: partialProofData, gasCost: context.gasCost };
+        __compactRuntime.finalizeCallProofData(context, partialProofData);
+        return { result: result_0, context: context, gasCost: context.callContext.currentGasCost };
       },
-      getPolicy: (...args_1) => {
+      getPolicy: async (...args_1) => {
         if (args_1.length !== 2) {
           throw new __compactRuntime.CompactError(`getPolicy: expected 2 arguments (as invoked from Typescript), received ${args_1.length}`);
         }
         const contextOrig_0 = args_1[0];
         const policyId_0 = args_1[1];
-        if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
+        if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.callContext.currentQueryContext != undefined)) {
           __compactRuntime.typeError('getPolicy',
                                      'argument 1 (as invoked from Typescript)',
                                      'blackbox-ai.compact line 437 char 1',
@@ -643,7 +652,7 @@ export class Contract {
                                      'Bytes<32>',
                                      policyId_0)
         }
-        const context = { ...contextOrig_0, gasCost: __compactRuntime.emptyRunningCost() };
+        const context = __compactRuntime.copyCircuitContext(contextOrig_0);
         const partialProofData = {
           input: {
             value: _descriptor_0.toValue(policyId_0),
@@ -653,11 +662,14 @@ export class Contract {
           publicTranscript: [],
           privateTranscriptOutputs: []
         };
-        const result_0 = this._getPolicy_0(context, partialProofData, policyId_0);
+        const result_0 = await this._getPolicy_0(context,
+                                                 partialProofData,
+                                                 policyId_0);
         partialProofData.output = { value: _descriptor_6.toValue(result_0), alignment: _descriptor_6.alignment() };
-        return { result: result_0, context: context, proofData: partialProofData, gasCost: context.gasCost };
+        __compactRuntime.finalizeCallProofData(context, partialProofData);
+        return { result: result_0, context: context, gasCost: context.callContext.currentGasCost };
       },
-      updateAuthorization: (...args_1) => {
+      updateAuthorization: async (...args_1) => {
         if (args_1.length !== 4) {
           throw new __compactRuntime.CompactError(`updateAuthorization: expected 4 arguments (as invoked from Typescript), received ${args_1.length}`);
         }
@@ -665,7 +677,7 @@ export class Contract {
         const datasetId_0 = args_1[1];
         const newStatus_0 = args_1[2];
         const owner_0 = args_1[3];
-        if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
+        if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.callContext.currentQueryContext != undefined)) {
           __compactRuntime.typeError('updateAuthorization',
                                      'argument 1 (as invoked from Typescript)',
                                      'blackbox-ai.compact line 446 char 1',
@@ -693,7 +705,7 @@ export class Contract {
                                      'Bytes<32>',
                                      owner_0)
         }
-        const context = { ...contextOrig_0, gasCost: __compactRuntime.emptyRunningCost() };
+        const context = __compactRuntime.copyCircuitContext(contextOrig_0);
         const partialProofData = {
           input: {
             value: _descriptor_0.toValue(datasetId_0).concat(_descriptor_1.toValue(newStatus_0).concat(_descriptor_0.toValue(owner_0))),
@@ -703,22 +715,23 @@ export class Contract {
           publicTranscript: [],
           privateTranscriptOutputs: []
         };
-        const result_0 = this._updateAuthorization_0(context,
-                                                     partialProofData,
-                                                     datasetId_0,
-                                                     newStatus_0,
-                                                     owner_0);
+        const result_0 = await this._updateAuthorization_0(context,
+                                                           partialProofData,
+                                                           datasetId_0,
+                                                           newStatus_0,
+                                                           owner_0);
         partialProofData.output = { value: [], alignment: [] };
-        return { result: result_0, context: context, proofData: partialProofData, gasCost: context.gasCost };
+        __compactRuntime.finalizeCallProofData(context, partialProofData);
+        return { result: result_0, context: context, gasCost: context.callContext.currentGasCost };
       },
-      revokeDataset: (...args_1) => {
+      revokeDataset: async (...args_1) => {
         if (args_1.length !== 3) {
           throw new __compactRuntime.CompactError(`revokeDataset: expected 3 arguments (as invoked from Typescript), received ${args_1.length}`);
         }
         const contextOrig_0 = args_1[0];
         const datasetId_0 = args_1[1];
         const owner_0 = args_1[2];
-        if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
+        if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.callContext.currentQueryContext != undefined)) {
           __compactRuntime.typeError('revokeDataset',
                                      'argument 1 (as invoked from Typescript)',
                                      'blackbox-ai.compact line 473 char 1',
@@ -739,7 +752,7 @@ export class Contract {
                                      'Bytes<32>',
                                      owner_0)
         }
-        const context = { ...contextOrig_0, gasCost: __compactRuntime.emptyRunningCost() };
+        const context = __compactRuntime.copyCircuitContext(contextOrig_0);
         const partialProofData = {
           input: {
             value: _descriptor_0.toValue(datasetId_0).concat(_descriptor_0.toValue(owner_0)),
@@ -749,12 +762,13 @@ export class Contract {
           publicTranscript: [],
           privateTranscriptOutputs: []
         };
-        const result_0 = this._revokeDataset_0(context,
-                                               partialProofData,
-                                               datasetId_0,
-                                               owner_0);
+        const result_0 = await this._revokeDataset_0(context,
+                                                     partialProofData,
+                                                     datasetId_0,
+                                                     owner_0);
         partialProofData.output = { value: [], alignment: [] };
-        return { result: result_0, context: context, proofData: partialProofData, gasCost: context.gasCost };
+        __compactRuntime.finalizeCallProofData(context, partialProofData);
+        return { result: result_0, context: context, gasCost: context.callContext.currentGasCost };
       }
     };
     this.impureCircuits = {
@@ -782,7 +796,7 @@ export class Contract {
       revokeDataset: this.circuits.revokeDataset
     };
   }
-  initialState(...args_0) {
+  async initialState(...args_0) {
     if (args_0.length !== 1) {
       throw new __compactRuntime.CompactError(`Contract state constructor: expected 1 argument (as invoked from Typescript), received ${args_0.length}`);
     }
@@ -820,7 +834,7 @@ export class Contract {
     state_0.setOperation('getPolicy', new __compactRuntime.ContractOperation());
     state_0.setOperation('updateAuthorization', new __compactRuntime.ContractOperation());
     state_0.setOperation('revokeDataset', new __compactRuntime.ContractOperation());
-    const context = __compactRuntime.createCircuitContext(__compactRuntime.dummyContractAddress(), constructorContext_0.initialZswapLocalState.coinPublicKey, state_0.data, constructorContext_0.initialPrivateState);
+    const context = __compactRuntime.createCircuitContext('constructor', __compactRuntime.dummyContractAddress(), constructorContext_0.initialZswapLocalState.coinPublicKey, state_0.data, constructorContext_0.initialPrivateState);
     const partialProofData = {
       input: { value: [], alignment: [] },
       output: undefined,
@@ -911,17 +925,17 @@ export class Contract {
                                                  value: __compactRuntime.StateValue.newCell({ value: _descriptor_2.toValue(0n),
                                                                                               alignment: _descriptor_2.alignment() }).encode() } },
                                        { ins: { cached: false, n: 1 } }]);
-    state_0.data = new __compactRuntime.ChargedState(context.currentQueryContext.state.state);
+    state_0.data = new __compactRuntime.ChargedState(context.callContext.currentQueryContext.state.state);
     return {
       currentContractState: state_0,
-      currentPrivateState: context.currentPrivateState,
-      currentZswapLocalState: context.currentZswapLocalState
+      currentPrivateState: context.callContext.currentPrivateState,
+      currentZswapLocalState: context.callContext.currentZswapLocalState
     }
   }
   _datasetContentHash_0(context, partialProofData) {
-    const witnessContext_0 = __compactRuntime.createWitnessContext(ledger(context.currentQueryContext.state), context.currentPrivateState, context.currentQueryContext.address);
+    const witnessContext_0 = __compactRuntime.createWitnessContext(ledger(context.callContext.currentQueryContext.state), context.callContext.currentPrivateState, context.callContext.currentQueryContext.address);
     const [nextPrivateState_0, result_0] = this.witnesses.datasetContentHash(witnessContext_0);
-    context.currentPrivateState = nextPrivateState_0;
+    context.callContext.currentPrivateState = nextPrivateState_0;
     if (!(result_0.buffer instanceof ArrayBuffer && result_0.BYTES_PER_ELEMENT === 1 && result_0.length === 32)) {
       __compactRuntime.typeError('datasetContentHash',
                                  'return value',
@@ -936,9 +950,9 @@ export class Contract {
     return result_0;
   }
   _licenseProof_0(context, partialProofData) {
-    const witnessContext_0 = __compactRuntime.createWitnessContext(ledger(context.currentQueryContext.state), context.currentPrivateState, context.currentQueryContext.address);
+    const witnessContext_0 = __compactRuntime.createWitnessContext(ledger(context.callContext.currentQueryContext.state), context.callContext.currentPrivateState, context.callContext.currentQueryContext.address);
     const [nextPrivateState_0, result_0] = this.witnesses.licenseProof(witnessContext_0);
-    context.currentPrivateState = nextPrivateState_0;
+    context.callContext.currentPrivateState = nextPrivateState_0;
     if (!(result_0.buffer instanceof ArrayBuffer && result_0.BYTES_PER_ELEMENT === 1 && result_0.length === 64)) {
       __compactRuntime.typeError('licenseProof',
                                  'return value',
@@ -953,9 +967,9 @@ export class Contract {
     return result_0;
   }
   _trainingDataHashes_0(context, partialProofData) {
-    const witnessContext_0 = __compactRuntime.createWitnessContext(ledger(context.currentQueryContext.state), context.currentPrivateState, context.currentQueryContext.address);
+    const witnessContext_0 = __compactRuntime.createWitnessContext(ledger(context.callContext.currentQueryContext.state), context.callContext.currentPrivateState, context.callContext.currentQueryContext.address);
     const [nextPrivateState_0, result_0] = this.witnesses.trainingDataHashes(witnessContext_0);
-    context.currentPrivateState = nextPrivateState_0;
+    context.callContext.currentPrivateState = nextPrivateState_0;
     if (!(Array.isArray(result_0) && result_0.length === 32 && result_0.every((t) => t.buffer instanceof ArrayBuffer && t.BYTES_PER_ELEMENT === 1 && t.length === 32))) {
       __compactRuntime.typeError('trainingDataHashes',
                                  'return value',
@@ -970,9 +984,9 @@ export class Contract {
     return result_0;
   }
   _datasetLicenses_0(context, partialProofData) {
-    const witnessContext_0 = __compactRuntime.createWitnessContext(ledger(context.currentQueryContext.state), context.currentPrivateState, context.currentQueryContext.address);
+    const witnessContext_0 = __compactRuntime.createWitnessContext(ledger(context.callContext.currentQueryContext.state), context.callContext.currentPrivateState, context.callContext.currentQueryContext.address);
     const [nextPrivateState_0, result_0] = this.witnesses.datasetLicenses(witnessContext_0);
-    context.currentPrivateState = nextPrivateState_0;
+    context.callContext.currentPrivateState = nextPrivateState_0;
     if (!(Array.isArray(result_0) && result_0.length === 32 && result_0.every((t) => t.buffer instanceof ArrayBuffer && t.BYTES_PER_ELEMENT === 1 && t.length === 32))) {
       __compactRuntime.typeError('datasetLicenses',
                                  'return value',
@@ -987,9 +1001,9 @@ export class Contract {
     return result_0;
   }
   _currentTimestamp_0(context, partialProofData) {
-    const witnessContext_0 = __compactRuntime.createWitnessContext(ledger(context.currentQueryContext.state), context.currentPrivateState, context.currentQueryContext.address);
+    const witnessContext_0 = __compactRuntime.createWitnessContext(ledger(context.callContext.currentQueryContext.state), context.callContext.currentPrivateState, context.callContext.currentQueryContext.address);
     const [nextPrivateState_0, result_0] = this.witnesses.currentTimestamp(witnessContext_0);
-    context.currentPrivateState = nextPrivateState_0;
+    context.callContext.currentPrivateState = nextPrivateState_0;
     if (!(typeof(result_0) === 'bigint' && result_0 >= 0n && result_0 <= 18446744073709551615n)) {
       __compactRuntime.typeError('currentTimestamp',
                                  'return value',
@@ -1003,17 +1017,17 @@ export class Contract {
     });
     return result_0;
   }
-  _registerDataset_0(context,
-                     partialProofData,
-                     datasetId_0,
-                     owner_0,
-                     contentHash_0,
-                     licenseHash_0,
-                     licenseType_0,
-                     authorizationStatus_0,
-                     validFrom_0,
-                     validUntil_0,
-                     metadataHash_0)
+  async _registerDataset_0(context,
+                           partialProofData,
+                           datasetId_0,
+                           owner_0,
+                           contentHash_0,
+                           licenseHash_0,
+                           licenseType_0,
+                           authorizationStatus_0,
+                           validFrom_0,
+                           validUntil_0,
+                           metadataHash_0)
   {
     __compactRuntime.assert(!_descriptor_4.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                        partialProofData,
@@ -1088,14 +1102,14 @@ export class Contract {
                                        { ins: { cached: true, n: 1 } }]);
     return [];
   }
-  _commitTraining_0(context,
-                    partialProofData,
-                    commitmentId_0,
-                    trainer_0,
-                    datasetIds_0,
-                    datasetCount_0,
-                    trainingTimestamp_0,
-                    modelHash_0)
+  async _commitTraining_0(context,
+                          partialProofData,
+                          commitmentId_0,
+                          trainer_0,
+                          datasetIds_0,
+                          datasetCount_0,
+                          trainingTimestamp_0,
+                          modelHash_0)
   {
     const disclosedCount_0 = datasetCount_0;
     __compactRuntime.assert(!_descriptor_4.fromValue(__compactRuntime.queryLedgerState(context,
@@ -1120,89 +1134,89 @@ export class Contract {
     __compactRuntime.assert(disclosedCount_0 <= 32n, 'too many datasets');
     const provenHashes_0 = this._trainingDataHashes_0(context, partialProofData);
     const provenLicenses_0 = this._datasetLicenses_0(context, partialProofData);
-    this._folder_0(context,
-                   partialProofData,
-                   ((context, partialProofData, t_0, i_0) =>
-                    {
-                      if (i_0 < disclosedCount_0) {
-                        const dId_0 = datasetIds_0[i_0];
-                        __compactRuntime.assert(_descriptor_4.fromValue(__compactRuntime.queryLedgerState(context,
-                                                                                                          partialProofData,
-                                                                                                          [
-                                                                                                           { dup: { n: 0 } },
-                                                                                                           { idx: { cached: false,
-                                                                                                                    pushPath: false,
-                                                                                                                    path: [
-                                                                                                                           { tag: 'value',
-                                                                                                                             value: { value: _descriptor_1.toValue(0n),
-                                                                                                                                      alignment: _descriptor_1.alignment() } }] } },
-                                                                                                           { push: { storage: false,
-                                                                                                                     value: __compactRuntime.StateValue.newCell({ value: _descriptor_0.toValue(dId_0),
-                                                                                                                                                                  alignment: _descriptor_0.alignment() }).encode() } },
-                                                                                                           'member',
-                                                                                                           { popeq: { cached: true,
-                                                                                                                      result: undefined } }]).value),
-                                                'dataset not registered');
-                        const info_0 = _descriptor_3.fromValue(__compactRuntime.queryLedgerState(context,
-                                                                                                 partialProofData,
-                                                                                                 [
-                                                                                                  { dup: { n: 0 } },
-                                                                                                  { idx: { cached: false,
-                                                                                                           pushPath: false,
-                                                                                                           path: [
-                                                                                                                  { tag: 'value',
-                                                                                                                    value: { value: _descriptor_1.toValue(0n),
-                                                                                                                             alignment: _descriptor_1.alignment() } }] } },
-                                                                                                  { idx: { cached: false,
-                                                                                                           pushPath: false,
-                                                                                                           path: [
-                                                                                                                  { tag: 'value',
-                                                                                                                    value: { value: _descriptor_0.toValue(dId_0),
-                                                                                                                             alignment: _descriptor_0.alignment() } }] } },
-                                                                                                  { popeq: { cached: false,
-                                                                                                             result: undefined } }]).value);
-                        __compactRuntime.assert(this._equal_1(provenHashes_0[i_0],
-                                                              info_0.contentHash),
-                                                'content hash mismatch');
-                        __compactRuntime.assert(this._equal_2(provenLicenses_0[i_0],
-                                                              info_0.licenseHash),
-                                                'license hash mismatch');
-                      }
-                      return t_0;
-                    }),
-                   [],
-                   [0n,
-                    1n,
-                    2n,
-                    3n,
-                    4n,
-                    5n,
-                    6n,
-                    7n,
-                    8n,
-                    9n,
-                    10n,
-                    11n,
-                    12n,
-                    13n,
-                    14n,
-                    15n,
-                    16n,
-                    17n,
-                    18n,
-                    19n,
-                    20n,
-                    21n,
-                    22n,
-                    23n,
-                    24n,
-                    25n,
-                    26n,
-                    27n,
-                    28n,
-                    29n,
-                    30n,
-                    31n]);
+    await this._folder_0(context,
+                         partialProofData,
+                         (async (context, partialProofData, t_0, i_0) =>
+                          {
+                            if (i_0 < disclosedCount_0) {
+                              const dId_0 = datasetIds_0[i_0];
+                              __compactRuntime.assert(_descriptor_4.fromValue(__compactRuntime.queryLedgerState(context,
+                                                                                                                partialProofData,
+                                                                                                                [
+                                                                                                                 { dup: { n: 0 } },
+                                                                                                                 { idx: { cached: false,
+                                                                                                                          pushPath: false,
+                                                                                                                          path: [
+                                                                                                                                 { tag: 'value',
+                                                                                                                                   value: { value: _descriptor_1.toValue(0n),
+                                                                                                                                            alignment: _descriptor_1.alignment() } }] } },
+                                                                                                                 { push: { storage: false,
+                                                                                                                           value: __compactRuntime.StateValue.newCell({ value: _descriptor_0.toValue(dId_0),
+                                                                                                                                                                        alignment: _descriptor_0.alignment() }).encode() } },
+                                                                                                                 'member',
+                                                                                                                 { popeq: { cached: true,
+                                                                                                                            result: undefined } }]).value),
+                                                      'dataset not registered');
+                              const info_0 = _descriptor_3.fromValue(__compactRuntime.queryLedgerState(context,
+                                                                                                       partialProofData,
+                                                                                                       [
+                                                                                                        { dup: { n: 0 } },
+                                                                                                        { idx: { cached: false,
+                                                                                                                 pushPath: false,
+                                                                                                                 path: [
+                                                                                                                        { tag: 'value',
+                                                                                                                          value: { value: _descriptor_1.toValue(0n),
+                                                                                                                                   alignment: _descriptor_1.alignment() } }] } },
+                                                                                                        { idx: { cached: false,
+                                                                                                                 pushPath: false,
+                                                                                                                 path: [
+                                                                                                                        { tag: 'value',
+                                                                                                                          value: { value: _descriptor_0.toValue(dId_0),
+                                                                                                                                   alignment: _descriptor_0.alignment() } }] } },
+                                                                                                        { popeq: { cached: false,
+                                                                                                                   result: undefined } }]).value);
+                              __compactRuntime.assert(this._equal_1(provenHashes_0[i_0],
+                                                                    info_0.contentHash),
+                                                      'content hash mismatch');
+                              __compactRuntime.assert(this._equal_2(provenLicenses_0[i_0],
+                                                                    info_0.licenseHash),
+                                                      'license hash mismatch');
+                            }
+                            return t_0;
+                          }),
+                         [],
+                         [0n,
+                          1n,
+                          2n,
+                          3n,
+                          4n,
+                          5n,
+                          6n,
+                          7n,
+                          8n,
+                          9n,
+                          10n,
+                          11n,
+                          12n,
+                          13n,
+                          14n,
+                          15n,
+                          16n,
+                          17n,
+                          18n,
+                          19n,
+                          20n,
+                          21n,
+                          22n,
+                          23n,
+                          24n,
+                          25n,
+                          26n,
+                          27n,
+                          28n,
+                          29n,
+                          30n,
+                          31n]);
     const now_0 = this._currentTimestamp_0(context, partialProofData);
     const commitment_0 = { commitmentId: commitmentId_0,
                            trainer: trainer_0,
@@ -1246,15 +1260,15 @@ export class Contract {
                                        { ins: { cached: true, n: 1 } }]);
     return [];
   }
-  _createPolicy_0(context,
-                  partialProofData,
-                  policyId_0,
-                  name_0,
-                  minAuthorizedPercentage_0,
-                  minLicensedPercentage_0,
-                  allowRestricted_0,
-                  requireValidLicenses_0,
-                  createdBy_0)
+  async _createPolicy_0(context,
+                        partialProofData,
+                        policyId_0,
+                        name_0,
+                        minAuthorizedPercentage_0,
+                        minLicensedPercentage_0,
+                        allowRestricted_0,
+                        requireValidLicenses_0,
+                        createdBy_0)
   {
     __compactRuntime.assert(!_descriptor_4.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                        partialProofData,
@@ -1319,12 +1333,12 @@ export class Contract {
                                        { ins: { cached: true, n: 1 } }]);
     return [];
   }
-  _verifyCompliance_0(context,
-                      partialProofData,
-                      verificationId_0,
-                      commitmentId_0,
-                      policyId_0,
-                      verifier_0)
+  async _verifyCompliance_0(context,
+                            partialProofData,
+                            verificationId_0,
+                            commitmentId_0,
+                            policyId_0,
+                            verifier_0)
   {
     __compactRuntime.assert(!_descriptor_4.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                        partialProofData,
@@ -1462,8 +1476,8 @@ export class Contract {
       __compactRuntime.assert(this._equal_4(provenLicenses_0[0],
                                             info0_0.licenseHash),
                               'license mismatch 0');
-      if (!this._equal_5(info0_0.authorizationStatus, 1n)) { }
-      if (this._equal_6(info0_0.licenseType, 3n)) { }
+      if (info0_0.authorizationStatus !== 1n) { }
+      if (info0_0.licenseType === 3n) { }
       if (policy_0.requireValidLicenses) {
         let t_1, t_2;
         if ((t_2 = commitment_0.trainingTimestamp, t_2 < info0_0.validFrom)
@@ -1511,14 +1525,14 @@ export class Contract {
                                                                                                             alignment: _descriptor_0.alignment() } }] } },
                                                                                  { popeq: { cached: false,
                                                                                             result: undefined } }]).value);
-      __compactRuntime.assert(this._equal_7(provenHashes_0[1],
+      __compactRuntime.assert(this._equal_5(provenHashes_0[1],
                                             info1_0.contentHash),
                               'hash mismatch 1');
-      __compactRuntime.assert(this._equal_8(provenLicenses_0[1],
+      __compactRuntime.assert(this._equal_6(provenLicenses_0[1],
                                             info1_0.licenseHash),
                               'license mismatch 1');
-      if (!this._equal_9(info1_0.authorizationStatus, 1n)) { }
-      if (this._equal_10(info1_0.licenseType, 3n)) { }
+      if (info1_0.authorizationStatus !== 1n) { }
+      if (info1_0.licenseType === 3n) { }
       if (policy_0.requireValidLicenses) {
         let t_4, t_5;
         if ((t_5 = commitment_0.trainingTimestamp, t_5 < info1_0.validFrom)
@@ -1566,14 +1580,14 @@ export class Contract {
                                                                                                             alignment: _descriptor_0.alignment() } }] } },
                                                                                  { popeq: { cached: false,
                                                                                             result: undefined } }]).value);
-      __compactRuntime.assert(this._equal_11(provenHashes_0[2],
-                                             info2_0.contentHash),
+      __compactRuntime.assert(this._equal_7(provenHashes_0[2],
+                                            info2_0.contentHash),
                               'hash mismatch 2');
-      __compactRuntime.assert(this._equal_12(provenLicenses_0[2],
-                                             info2_0.licenseHash),
+      __compactRuntime.assert(this._equal_8(provenLicenses_0[2],
+                                            info2_0.licenseHash),
                               'license mismatch 2');
-      if (!this._equal_13(info2_0.authorizationStatus, 1n)) { }
-      if (this._equal_14(info2_0.licenseType, 3n)) { }
+      if (info2_0.authorizationStatus !== 1n) { }
+      if (info2_0.licenseType === 3n) { }
       if (policy_0.requireValidLicenses) {
         let t_7, t_8;
         if ((t_8 = commitment_0.trainingTimestamp, t_8 < info2_0.validFrom)
@@ -1630,7 +1644,7 @@ export class Contract {
                                        { ins: { cached: true, n: 1 } }]);
     return [];
   }
-  _getDataset_0(context, partialProofData, datasetId_0) {
+  async _getDataset_0(context, partialProofData, datasetId_0) {
     __compactRuntime.assert(_descriptor_4.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                       partialProofData,
                                                                                       [
@@ -1667,7 +1681,7 @@ export class Contract {
                                                                       { popeq: { cached: false,
                                                                                  result: undefined } }]).value);
   }
-  _getCommitment_0(context, partialProofData, commitmentId_0) {
+  async _getCommitment_0(context, partialProofData, commitmentId_0) {
     __compactRuntime.assert(_descriptor_4.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                       partialProofData,
                                                                                       [
@@ -1704,7 +1718,7 @@ export class Contract {
                                                                       { popeq: { cached: false,
                                                                                  result: undefined } }]).value);
   }
-  _getVerification_0(context, partialProofData, verificationId_0) {
+  async _getVerification_0(context, partialProofData, verificationId_0) {
     __compactRuntime.assert(_descriptor_4.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                       partialProofData,
                                                                                       [
@@ -1741,7 +1755,7 @@ export class Contract {
                                                                       { popeq: { cached: false,
                                                                                  result: undefined } }]).value);
   }
-  _getPolicy_0(context, partialProofData, policyId_0) {
+  async _getPolicy_0(context, partialProofData, policyId_0) {
     __compactRuntime.assert(_descriptor_4.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                       partialProofData,
                                                                                       [
@@ -1778,11 +1792,11 @@ export class Contract {
                                                                       { popeq: { cached: false,
                                                                                  result: undefined } }]).value);
   }
-  _updateAuthorization_0(context,
-                         partialProofData,
-                         datasetId_0,
-                         newStatus_0,
-                         owner_0)
+  async _updateAuthorization_0(context,
+                               partialProofData,
+                               datasetId_0,
+                               newStatus_0,
+                               owner_0)
   {
     __compactRuntime.assert(_descriptor_4.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                       partialProofData,
@@ -1819,7 +1833,7 @@ export class Contract {
                                                                                                          alignment: _descriptor_0.alignment() } }] } },
                                                                               { popeq: { cached: false,
                                                                                          result: undefined } }]).value);
-    __compactRuntime.assert(this._equal_15(info_0.owner, owner_0), 'not owner');
+    __compactRuntime.assert(this._equal_9(info_0.owner, owner_0), 'not owner');
     __compactRuntime.assert(newStatus_0 <= 3n, 'invalid status');
     const updated_0 = { datasetId: info_0.datasetId,
                         owner: info_0.owner,
@@ -1850,7 +1864,7 @@ export class Contract {
                                        { ins: { cached: true, n: 1 } }]);
     return [];
   }
-  _revokeDataset_0(context, partialProofData, datasetId_0, owner_0) {
+  async _revokeDataset_0(context, partialProofData, datasetId_0, owner_0) {
     __compactRuntime.assert(_descriptor_4.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                       partialProofData,
                                                                                       [
@@ -1886,7 +1900,7 @@ export class Contract {
                                                                                                          alignment: _descriptor_0.alignment() } }] } },
                                                                               { popeq: { cached: false,
                                                                                          result: undefined } }]).value);
-    __compactRuntime.assert(this._equal_16(info_0.owner, owner_0), 'not owner');
+    __compactRuntime.assert(this._equal_10(info_0.owner, owner_0), 'not owner');
     const updated_0 = { datasetId: info_0.datasetId,
                         owner: info_0.owner,
                         contentHash: info_0.contentHash,
@@ -1928,8 +1942,8 @@ export class Contract {
     if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
-  _folder_0(context, partialProofData, f, x, a0) {
-    for (let i = 0; i < 32; i++) { x = f(context, partialProofData, x, a0[i]); }
+  async _folder_0(context, partialProofData, f, x, a0) {
+    for (let i = 0; i < 32; i++) { x = await f(context, partialProofData, x, a0[i]); }
     return x;
   }
   _equal_3(x0, y0) {
@@ -1941,11 +1955,11 @@ export class Contract {
     return true;
   }
   _equal_5(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_6(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_7(x0, y0) {
@@ -1957,34 +1971,10 @@ export class Contract {
     return true;
   }
   _equal_9(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_10(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_11(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_12(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_13(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_14(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_15(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_16(x0, y0) {
     if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
@@ -1993,7 +1983,7 @@ export function ledger(stateOrChargedState) {
   const state = stateOrChargedState instanceof __compactRuntime.StateValue ? stateOrChargedState : stateOrChargedState.state;
   const chargedState = stateOrChargedState instanceof __compactRuntime.StateValue ? new __compactRuntime.ChargedState(stateOrChargedState) : stateOrChargedState;
   const context = {
-    currentQueryContext: new __compactRuntime.QueryContext(chargedState, __compactRuntime.dummyContractAddress()),
+    callContext: { currentQueryContext: new __compactRuntime.QueryContext(chargedState, __compactRuntime.dummyContractAddress()), currentGasCost: __compactRuntime.emptyRunningCost() },
     costModel: __compactRuntime.CostModel.initialCostModel()
   };
   const partialProofData = {
@@ -2498,7 +2488,7 @@ export function ledger(stateOrChargedState) {
   };
 }
 const _emptyContext = {
-  currentQueryContext: new __compactRuntime.QueryContext(new __compactRuntime.ContractState().data, __compactRuntime.dummyContractAddress())
+  callContext: { currentQueryContext: new __compactRuntime.QueryContext(new __compactRuntime.ContractState().data, __compactRuntime.dummyContractAddress()), currentGasCost: __compactRuntime.emptyRunningCost() }
 };
 const _dummyContract = new Contract({
   datasetContentHash: (...args) => undefined,
@@ -2510,4 +2500,17 @@ const _dummyContract = new Contract({
 export const pureCircuits = {};
 export const contractReferenceLocations =
   { tag: 'publicLedgerArray', indices: { } };
+export const expectedVk = {
+  'commitTraining': 'f92dac19ec661a6d20f6828c5fa7bd350f4eea5ae0ff8736b8505f6af859c41d',
+  'createPolicy': '73bc6e38e8d082f4c1b507d0fffb967b7306b9670c18dd72042f1919967eff9e',
+  'getCommitment': '5af1f897e55d226cd0ad380c648b8128c6ba06631c54ec6c4864c50b67bdce92',
+  'getDataset': 'c77d6904227517973280331d92818f97412faf29c604d79be29f8c5db2ba9f75',
+  'getPolicy': '3874a87640d19ca3af793bf72ea48e8e04e23e555c8a06902898bfdbf2a86776',
+  'getVerification': '64b9b45206725253c26661e8d9ae1a87871f889375e61086963f138b41d47527',
+  'registerDataset': '21111c6c542ad01b29f01a965fc7c9dd79330fcb747b426227c65eaf44de15e7',
+  'revokeDataset': '944bb991630208c263c460f832ecb1161f9d1772db33d0b5ed52c14f7821671e',
+  'updateAuthorization': 'e5cf7b3ceba0f39d7f3e0c1358d1af370de5d5ff127acf2864252300bff3d454',
+  'verifyCompliance': '11e4b32149602bb1052796afed48196f87bf538049810b28678e8ddf3c4563de',
+};
+
 //# sourceMappingURL=index.js.map

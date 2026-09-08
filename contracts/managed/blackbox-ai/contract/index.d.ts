@@ -61,14 +61,14 @@ export type ImpureCircuits<PS> = {
                   authorizationStatus_0: bigint,
                   validFrom_0: bigint,
                   validUntil_0: bigint,
-                  metadataHash_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
+                  metadataHash_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, []>>;
   commitTraining(context: __compactRuntime.CircuitContext<PS>,
                  commitmentId_0: Uint8Array,
                  trainer_0: Uint8Array,
                  datasetIds_0: Uint8Array[],
                  datasetCount_0: bigint,
                  trainingTimestamp_0: bigint,
-                 modelHash_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
+                 modelHash_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, []>>;
   createPolicy(context: __compactRuntime.CircuitContext<PS>,
                policyId_0: Uint8Array,
                name_0: Uint8Array,
@@ -76,26 +76,26 @@ export type ImpureCircuits<PS> = {
                minLicensedPercentage_0: bigint,
                allowRestricted_0: boolean,
                requireValidLicenses_0: boolean,
-               createdBy_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
+               createdBy_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, []>>;
   verifyCompliance(context: __compactRuntime.CircuitContext<PS>,
                    verificationId_0: Uint8Array,
                    commitmentId_0: Uint8Array,
                    policyId_0: Uint8Array,
-                   verifier_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
+                   verifier_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, []>>;
   getDataset(context: __compactRuntime.CircuitContext<PS>,
-             datasetId_0: Uint8Array): __compactRuntime.CircuitResults<PS, DatasetInfo>;
+             datasetId_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, DatasetInfo>>;
   getCommitment(context: __compactRuntime.CircuitContext<PS>,
-                commitmentId_0: Uint8Array): __compactRuntime.CircuitResults<PS, TrainingCommitment>;
+                commitmentId_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, TrainingCommitment>>;
   getVerification(context: __compactRuntime.CircuitContext<PS>,
-                  verificationId_0: Uint8Array): __compactRuntime.CircuitResults<PS, VerificationResult>;
-  getPolicy(context: __compactRuntime.CircuitContext<PS>, policyId_0: Uint8Array): __compactRuntime.CircuitResults<PS, Policy>;
+                  verificationId_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, VerificationResult>>;
+  getPolicy(context: __compactRuntime.CircuitContext<PS>, policyId_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, Policy>>;
   updateAuthorization(context: __compactRuntime.CircuitContext<PS>,
                       datasetId_0: Uint8Array,
                       newStatus_0: bigint,
-                      owner_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
+                      owner_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, []>>;
   revokeDataset(context: __compactRuntime.CircuitContext<PS>,
                 datasetId_0: Uint8Array,
-                owner_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
+                owner_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, []>>;
 }
 
 export type ProvableCircuits<PS> = {
@@ -108,14 +108,14 @@ export type ProvableCircuits<PS> = {
                   authorizationStatus_0: bigint,
                   validFrom_0: bigint,
                   validUntil_0: bigint,
-                  metadataHash_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
+                  metadataHash_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, []>>;
   commitTraining(context: __compactRuntime.CircuitContext<PS>,
                  commitmentId_0: Uint8Array,
                  trainer_0: Uint8Array,
                  datasetIds_0: Uint8Array[],
                  datasetCount_0: bigint,
                  trainingTimestamp_0: bigint,
-                 modelHash_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
+                 modelHash_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, []>>;
   createPolicy(context: __compactRuntime.CircuitContext<PS>,
                policyId_0: Uint8Array,
                name_0: Uint8Array,
@@ -123,26 +123,26 @@ export type ProvableCircuits<PS> = {
                minLicensedPercentage_0: bigint,
                allowRestricted_0: boolean,
                requireValidLicenses_0: boolean,
-               createdBy_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
+               createdBy_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, []>>;
   verifyCompliance(context: __compactRuntime.CircuitContext<PS>,
                    verificationId_0: Uint8Array,
                    commitmentId_0: Uint8Array,
                    policyId_0: Uint8Array,
-                   verifier_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
+                   verifier_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, []>>;
   getDataset(context: __compactRuntime.CircuitContext<PS>,
-             datasetId_0: Uint8Array): __compactRuntime.CircuitResults<PS, DatasetInfo>;
+             datasetId_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, DatasetInfo>>;
   getCommitment(context: __compactRuntime.CircuitContext<PS>,
-                commitmentId_0: Uint8Array): __compactRuntime.CircuitResults<PS, TrainingCommitment>;
+                commitmentId_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, TrainingCommitment>>;
   getVerification(context: __compactRuntime.CircuitContext<PS>,
-                  verificationId_0: Uint8Array): __compactRuntime.CircuitResults<PS, VerificationResult>;
-  getPolicy(context: __compactRuntime.CircuitContext<PS>, policyId_0: Uint8Array): __compactRuntime.CircuitResults<PS, Policy>;
+                  verificationId_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, VerificationResult>>;
+  getPolicy(context: __compactRuntime.CircuitContext<PS>, policyId_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, Policy>>;
   updateAuthorization(context: __compactRuntime.CircuitContext<PS>,
                       datasetId_0: Uint8Array,
                       newStatus_0: bigint,
-                      owner_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
+                      owner_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, []>>;
   revokeDataset(context: __compactRuntime.CircuitContext<PS>,
                 datasetId_0: Uint8Array,
-                owner_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
+                owner_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, []>>;
 }
 
 export type PureCircuits = {
@@ -158,14 +158,14 @@ export type Circuits<PS> = {
                   authorizationStatus_0: bigint,
                   validFrom_0: bigint,
                   validUntil_0: bigint,
-                  metadataHash_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
+                  metadataHash_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, []>>;
   commitTraining(context: __compactRuntime.CircuitContext<PS>,
                  commitmentId_0: Uint8Array,
                  trainer_0: Uint8Array,
                  datasetIds_0: Uint8Array[],
                  datasetCount_0: bigint,
                  trainingTimestamp_0: bigint,
-                 modelHash_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
+                 modelHash_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, []>>;
   createPolicy(context: __compactRuntime.CircuitContext<PS>,
                policyId_0: Uint8Array,
                name_0: Uint8Array,
@@ -173,26 +173,26 @@ export type Circuits<PS> = {
                minLicensedPercentage_0: bigint,
                allowRestricted_0: boolean,
                requireValidLicenses_0: boolean,
-               createdBy_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
+               createdBy_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, []>>;
   verifyCompliance(context: __compactRuntime.CircuitContext<PS>,
                    verificationId_0: Uint8Array,
                    commitmentId_0: Uint8Array,
                    policyId_0: Uint8Array,
-                   verifier_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
+                   verifier_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, []>>;
   getDataset(context: __compactRuntime.CircuitContext<PS>,
-             datasetId_0: Uint8Array): __compactRuntime.CircuitResults<PS, DatasetInfo>;
+             datasetId_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, DatasetInfo>>;
   getCommitment(context: __compactRuntime.CircuitContext<PS>,
-                commitmentId_0: Uint8Array): __compactRuntime.CircuitResults<PS, TrainingCommitment>;
+                commitmentId_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, TrainingCommitment>>;
   getVerification(context: __compactRuntime.CircuitContext<PS>,
-                  verificationId_0: Uint8Array): __compactRuntime.CircuitResults<PS, VerificationResult>;
-  getPolicy(context: __compactRuntime.CircuitContext<PS>, policyId_0: Uint8Array): __compactRuntime.CircuitResults<PS, Policy>;
+                  verificationId_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, VerificationResult>>;
+  getPolicy(context: __compactRuntime.CircuitContext<PS>, policyId_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, Policy>>;
   updateAuthorization(context: __compactRuntime.CircuitContext<PS>,
                       datasetId_0: Uint8Array,
                       newStatus_0: bigint,
-                      owner_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
+                      owner_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, []>>;
   revokeDataset(context: __compactRuntime.CircuitContext<PS>,
                 datasetId_0: Uint8Array,
-                owner_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
+                owner_0: Uint8Array): Promise<__compactRuntime.CircuitResults<PS, []>>;
 }
 
 export type Ledger = {
@@ -240,8 +240,9 @@ export declare class Contract<PS = any, W extends Witnesses<PS> = Witnesses<PS>>
   impureCircuits: ImpureCircuits<PS>;
   provableCircuits: ProvableCircuits<PS>;
   constructor(witnesses: W);
-  initialState(context: __compactRuntime.ConstructorContext<PS>): __compactRuntime.ConstructorResult<PS>;
+  initialState(context: __compactRuntime.ConstructorContext<PS>): Promise<__compactRuntime.ConstructorResult<PS>>;
 }
 
 export declare function ledger(state: __compactRuntime.StateValue | __compactRuntime.ChargedState): Ledger;
 export declare const pureCircuits: PureCircuits;
+export declare const expectedVk: Record<string, string>;
