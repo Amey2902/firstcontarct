@@ -12,13 +12,22 @@ const COMPATIBLE_CONNECTOR_API_VERSION = '4.x';
 function findWallet(): InitialAPI | undefined {
   const midnight = (window as any).midnight;
   if (!midnight) return undefined;
-  return Object.values(midnight).find(
-    (w): w is InitialAPI =>
-      !!w &&
-      typeof w === 'object' &&
-      'apiVersion' in w &&
-      semver.satisfies((w as InitialAPI).apiVersion, COMPATIBLE_CONNECTOR_API_VERSION),
+
+  const isCompatible = (w: unknown): w is InitialAPI =>
+    !!w &&
+    typeof w === 'object' &&
+    'apiVersion' in w &&
+    semver.satisfies((w as InitialAPI).apiVersion, COMPATIBLE_CONNECTOR_API_VERSION);
+
+  const all = Object.values(midnight).filter(isCompatible) as InitialAPI[];
+  if (all.length === 0) return undefined;
+
+  // Prefer the official Midnight Lace wallet
+  const lace = all.find(w =>
+    typeof (w as any).name === 'string' &&
+    (w as any).name.toLowerCase().includes('lace'),
   );
+  return lace ?? all[0];
 }
 
 export function useMidnight() {
