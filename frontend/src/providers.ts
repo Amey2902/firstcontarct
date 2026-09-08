@@ -1,7 +1,6 @@
 /**
  * Browser providers wired to the Midnight DApp Connector (Lace wallet).
  */
-import { dappConnectorProofProvider } from '@midnight-ntwrk/midnight-js-dapp-connector-proof-provider';
 import { httpClientProofProvider } from '@midnight-ntwrk/midnight-js-http-client-proof-provider';
 import { indexerPublicDataProvider } from '@midnight-ntwrk/midnight-js-indexer-public-data-provider';
 import { FetchZkConfigProvider } from '@midnight-ntwrk/midnight-js-fetch-zk-config-provider';
@@ -17,6 +16,7 @@ const INDEXER_URL    = import.meta.env.VITE_INDEXER_URL    ?? 'https://indexer.p
 const INDEXER_WS_URL = import.meta.env.VITE_INDEXER_WS_URL ?? 'wss://indexer.preview.midnight.network/api/v4/graphql/ws';
 const PRIVATE_STATE_PASSWORD = import.meta.env.VITE_PRIVATE_STATE_PASSWORD ?? 'Local-Devnet-Development-Placeholder-1';
 const PROOF_SERVER_URL = import.meta.env.VITE_PROOF_SERVER_URL ?? 'http://localhost:6300';
+const NETWORK = import.meta.env.VITE_NETWORK ?? 'preview';
 
 export interface BlackBoxProviders {
   privateStateProvider: PrivateStateProvider<string>;
