@@ -1,6 +1,18 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import semver from 'semver';
-import type { ConnectedAPI, InitialAPI } from '@midnight-ntwrk/dapp-connector-api';
+
+export interface InitialAPI {
+  name: string;
+  icon: string;
+  apiVersion: string;
+  connect(networkId: string): Promise<ConnectedAPI>;
+}
+
+export interface ConnectedAPI {
+  getUnshieldedAddress(): Promise<{ unshieldedAddress: string }>;
+  getShieldedAddresses(): Promise<{ shieldedAddress: string }>;
+  submitTx(tx: unknown): Promise<string>;
+}
 
 export type WalletType = 'lace' | '1am' | 'generic';
 export type WalletStatus = 'disconnected' | 'detecting' | 'ready' | 'connecting' | 'connected' | 'error';

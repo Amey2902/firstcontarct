@@ -25,11 +25,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Run Midnight contract automated tests
-        run: npm test
+        run: node scripts/run-tests.js
 
       - name: Install frontend dependencies
         working-directory: ./frontend
-        run: npm install --legacy-peer-deps --no-audit --no-fund
+        run: npm install --no-audit --no-fund
 
       - name: Build frontend distribution
         working-directory: ./frontend
