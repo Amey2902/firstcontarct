@@ -1,0 +1,9 @@
+services:
+  proof-server:
+    image: midnightnetwork/proof-server:4.1.1
+    container_name: blackbox-proof-server
+    ports:
+      - "6300:6300"
+    environment:
+      - RUST_LOG=info
+    restart: unless-stopped
