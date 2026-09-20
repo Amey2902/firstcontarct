@@ -114,7 +114,9 @@ export const App: React.FC = () => {
   const [datasets, setDatasets] = useState<RegisteredDataset[]>(INITIAL_DATASETS);
   const [audits, setAudits] = useState<AuditRecord[]>(INITIAL_AUDITS);
 
-  const { state: walletState, connect, disconnect } = useMidnight();
+  const { status, wallets, address, connect, disconnect } = useMidnight();
+  const isConnecting = status === 'connecting';
+  const walletState = { status, address, wallets, isConnecting };
 
   const handleRegisterDataset = (newDataset: RegisteredDataset) => {
     setDatasets((prev) => [newDataset, ...prev]);
