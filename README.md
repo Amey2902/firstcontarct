@@ -1,5 +1,6 @@
 # 🛡️ BLACKBOX AI — Private AI Training Data Provenance Verification System
 
+[![Live Demo](https://img.shields.io/badge/Live%20DApp-frontend0--psi.vercel.app-000000.svg?style=for-the-badge&logo=vercel)](https://frontend0-psi.vercel.app/)
 [![Midnight Network](https://img.shields.io/badge/Midnight-Network%20Preprod-059669.svg?style=for-the-badge&logo=shield)](https://midnight.network)
 [![Smart Contract](https://img.shields.io/badge/Compact-0.22%2B-0284c7.svg?style=for-the-badge)](https://docs.midnight.network)
 [![Zero-Knowledge Proofs](https://img.shields.io/badge/ZK--SNARKs-Halo2%20%2F%20Plonk-7c3aed.svg?style=for-the-badge)](https://docs.midnight.network)
@@ -8,6 +9,8 @@
 [![CI/CD](https://img.shields.io/badge/CI%2FCD-Passing-10b981.svg?style=for-the-badge&logo=githubactions)](https://github.com/shritesh263/Blackbox-Ai/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg?style=for-the-badge)](LICENSE)
 
+> 🚀 **Live Production Deployment**: **[https://frontend0-psi.vercel.app/](https://frontend0-psi.vercel.app/)**
+>
 > **BLACKBOX AI** is an enterprise-grade Zero-Knowledge (ZK) compliance and training data provenance verification system built natively on the **Midnight Network**. It solves the foundational regulatory dilemma of the generative AI era: **proving to regulators, enterprise auditors, and copyright holders that AI models were trained exclusively on legally compliant, authorized, and uncorrupted datasets—without ever exposing confidential training data, trade secrets, or proprietary model weights.**
 
 ---
@@ -331,6 +334,11 @@ Results: 7/7 test scenarios PASSED (100% compliance)
 ---
 
 ## 🌐 Deployment Guide
+
+### Live Production Deployment
+- 🔗 **Production URL**: **[https://frontend0-psi.vercel.app/](https://frontend0-psi.vercel.app/)**
+- ⚡ **Hosting Platform**: Vercel (Edge Network)
+- 🛡️ **Network Environment**: Midnight Preprod Testnet
 
 ### Deploying the Frontend (Vercel / Netlify / Cloudflare)
 Build the static distribution:
