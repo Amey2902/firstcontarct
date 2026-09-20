@@ -52,3 +52,8 @@ export async function computeCommitmentIdBrowser(trainer: string, model: string)
 export async function computeVerificationIdBrowser(commitmentId: string, timestamp: number): Promise<string> {
   return sha256HexBrowser(`verification:${commitmentId}:${timestamp}`);
 }
+
+export async function computeModelHashBrowser(modelName: string, architecture: string): Promise<string> {
+  return sha256HexBrowser(`model:${modelName}:${architecture}`);
+}
+
