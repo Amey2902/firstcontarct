@@ -6,14 +6,39 @@
     <title>BlackBox AI — Private AI Training Data Provenance</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              surface: '#0B0F17',
+              'surface-container': '#111827',
+              'surface-raised': '#162032',
+              'surface-border': '#1F2937',
+              primary: '#10B981',
+              secondary: '#06B6D4',
+              accent: '#8B5CF6',
+              danger: '#EF4444',
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              headline: ['"Plus Jakarta Sans"', 'sans-serif'],
+              mono: ['"JetBrains Mono"', 'monospace'],
+            },
+          },
+        },
+      };
+    </script>
     <script>
       window.global = window;
       window.globalThis = window;
       window.process = window.process || { env: {} };
     </script>
   </head>
-  <body class="bg-[#070b14] text-[#e2e8f0] antialiased">
+  <body class="bg-[#0B0F17] text-[#dfe2ee] font-sans antialiased selection:bg-[#10B981]/30 selection:text-[#10B981]">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

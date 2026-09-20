@@ -137,7 +137,7 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen bg-[#0B0F17] text-[#dfe2ee] flex flex-col selection:bg-[#10B981]/30 selection:text-[#10B981]">
       {/* Top Navigation */}
       <Navbar
         activeView={activeView}
@@ -179,26 +179,26 @@ export const App: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-900 bg-slate-950/80 backdrop-blur-md py-8">
+      <footer className="border-t border-[#1F2937] bg-[#0B0F17]/90 backdrop-blur-md py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center space-x-2">
-            <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center">
-              <ShieldCheck className="w-4 h-4 text-white" />
+            <div className="w-6 h-6 rounded bg-[#111827] border border-[#1F2937] flex items-center justify-center">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#10B981]" />
             </div>
-            <span className="text-xs sm:text-sm font-bold text-slate-300 tracking-wider font-mono">BLACKBOX AI</span>
-            <span className="text-xs text-slate-500">| Midnight Network Testnet / Preprod</span>
+            <span className="text-xs font-mono font-bold text-[#F9FAFB] tracking-wider">BLACKBOX AI</span>
+            <span className="text-xs text-[#9CA3AF]">| Midnight Network Preprod</span>
           </div>
 
-          <div className="flex items-center space-x-6 text-xs text-slate-400">
+          <div className="flex items-center space-x-6 text-xs text-[#9CA3AF] font-mono">
             <span className="flex items-center space-x-1.5">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-              <span>Zero-Knowledge Compact Runtime</span>
+              <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse"></span>
+              <span>Compact ZK Runtime</span>
             </span>
             <a
               href="https://docs.midnight.network"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-cyan-400 transition-colors flex items-center space-x-1"
+              className="hover:text-[#10B981] transition-colors flex items-center space-x-1"
             >
               <span>Midnight Docs</span>
               <ExternalLink className="w-3 h-3" />
@@ -211,6 +211,7 @@ export const App: React.FC = () => {
       <WalletModal
         isOpen={isWalletModalOpen}
         onClose={() => setIsWalletModalOpen(false)}
+        wallets={walletState.wallets}
         onConnect={connect}
         isConnecting={walletState.isConnecting}
       />

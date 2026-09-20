@@ -125,56 +125,56 @@ export const ComplianceVerificationView: React.FC<ComplianceVerificationViewProp
     <div className="space-y-8 animate-in fade-in duration-200">
       {/* Header */}
       <div>
-        <h2 className="text-xl font-bold text-white flex items-center space-x-2">
-          <ShieldCheck className="w-5 h-5 text-cyan-400" />
-          <span>Midnight Zero-Knowledge Compliance Verification</span>
+        <h2 className="text-lg font-headline font-bold text-white flex items-center space-x-2">
+          <ShieldCheck className="w-5 h-5 text-[#10B981]" />
+          <span>Zero-Knowledge Compliance Verifier & Policy Inspector</span>
         </h2>
-        <p className="text-xs sm:text-sm text-slate-400 mt-1">
+        <p className="text-xs text-[#9CA3AF] mt-1">
           Verify 5 AI training data compliance invariants in zero-knowledge. Proves provenance without exposing model weights or dataset contents.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Verification Config Form */}
         <div className="lg:col-span-6 space-y-6">
-          <div className="glass-card rounded-2xl p-6 border border-indigo-500/30">
-            <h3 className="text-base font-bold text-white mb-4 flex items-center space-x-2">
-              <Cpu className="w-4 h-4 text-cyan-400" />
-              <span>AI Training Run Commitment</span>
+          <div className="glass-card rounded-lg p-5 bg-[#111827] border border-[#1F2937]">
+            <h3 className="text-sm font-headline font-bold text-white mb-4 flex items-center space-x-2">
+              <Cpu className="w-4 h-4 text-[#06B6D4]" />
+              <span>AI Training Run Parameters</span>
             </h3>
 
             <form onSubmit={handleRunVerification} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">AI Model Name / ID</label>
+                <label className="block text-[11px] font-mono font-semibold text-[#9CA3AF] mb-1">MODEL IDENTIFIER</label>
                 <input
                   type="text"
                   required
                   value={modelName}
                   onChange={(e) => setModelName(e.target.value)}
-                  className="w-full bg-slate-900/80 border border-slate-700 rounded-lg px-3 py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-cyan-500"
+                  className="w-full bg-[#0B0F17] border border-[#1F2937] rounded px-3 py-2 text-xs text-[#F9FAFB] focus:outline-none focus:border-[#06B6D4] font-mono"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Model Architecture</label>
+                <label className="block text-[11px] font-mono font-semibold text-[#9CA3AF] mb-1">MODEL ARCHITECTURE</label>
                 <input
                   type="text"
                   required
                   value={modelArchitecture}
                   onChange={(e) => setModelArchitecture(e.target.value)}
-                  className="w-full bg-slate-900/80 border border-slate-700 rounded-lg px-3 py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-cyan-500"
+                  className="w-full bg-[#0B0F17] border border-[#1F2937] rounded px-3 py-2 text-xs text-[#F9FAFB] focus:outline-none focus:border-[#06B6D4] font-mono"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Target Training Dataset</label>
+                <label className="block text-[11px] font-mono font-semibold text-[#9CA3AF] mb-1">TRAINING DATASET COMMITMENT</label>
                 {datasets.length === 0 ? (
-                  <p className="text-xs text-rose-400">No datasets registered. Please register a dataset first.</p>
+                  <p className="text-xs text-[#EF4444]">No datasets registered. Please commit a dataset first.</p>
                 ) : (
                   <select
                     value={selectedDatasetId || datasets[0]?.id}
                     onChange={(e) => setSelectedDatasetId(e.target.value)}
-                    className="w-full bg-slate-900/80 border border-slate-700 rounded-lg px-3 py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-[#0B0F17] border border-[#1F2937] rounded px-3 py-2 text-xs text-[#F9FAFB] focus:outline-none focus:border-[#06B6D4] font-mono"
                   >
                     {datasets.map((d) => (
                       <option key={d.id} value={d.id}>
@@ -186,60 +186,60 @@ export const ComplianceVerificationView: React.FC<ComplianceVerificationViewProp
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Training Completion Date</label>
+                <label className="block text-[11px] font-mono font-semibold text-[#9CA3AF] mb-1">TRAINING TIMESTAMP</label>
                 <input
                   type="date"
                   value={trainingDate}
                   onChange={(e) => setTrainingDate(e.target.value)}
-                  className="w-full bg-slate-900/80 border border-slate-700 rounded-lg px-3 py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-cyan-500"
+                  className="w-full bg-[#0B0F17] border border-[#1F2937] rounded px-3 py-2 text-xs text-[#F9FAFB] focus:outline-none focus:border-[#06B6D4] font-mono"
                 />
               </div>
 
               {/* Simulation/Scenario Controls for Hackathon Evaluation */}
-              <div className="pt-3 border-t border-slate-800">
-                <p className="text-xs font-semibold text-indigo-300 mb-2 flex items-center space-x-1">
+              <div className="pt-3 border-t border-[#1F2937]">
+                <p className="text-xs font-mono font-semibold text-[#10B981] mb-2 flex items-center space-x-1">
                   <Sparkles className="w-3.5 h-3.5" />
-                  <span>Interactive ZK Circuit Edge-Case Simulators:</span>
+                  <span>ZK Circuit Invariant Stress Tests:</span>
                 </p>
                 <div className="grid grid-cols-2 gap-2 text-xs">
-                  <label className="flex items-center space-x-2 text-slate-300 cursor-pointer bg-slate-900/50 p-2 rounded-lg border border-slate-800">
+                  <label className="flex items-center space-x-2 text-[#dfe2ee] cursor-pointer bg-[#162032] p-2 rounded border border-[#1F2937]">
                     <input
                       type="checkbox"
                       checked={forceLicenseFail}
                       onChange={(e) => setForceLicenseFail(e.target.checked)}
-                      className="rounded border-slate-700 text-cyan-500 focus:ring-0"
+                      className="rounded border-[#1F2937] text-[#10B981] focus:ring-0"
                     />
-                    <span>Simulate License Breach</span>
+                    <span className="font-mono text-[11px]">Inject License Breach</span>
                   </label>
 
-                  <label className="flex items-center space-x-2 text-slate-300 cursor-pointer bg-slate-900/50 p-2 rounded-lg border border-slate-800">
+                  <label className="flex items-center space-x-2 text-[#dfe2ee] cursor-pointer bg-[#162032] p-2 rounded border border-[#1F2937]">
                     <input
                       type="checkbox"
                       checked={forceTemporalFail}
                       onChange={(e) => setForceTemporalFail(e.target.checked)}
-                      className="rounded border-slate-700 text-cyan-500 focus:ring-0"
+                      className="rounded border-[#1F2937] text-[#10B981] focus:ring-0"
                     />
-                    <span>Simulate Expired Term</span>
+                    <span className="font-mono text-[11px]">Inject Expired Date</span>
                   </label>
 
-                  <label className="flex items-center space-x-2 text-slate-300 cursor-pointer bg-slate-900/50 p-2 rounded-lg border border-slate-800">
+                  <label className="flex items-center space-x-2 text-[#dfe2ee] cursor-pointer bg-[#162032] p-2 rounded border border-[#1F2937]">
                     <input
                       type="checkbox"
                       checked={forceIntegrityFail}
                       onChange={(e) => setForceIntegrityFail(e.target.checked)}
-                      className="rounded border-slate-700 text-cyan-500 focus:ring-0"
+                      className="rounded border-[#1F2937] text-[#10B981] focus:ring-0"
                     />
-                    <span>Tamper Content Hash</span>
+                    <span className="font-mono text-[11px]">Tamper Merkle Hash</span>
                   </label>
 
-                  <label className="flex items-center space-x-2 text-slate-300 cursor-pointer bg-slate-900/50 p-2 rounded-lg border border-slate-800">
+                  <label className="flex items-center space-x-2 text-[#dfe2ee] cursor-pointer bg-[#162032] p-2 rounded border border-[#1F2937]">
                     <input
                       type="checkbox"
                       checked={!piiSanitized}
                       onChange={(e) => setPiiSanitized(!e.target.checked)}
-                      className="rounded border-slate-700 text-rose-500 focus:ring-0"
+                      className="rounded border-[#1F2937] text-[#EF4444] focus:ring-0"
                     />
-                    <span className="text-rose-300">Simulate PII Leakage</span>
+                    <span className="text-[#ffb4ab] font-mono text-[11px]">Simulate PII Leak</span>
                   </label>
                 </div>
               </div>
@@ -247,11 +247,11 @@ export const ComplianceVerificationView: React.FC<ComplianceVerificationViewProp
               <button
                 type="submit"
                 disabled={isVerifying || datasets.length === 0}
-                className="w-full bg-gradient-to-r from-cyan-600 via-indigo-600 to-purple-600 hover:from-cyan-500 hover:to-purple-500 text-white text-xs sm:text-sm font-semibold py-3 rounded-xl transition-all glow-button disabled:opacity-50 flex items-center justify-center space-x-2"
+                className="w-full bg-[#10B981] hover:bg-[#059669] text-[#0B0F17] text-xs font-semibold py-3 rounded transition-all glow-button disabled:opacity-50 flex items-center justify-center space-x-2 font-mono"
               >
                 {isVerifying ? (
                   <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <Loader2 className="w-4 h-4 animate-spin text-[#0B0F17]" />
                     <span>Executing Midnight ZK Proof Circuit...</span>
                   </>
                 ) : (
@@ -268,95 +268,95 @@ export const ComplianceVerificationView: React.FC<ComplianceVerificationViewProp
         {/* Live ZK Circuit Status & Result */}
         <div className="lg:col-span-6 space-y-6">
           {/* 5 Invariant Checklist */}
-          <div className="glass-card rounded-2xl p-6 border border-indigo-500/30">
-            <h3 className="text-base font-bold text-white mb-4 flex items-center space-x-2">
-              <FileCheck2 className="w-4 h-4 text-indigo-400" />
+          <div className="glass-card rounded-lg p-5 bg-[#111827] border border-[#1F2937]">
+            <h3 className="text-sm font-headline font-bold text-white mb-4 flex items-center space-x-2">
+              <FileCheck2 className="w-4 h-4 text-[#06B6D4]" />
               <span>5 Zero-Knowledge Provenance Invariants</span>
             </h3>
 
-            <div className="space-y-3">
+            <div className="space-y-2.5">
               {/* Invariant 1 */}
-              <div className="flex items-start space-x-3 p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+              <div className="flex items-start space-x-3 p-3 rounded bg-[#162032] border border-[#1F2937]">
                 {currentResult ? (
                   currentResult.ruleResults.datasetAuthorized ? (
-                    <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 text-[#10B981] flex-shrink-0 mt-0.5" />
                   ) : (
-                    <XCircle className="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5" />
+                    <XCircle className="w-4 h-4 text-[#EF4444] flex-shrink-0 mt-0.5" />
                   )
                 ) : (
-                  <div className="w-5 h-5 rounded-full border border-slate-600 flex items-center justify-center text-[10px] text-slate-400 mt-0.5">1</div>
+                  <div className="w-4 h-4 rounded-full border border-[#4B5563] flex items-center justify-center text-[10px] text-[#9CA3AF] mt-0.5 font-mono">1</div>
                 )}
                 <div className="text-xs">
-                  <div className="font-semibold text-white">1. Dataset Authorization Invariant</div>
-                  <p className="text-slate-400">Verifies dataset state is actively AUTHORIZED on Midnight ledger (not revoked).</p>
+                  <div className="font-semibold text-white font-mono text-[11px]">1. DATASET AUTHORIZATION INVARIANT</div>
+                  <p className="text-[#9CA3AF] text-[11px]">Verifies dataset state is actively AUTHORIZED on Midnight ledger (not revoked).</p>
                 </div>
               </div>
 
               {/* Invariant 2 */}
-              <div className="flex items-start space-x-3 p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+              <div className="flex items-start space-x-3 p-3 rounded bg-[#162032] border border-[#1F2937]">
                 {currentResult ? (
                   currentResult.ruleResults.licenseCompatible ? (
-                    <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 text-[#10B981] flex-shrink-0 mt-0.5" />
                   ) : (
-                    <XCircle className="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5" />
+                    <XCircle className="w-4 h-4 text-[#EF4444] flex-shrink-0 mt-0.5" />
                   )
                 ) : (
-                  <div className="w-5 h-5 rounded-full border border-slate-600 flex items-center justify-center text-[10px] text-slate-400 mt-0.5">2</div>
+                  <div className="w-4 h-4 rounded-full border border-[#4B5563] flex items-center justify-center text-[10px] text-[#9CA3AF] mt-0.5 font-mono">2</div>
                 )}
                 <div className="text-xs">
-                  <div className="font-semibold text-white">2. License Compatibility Invariant</div>
-                  <p className="text-slate-400">Ensures license allows AI training (Commercial/Open-Source; rejects RESTRICTED).</p>
+                  <div className="font-semibold text-white font-mono text-[11px]">2. LICENSE COMPATIBILITY INVARIANT</div>
+                  <p className="text-[#9CA3AF] text-[11px]">Ensures license allows AI training (Commercial/Open-Source; rejects RESTRICTED).</p>
                 </div>
               </div>
 
               {/* Invariant 3 */}
-              <div className="flex items-start space-x-3 p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+              <div className="flex items-start space-x-3 p-3 rounded bg-[#162032] border border-[#1F2937]">
                 {currentResult ? (
                   currentResult.ruleResults.temporalValidity ? (
-                    <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 text-[#10B981] flex-shrink-0 mt-0.5" />
                   ) : (
-                    <XCircle className="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5" />
+                    <XCircle className="w-4 h-4 text-[#EF4444] flex-shrink-0 mt-0.5" />
                   )
                 ) : (
-                  <div className="w-5 h-5 rounded-full border border-slate-600 flex items-center justify-center text-[10px] text-slate-400 mt-0.5">3</div>
+                  <div className="w-4 h-4 rounded-full border border-[#4B5563] flex items-center justify-center text-[10px] text-[#9CA3AF] mt-0.5 font-mono">3</div>
                 )}
                 <div className="text-xs">
-                  <div className="font-semibold text-white">3. Temporal Validity Window</div>
-                  <p className="text-slate-400">Proves training timestamp lies strictly between validFrom and validUntil dates.</p>
+                  <div className="font-semibold text-white font-mono text-[11px]">3. TEMPORAL VALIDITY WINDOW</div>
+                  <p className="text-[#9CA3AF] text-[11px]">Proves training timestamp lies strictly between validFrom and validUntil dates.</p>
                 </div>
               </div>
 
               {/* Invariant 4 */}
-              <div className="flex items-start space-x-3 p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+              <div className="flex items-start space-x-3 p-3 rounded bg-[#162032] border border-[#1F2937]">
                 {currentResult ? (
                   currentResult.ruleResults.datasetIntegrity ? (
-                    <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 text-[#10B981] flex-shrink-0 mt-0.5" />
                   ) : (
-                    <XCircle className="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5" />
+                    <XCircle className="w-4 h-4 text-[#EF4444] flex-shrink-0 mt-0.5" />
                   )
                 ) : (
-                  <div className="w-5 h-5 rounded-full border border-slate-600 flex items-center justify-center text-[10px] text-slate-400 mt-0.5">4</div>
+                  <div className="w-4 h-4 rounded-full border border-[#4B5563] flex items-center justify-center text-[10px] text-[#9CA3AF] mt-0.5 font-mono">4</div>
                 )}
                 <div className="text-xs">
-                  <div className="font-semibold text-white">4. Cryptographic Dataset Integrity</div>
-                  <p className="text-slate-400">ZK witness verifies SHA-256 content commitment matches ledger record without revealing sample.</p>
+                  <div className="font-semibold text-white font-mono text-[11px]">4. CRYPTOGRAPHIC DATASET INTEGRITY</div>
+                  <p className="text-[#9CA3AF] text-[11px]">ZK witness verifies SHA-256 content commitment matches ledger record.</p>
                 </div>
               </div>
 
               {/* Invariant 5 */}
-              <div className="flex items-start space-x-3 p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+              <div className="flex items-start space-x-3 p-3 rounded bg-[#162032] border border-[#1F2937]">
                 {currentResult ? (
                   currentResult.ruleResults.piiSanitized ? (
-                    <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 text-[#10B981] flex-shrink-0 mt-0.5" />
                   ) : (
-                    <XCircle className="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5" />
+                    <XCircle className="w-4 h-4 text-[#EF4444] flex-shrink-0 mt-0.5" />
                   )
                 ) : (
-                  <div className="w-5 h-5 rounded-full border border-slate-600 flex items-center justify-center text-[10px] text-slate-400 mt-0.5">5</div>
+                  <div className="w-4 h-4 rounded-full border border-[#4B5563] flex items-center justify-center text-[10px] text-[#9CA3AF] mt-0.5 font-mono">5</div>
                 )}
                 <div className="text-xs">
-                  <div className="font-semibold text-white">5. PII & Privacy Sanitization</div>
-                  <p className="text-slate-400">Attests data sanitization protocol was executed prior to model gradient step.</p>
+                  <div className="font-semibold text-white font-mono text-[11px]">5. PII & PRIVACY SANITIZATION</div>
+                  <p className="text-[#9CA3AF] text-[11px]">Attests data sanitization protocol was executed prior to model gradient step.</p>
                 </div>
               </div>
             </div>
@@ -365,48 +365,48 @@ export const ComplianceVerificationView: React.FC<ComplianceVerificationViewProp
           {/* Verification Result Banner */}
           {currentResult && (
             <div
-              className={`glass-card rounded-2xl p-6 border ${
+              className={`glass-card rounded-lg p-5 border ${
                 currentResult.overallStatus === 'VERIFIED_COMPLIANT'
-                  ? 'border-emerald-500/50 bg-emerald-950/20'
-                  : 'border-rose-500/50 bg-rose-950/20'
+                  ? 'border-[#10B981]/50 bg-[#111827] glow-emerald'
+                  : 'border-[#EF4444]/50 bg-[#111827] glow-danger'
               } animate-in fade-in duration-300`}
             >
               <div className="flex items-center space-x-3 mb-4">
                 {currentResult.overallStatus === 'VERIFIED_COMPLIANT' ? (
                   <>
-                    <CheckCircle2 className="w-8 h-8 text-emerald-400 flex-shrink-0" />
+                    <CheckCircle2 className="w-7 h-7 text-[#10B981] flex-shrink-0" />
                     <div>
-                      <h4 className="text-base sm:text-lg font-bold text-emerald-400">Midnight ZK Proof Verified Compliant!</h4>
-                      <p className="text-xs text-slate-300">All 5 compliance circuits passed with 100% cryptographic certainty.</p>
+                      <h4 className="text-base font-headline font-bold text-[#10B981]">Midnight ZK Proof Verified Compliant!</h4>
+                      <p className="text-xs text-[#9CA3AF]">All 5 compliance circuits passed with 100% cryptographic certainty.</p>
                     </div>
                   </>
                 ) : (
                   <>
-                    <XCircle className="w-8 h-8 text-rose-400 flex-shrink-0" />
+                    <XCircle className="w-7 h-7 text-[#EF4444] flex-shrink-0" />
                     <div>
-                      <h4 className="text-base sm:text-lg font-bold text-rose-400">ZK Compliance Verification Failed</h4>
-                      <p className="text-xs text-slate-300">One or more compliance invariants violated. Training provenance rejected.</p>
+                      <h4 className="text-base font-headline font-bold text-[#ffb4ab]">ZK Compliance Verification Failed</h4>
+                      <p className="text-xs text-[#9CA3AF]">One or more compliance invariants violated. Provenance rejected.</p>
                     </div>
                   </>
                 )}
               </div>
 
-              <div className="space-y-2 text-xs font-mono bg-slate-950/60 p-4 rounded-xl border border-slate-800">
+              <div className="space-y-1.5 text-xs font-mono bg-[#0B0F17] p-3.5 rounded border border-[#1F2937]">
                 <div className="flex justify-between">
-                  <span className="text-slate-500">Audit ID:</span>
-                  <span className="text-slate-200">{currentResult.auditId}</span>
+                  <span className="text-[#9CA3AF]">Audit ID:</span>
+                  <span className="text-[#F9FAFB]">{currentResult.auditId}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-500">ZK Proof Hash:</span>
-                  <span className="text-cyan-300 truncate max-w-[200px]">{currentResult.proofHash}</span>
+                  <span className="text-[#9CA3AF]">ZK Proof Hash:</span>
+                  <span className="text-[#06B6D4] truncate max-w-[200px]">{currentResult.proofHash}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-500">Model Hash:</span>
-                  <span className="text-slate-200 truncate max-w-[200px]">{currentResult.modelHash}</span>
+                  <span className="text-[#9CA3AF]">Model Commitment:</span>
+                  <span className="text-[#F9FAFB] truncate max-w-[200px]">{currentResult.modelHash}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-500">Midnight Ledger Circuit:</span>
-                  <span className="text-indigo-300 text-[11px] truncate max-w-[220px]">BlackBox.verifyCompliance</span>
+                  <span className="text-[#9CA3AF]">Midnight Compact Circuit:</span>
+                  <span className="text-[#10B981] text-[11px] truncate max-w-[220px]">BlackBox.verifyCompliance</span>
                 </div>
               </div>
             </div>
