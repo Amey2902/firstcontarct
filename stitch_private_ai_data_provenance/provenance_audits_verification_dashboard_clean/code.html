@@ -1,0 +1,250 @@
+<!DOCTYPE html><html class="light" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_dashboard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      "colors": {
+        "on-tertiary-fixed-variant": "#930013",
+        "on-tertiary": "#ffffff",
+        "on-background": "#0f172a",
+        "tertiary-container": "#b91c1c",
+        "surface-container-highest": "#e2e8f0",
+        "surface-container": "#f1f5f9",
+        "secondary": "#0284c7",
+        "primary-fixed": "#d1fae5",
+        "on-tertiary-container": "#991b1b",
+        "outline-variant": "#e2e8f0",
+        "secondary-container": "#e0f2fe",
+        "surface-container-low": "#ffffff",
+        "surface-bright": "#ffffff",
+        "secondary-fixed": "#bae6fd",
+        "on-secondary": "#ffffff",
+        "outline": "#64748b",
+        "on-tertiary-fixed": "#450a0a",
+        "on-primary": "#ffffff",
+        "surface-variant": "#f8fafc",
+        "on-primary-fixed-variant": "#047857",
+        "surface-tint": "#059669",
+        "tertiary": "#dc2626",
+        "background": "#f8fafc",
+        "tertiary-fixed-dim": "#fca5a5",
+        "surface": "#f8fafc",
+        "on-secondary-container": "#0369a1",
+        "surface-container-high": "#e2e8f0",
+        "primary-fixed-dim": "#6ee7b7",
+        "on-secondary-fixed": "#0c4a6e",
+        "tertiary-fixed": "#fee2e2",
+        "primary-container": "#047857",
+        "on-primary-fixed": "#064e3b",
+        "inverse-surface": "#0f172a",
+        "error-container": "#fee2e2",
+        "surface-dim": "#f1f5f9",
+        "surface-container-lowest": "#ffffff",
+        "primary": "#059669",
+        "on-error": "#ffffff",
+        "inverse-on-surface": "#f8fafc",
+        "error": "#dc2626",
+        "on-secondary-fixed-variant": "#075985",
+        "on-surface-variant": "#334155",
+        "on-error-container": "#991b1b",
+        "inverse-primary": "#10b981",
+        "secondary-fixed-dim": "#7dd3fc",
+        "on-surface": "#0f172a",
+        "on-primary-container": "#ffffff"
+      },
+      "borderRadius": {
+        "DEFAULT": "0.125rem",
+        "lg": "0.25rem",
+        "xl": "0.5rem",
+        "full": "0.75rem"
+      },
+      "spacing": {
+        "space-xs": "0.25rem",
+        "margin": "2rem",
+        "gutter-lg": "2rem",
+        "space-sm": "0.5rem",
+        "space-lg": "1.5rem",
+        "margin-mobile": "1rem",
+        "gutter-sm": "1rem",
+        "gutter": "1.5rem",
+        "space-md": "1rem",
+        "space-xl": "2.5rem"
+      },
+      "fontFamily": {
+        "headline-lg-mobile": [
+          "Plus Jakarta Sans"
+        ],
+        "body-lg": [
+          "Inter"
+        ],
+        "headline-md": [
+          "Plus Jakarta Sans"
+        ],
+        "headline-lg": [
+          "Plus Jakarta Sans"
+        ],
+        "code-sm": [
+          "JetBrains Mono"
+        ],
+        "code-md": [
+          "JetBrains Mono"
+        ],
+        "headline-xl": [
+          "Plus Jakarta Sans"
+        ],
+        "label-caps": [
+          "JetBrains Mono"
+        ],
+        "body-sm": [
+          "Inter"
+        ],
+        "body-md": [
+          "Inter"
+        ],
+        "display-lg": [
+          "Plus Jakarta Sans"
+        ]
+      },
+      "fontSize": {
+        "headline-lg-mobile": [
+          "1.5rem",
+          {
+            "lineHeight": "2rem",
+            "letterSpacing": "-0.015em",
+            "fontWeight": "600"
+          }
+        ],
+        "body-lg": [
+          "1.125rem",
+          {
+            "lineHeight": "1.75rem",
+            "fontWeight": "400"
+          }
+        ],
+        "headline-md": [
+          "1.25rem",
+          {
+            "lineHeight": "1.75rem",
+            "letterSpacing": "-0.01em",
+            "fontWeight": "600"
+          }
+        ],
+        "headline-lg": [
+          "1.75rem",
+          {
+            "lineHeight": "2.25rem",
+            "letterSpacing": "-0.015em",
+            "fontWeight": "600"
+          }
+        ],
+        "code-sm": [
+          "0.75rem",
+          {
+            "lineHeight": "1rem",
+            "letterSpacing": "-0.005em",
+            "fontWeight": "500"
+          }
+        ],
+        "code-md": [
+          "0.875rem",
+          {
+            "lineHeight": "1.25rem",
+            "letterSpacing": "-0.01em",
+            "fontWeight": "500"
+          }
+        ],
+        "headline-xl": [
+          "2.25rem",
+          {
+            "lineHeight": "2.75rem",
+            "letterSpacing": "-0.02em",
+            "fontWeight": "600"
+          }
+        ],
+        "label-caps": [
+          "0.6875rem",
+          {
+            "lineHeight": "0.875rem",
+            "letterSpacing": "0.08em",
+            "fontWeight": "600"
+          }
+        ],
+        "body-sm": [
+          "0.75rem",
+          {
+            "lineHeight": "1.125rem",
+            "fontWeight": "400"
+          }
+        ],
+        "body-md": [
+          "0.875rem",
+          {
+            "lineHeight": "1.375rem",
+            "fontWeight": "400"
+          }
+        ],
+        "display-lg": [
+          "3rem",
+          {
+            "lineHeight": "3.5rem",
+            "letterSpacing": "-0.025em",
+            "fontWeight": "700"
+          }
+        ]
+      }
+    }
+  }
+}</script></head><body class="bg-[#F8FAFC] font-body-md text-body-md text-on-surface min-h-screen"><header class="fixed top-0 left-0 right-0 z-50 h-16 bg-white/90 backdrop-blur-xl border-b border-slate-200/70 flex items-center justify-between px-6 lg:px-10"><div class="flex items-center gap-8"><div class="flex items-center gap-3"><img alt="BlackBox AI ZK Logo" class="h-7 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VVODXr1eMrajRjtNZWKNcI9ojnVxG6KRsvdNW1w2DyG5eb-dECb2jqM4UnIPBlkePQ41qdgn510hJUZ6uAPQsLTyaRTYc1s-TL7E0kTQMYUwdv_k0YvY3WM3Nk5lBVlFAk50utO-jUzeu8Mdk2dWoPTB01ATFkD0zPU6RKgX4NVMuNAeONBXJcDRHUNjSclgoD7RZAXAFqCZGqrOmFeZ-tCSZLW3NQmHbAvtd0VgZbh-khPbCwB173bGrA"><span class="text-lg tracking-tight text-slate-900 font-bold">BlackBox AI</span><span class="text-[11px] uppercase px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-semibold font-mono">Midnight ZK</span></div><nav class="hidden xl:flex items-center gap-6 h-16" data-active-classes="text-emerald-700 font-semibold"><a aria-current="page" class="transition-colors px-1 h-full flex items-center text-emerald-700 border-b-2 border-emerald-600 font-semibold text-sm" data-path="provenance-audits" href="#">Provenance Audits</a><a class="text-slate-500 hover:text-slate-900 transition-colors px-1 h-full flex items-center text-sm font-medium" data-path="dataset-registry" href="#">Dataset Registry</a><a class="text-slate-500 hover:text-slate-900 transition-colors px-1 h-full flex items-center text-sm font-medium" data-path="zero-knowledge-verifier" href="#">Zero-Knowledge Verifier</a><a class="text-slate-500 hover:text-slate-900 transition-colors px-1 h-full flex items-center text-sm font-medium" data-path="compliance-policies" href="#">Compliance Policies</a><a class="text-slate-500 hover:text-slate-900 transition-colors px-1 h-full flex items-center text-sm font-medium" data-path="api-and-proofs" href="#">API &amp; Proofs</a></nav></div><div class="flex items-center gap-4"><div class="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-slate-50 border border-slate-200/60"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span><span class="font-code-sm text-xs text-slate-500">Midnight Testnet: <span class="text-emerald-700 font-medium">Synced</span></span></div><button class="flex items-center gap-1.5 bg-emerald-600 text-white text-xs px-4 py-2 rounded-xl hover:bg-emerald-700 transition-all shadow-sm font-medium"><span class="material-symbols-outlined text-base">verified</span><span class="">Verify ZK Proof</span></button><button class="relative p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-colors"><span class="material-symbols-outlined text-xl">notifications</span><span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-sky-500"></span></button><div class="flex items-center gap-3 pl-3 border-l border-slate-200/60"><div class="hidden sm:flex flex-col text-right"><span class="text-xs font-semibold text-slate-900">Dr. Alex Vance</span><span class="text-[11px] text-slate-400 font-mono">Auditor</span></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover border border-slate-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfuKF-sAKrFaJLvkzpFa01ut5TESpqfM_RKU_ldtz3m5urCwCTlut7gbQO_R64AikZB_O60OYVu-lje-nAOXjP0zZTNAsFEJ30IZ5nANVxTe49yJV2I2TvyNwX0aYDxRjscM-wDbiaIVLqPhqUSGiy-uE4P40a-1OUGc5e6GN5jptI0-Z0Jk7tXugn4HTBBohLvGfBBRSRMo43vxdMzbVoObHEcHQaMf-CD_WhxeoYHfNKRAwRevrU_A"></div></div></header><aside class="fixed left-0 top-16 bottom-10 w-64 bg-white border-r border-slate-200 z-40 hidden lg:flex flex-col justify-between py-space-md"><div class="px-4 py-2 flex flex-col gap-6"><div class="px-3 font-mono text-[11px] font-medium tracking-wider text-slate-400 uppercase">Auditor Command</div><nav class="flex flex-col gap-1" data-active-classes="bg-emerald-50 text-emerald-800 font-medium"><a aria-current="page" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-emerald-50 text-emerald-800 font-medium transition-colors text-sm group" data-path="provenance-audits" href="#"><span class="material-symbols-outlined text-lg text-emerald-600 group-hover:text-emerald-700">policy</span><span class="">Audits Overview</span></a><a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors text-sm font-medium group" data-path="dataset-registry" href="#"><span class="material-symbols-outlined text-lg text-slate-400 group-hover:text-slate-600">dataset</span><span class="">Dataset Registry</span></a><a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors text-sm font-medium group" data-path="zero-knowledge-verifier" href="#"><span class="material-symbols-outlined text-lg text-slate-400 group-hover:text-slate-600">lock_reset</span><span class="">ZK Circuit Engine</span></a><a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors text-sm font-medium group" data-path="compliance-policies" href="#"><span class="material-symbols-outlined text-lg text-slate-400 group-hover:text-slate-600">gavel</span><span class="">Compliance Guard</span></a><a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors text-sm font-medium group" data-path="api-and-proofs" href="#"><span class="material-symbols-outlined text-lg text-slate-400 group-hover:text-slate-600">key</span><span class="">RPC &amp; Proof API</span></a></nav></div><div class="px-4 py-3 border-t border-slate-100 flex flex-col gap-2"><div class="px-3 flex items-center justify-between font-mono text-[11px] text-slate-400"><span class="uppercase tracking-wider">Node Status</span><span class="flex items-center gap-1.5 text-emerald-600"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>Online</span></div><div class="px-3 py-2 bg-slate-50/70 rounded-lg flex items-center justify-between text-xs font-mono"><span class="text-slate-500">#mn-098x</span><span class="text-slate-700 font-medium">Shielded ZK</span></div></div></aside><div class="lg:pl-64 flex flex-col min-h-screen bg-[#F8FAFC]"><div class="fixed top-16 left-0 lg:left-64 right-0 h-10 bg-white/70 backdrop-blur-md border-b border-slate-200/60 z-30 flex items-center px-6 lg:px-10 gap-2 font-code-sm text-xs text-slate-400"><span class="material-symbols-outlined text-sm text-slate-400">home</span><span class="">/</span><span class="text-slate-500">BlackBox AI Core</span><span class="">/</span><span class="text-slate-800 font-medium">Live Provenance Session</span></div><main class="w-full pt-28 pb-14 px-margin-mobile lg:px-margin flex-1 bg-[#F8FAFC]"><div class="flex flex-col w-full gap-10 max-w-7xl mx-auto"></div>
+<script>
+  // Simple interactive micro-interactions for modal and proof simulation
+  const modal = document.getElementById('audit-modal');
+  const openBtn = document.getElementById('open-audit-modal-btn');
+  const closeBtn = document.getElementById('close-audit-modal-btn');
+  const cancelBtn = document.getElementById('cancel-audit-btn');
+  const startAuditBtn = document.getElementById('start-audit-btn');
+  const genProgress = document.getElementById('gen-progress');
+  const progressBar = document.getElementById('progress-bar');
+  const progressPercent = document.getElementById('progress-percent');
+
+  openBtn?.addEventListener('click', () => {
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  });
+
+  const closeModal = () => {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    genProgress.classList.add('hidden');
+    progressBar.style.width = '0%';
+    progressPercent.textContent = '0%';
+  };
+
+  closeBtn?.addEventListener('click', closeModal);
+  cancelBtn?.addEventListener('click', closeModal);
+
+  window.triggerProofGen = function() {
+    genProgress.classList.remove('hidden');
+    startAuditBtn.disabled = true;
+    startAuditBtn.classList.add('opacity-50');
+
+    let current = 0;
+    const interval = setInterval(() => {
+      current += 25;
+      if (current <= 100) {
+        progressBar.style.width = current + '%';
+        progressPercent.textContent = current + '%';
+      }
+      if (current >= 100) {
+        clearInterval(interval);
+        setTimeout(() => {
+          alert("Zero-Knowledge Proof verified on Midnight Network! Model DeepReason-v1 compliant.");
+          startAuditBtn.disabled = false;
+          startAuditBtn.classList.remove('opacity-50');
+          closeModal();
+        }, 400);
+      }
+    }, 250);
+  };
+</script></main><footer class="fixed bottom-0 left-0 right-0 h-10 bg-white border-t border-slate-200 z-40 flex items-center justify-between px-margin-mobile lg:px-margin font-code-sm text-code-sm text-slate-600 shadow-[0_-1px_3px_rgba(0,0,0,0.04)]"><div class="flex items-center gap-space-lg"><span class="flex items-center gap-space-xs"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span class="">ZK Circuit Latency: <strong class="text-slate-900 font-mono">142ms</strong></span></span><span class="hidden sm:flex items-center gap-space-xs"><span class="">Proof Protocol: <strong class="text-sky-700 font-mono font-medium">Halo2 / Midnight SNARK</strong></span></span></div><div class="flex items-center gap-space-md"><span class="">Midnight Consensus Height: <strong class="text-emerald-700 font-mono font-semibold">#2,841,920</strong></span><span class="hidden md:inline-block text-slate-300">|</span><span class="hidden md:inline-block text-slate-500">Zero-Knowledge Integrity Guaranteed</span></div></footer></div>
+
+</body></html>

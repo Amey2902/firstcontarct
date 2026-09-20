@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = {
+  theme: {
+    extend: {
+      "colors": {
+        "on-background": "#0f172a",
+        "surface": "#f8fafc",
+        "surface-container": "#ffffff",
+        "surface-container-low": "#ffffff",
+        "surface-container-high": "#f1f5f9",
+        "surface-container-highest": "#e2e8f0",
+        "surface-container-lowest": "#ffffff",
+        "outline-variant": "#e2e8f0",
+        "outline": "#64748b",
+        "on-surface-variant": "#475569",
+        "on-surface": "#0f172a",
+        "primary": "#059669",
+        "primary-container": "#047857",
+        "on-primary": "#ffffff",
+        "on-primary-container": "#ffffff",
+        "secondary": "#0284c7",
+        "secondary-container": "#0369a1",
+        "secondary-fixed": "#bae6fd",
+        "on-secondary": "#ffffff",
+        "error": "#dc2626",
+        "error-container": "#fee2e2"
+      },
+      "borderRadius": {
+        "DEFAULT": "0.125rem",
+        "lg": "0.375rem",
+        "xl": "0.75rem",
+        "full": "9999px"
+      },
+      "spacing": {
+        "space-xs": "0.25rem",
+        "margin": "2rem",
+        "gutter-lg": "2rem",
+        "space-sm": "0.5rem",
+        "space-lg": "1.5rem",
+        "margin-mobile": "1rem",
+        "gutter-sm": "1rem",
+        "gutter": "1.5rem",
+        "space-md": "1rem",
+        "space-xl": "2.5rem"
+      },
+      "fontFamily": {
+        "headline-lg-mobile": ["Plus Jakarta Sans"],
+        "body-lg": ["Inter"],
+        "headline-md": ["Plus Jakarta Sans"],
+        "headline-lg": ["Plus Jakarta Sans"],
+        "code-sm": ["JetBrains Mono"],
+        "code-md": ["JetBrains Mono"],
+        "headline-xl": ["Plus Jakarta Sans"],
+        "label-caps": ["JetBrains Mono"],
+        "body-sm": ["Inter"],
+        "body-md": ["Inter"],
+        "display-lg": ["Plus Jakarta Sans"]
+      },
+      "fontSize": {
+        "headline-lg-mobile": ["1.5rem", { lineHeight: "2rem", letterSpacing: "-0.015em", fontWeight: "600" }],
+        "body-lg": ["1.125rem", { lineHeight: "1.75rem", fontWeight: "400" }],
+        "headline-md": ["1.25rem", { lineHeight: "1.75rem", letterSpacing: "-0.01em", fontWeight: "600" }],
+        "headline-lg": ["1.75rem", { lineHeight: "2.25rem", letterSpacing: "-0.015em", fontWeight: "600" }],
+        "code-sm": ["0.75rem", { lineHeight: "1rem", letterSpacing: "-0.005em", fontWeight: "500" }],
+        "code-md": ["0.875rem", { lineHeight: "1.25rem", letterSpacing: "-0.01em", fontWeight: "500" }],
+        "headline-xl": ["2.25rem", { lineHeight: "2.75rem", letterSpacing: "-0.02em", fontWeight: "700" }],
+        "label-caps": ["0.6875rem", { lineHeight: "0.875rem", letterSpacing: "0.08em", fontWeight: "600" }],
+        "body-sm": ["0.75rem", { lineHeight: "1.125rem", fontWeight: "400" }],
+        "body-md": ["0.875rem", { lineHeight: "1.375rem", fontWeight: "400" }],
+        "display-lg": ["3rem", { lineHeight: "3.5rem", letterSpacing: "-0.025em", fontWeight: "700" }]
+      }
+    }
+  }
+}</script></head><body class="bg-[#F8FAFC] font-body-md text-body-md text-slate-900 min-h-screen"><header class="fixed top-0 left-0 right-0 z-50 h-16 bg-white/95 backdrop-blur-xl border-b border-slate-200 shadow-sm flex items-center justify-between px-margin-mobile lg:px-margin"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-sm"><img alt="BlackBox AI ZK Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VVODXr1eMrajRjtNZWKNcI9ojnVxG6KRsvdNW1w2DyG5eb-dECb2jqM4UnIPBlkePQ41qdgn510hJUZ6uAPQsLTyaRTYc1s-TL7E0kTQMYUwdv_k0YvY3WM3Nk5lBVlFAk50utO-jUzeu8Mdk2dWoPTB01ATFkD0zPU6RKgX4NVMuNAeONBXJcDRHUNjSclgoD7RZAXAFqCZGqrOmFeZ-tCSZLW3NQmHbAvtd0VgZbh-khPbCwB173bGrA"/><span class="font-headline-md text-headline-md tracking-tight text-slate-900 font-bold">BlackBox AI</span><span class="font-label-caps text-label-caps uppercase px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold">Midnight ZK</span></div><nav class="hidden xl:flex items-center gap-space-md h-16"><a class="text-slate-600 hover:text-slate-900 transition-colors font-body-md text-body-md px-space-xs h-full flex items-center" data-path="provenance-audits" href="#">Provenance Audits</a><a class="text-slate-600 hover:text-slate-900 transition-colors font-body-md text-body-md px-space-xs h-full flex items-center" data-path="dataset-registry" href="#">Dataset Registry</a><a class="text-slate-600 hover:text-slate-900 transition-colors font-body-md text-body-md px-space-xs h-full flex items-center" data-path="zero-knowledge-verifier" href="#">Zero-Knowledge Verifier</a><a aria-current="page" class="transition-colors font-body-md px-space-xs h-full flex items-center text-emerald-600 border-b-2 border-emerald-600 font-semibold" data-path="compliance-policies" href="#">Compliance Policies</a><a class="text-slate-600 hover:text-slate-900 transition-colors font-body-md text-body-md px-space-xs h-full flex items-center" data-path="api-and-proofs" href="#">API &amp; Proofs</a></nav></div><div class="flex items-center gap-space-md"><div class="hidden md:flex items-center gap-space-xs px-3 py-1 rounded-full bg-slate-100 border border-slate-200"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span><span class="font-code-sm text-code-sm text-slate-600">Midnight Testnet: <span class="text-emerald-700 font-semibold">Synced</span></span></div><button class="flex items-center gap-space-xs bg-emerald-600 text-white font-code-md text-code-md px-space-md py-1.5 rounded-lg hover:bg-emerald-700 transition-all shadow-sm"><span class="material-symbols-outlined text-base">verified</span><span>Verify ZK Proof</span></button><button class="relative p-1.5 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors"><span class="material-symbols-outlined">notifications</span><span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-sky-500 ring-2 ring-white"></span></button><div class="flex items-center gap-space-sm pl-space-sm border-l border-slate-200"><div class="hidden sm:flex flex-col text-right"><span class="font-body-sm text-body-sm font-semibold text-slate-800">Dr. Alex Vance</span><span class="font-code-sm text-code-sm text-sky-600 font-medium">Cryptographic Auditor</span></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover border border-slate-200 shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfuKF-sAKrFaJLvkzpFa01ut5TESpqfM_RKU_ldtz3m5urCwCTlut7gbQO_R64AikZB_O60OYVu-lje-nAOXjP0zZTNAsFEJ30IZ5nANVxTe49yJV2I2TvyNwX0aYDxRjscM-wDbiaIVLqPhqUSGiy-uE4P40a-1OUGc5e6GN5jptI0-Z0Jk7tXugn4HTBBohLvGfBBRSRMo43vxdMzbVoObHEcHQaMf-CD_WhxeoYHfNKRAwRevrU_A"/></div></div></header><aside class="fixed left-0 top-16 bottom-10 w-64 bg-white border-r border-slate-200 z-40 hidden lg:flex flex-col justify-between py-space-md shadow-sm"><div class="px-space-md flex flex-col gap-space-lg"><div class="font-label-caps text-label-caps uppercase text-slate-400 tracking-wider px-space-xs font-semibold">Auditor Command</div><nav class="flex flex-col gap-1"><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all font-body-md text-body-md" data-path="provenance-audits" href="#"><span class="material-symbols-outlined text-xl text-slate-400">policy</span>Audits Overview</a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all font-body-md text-body-md" data-path="dataset-registry" href="#"><span class="material-symbols-outlined text-xl text-slate-400">dataset</span>Dataset Registry</a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all font-body-md text-body-md" data-path="zero-knowledge-verifier" href="#"><span class="material-symbols-outlined text-xl text-slate-400">lock_reset</span>ZK Circuit Engine</a><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg transition-all bg-emerald-50 text-emerald-700 font-semibold border border-emerald-100" data-path="compliance-policies" href="#"><span class="material-symbols-outlined text-xl text-emerald-600">gavel</span>Compliance Guard</a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all font-body-md text-body-md" data-path="api-and-proofs" href="#"><span class="material-symbols-outlined text-xl text-slate-400">key</span>RPC &amp; Proof API</a></nav></div><div class="px-space-md flex flex-col gap-space-xs pt-space-md border-t border-slate-200"><div class="font-label-caps text-label-caps text-slate-400 uppercase px-space-xs font-semibold">Active Midnight Node</div><div class="bg-slate-50 p-space-sm rounded-lg border border-slate-200 flex flex-col gap-1"><div class="flex items-center justify-between font-code-sm text-code-sm"><span class="text-slate-500">Relay ID</span><span class="text-sky-700 font-mono font-semibold">#mn-098x</span></div><div class="flex items-center justify-between font-code-sm text-code-sm"><span class="text-slate-500">Gas Mode</span><span class="text-emerald-700 font-semibold">Shielded ZK</span></div></div></div></aside><div class="lg:pl-64 flex flex-col min-h-screen"><div class="fixed top-16 left-0 lg:left-64 right-0 h-10 bg-white/80 backdrop-blur-md border-b border-slate-200 z-30 flex items-center px-margin-mobile lg:px-margin gap-space-xs font-code-sm text-code-sm text-slate-500"><span class="material-symbols-outlined text-sm text-slate-400">home</span><span>/</span><span class="text-slate-400">BlackBox AI Core</span><span>/</span><span class="text-sky-700 font-medium">Live Provenance Session</span></div><main class="w-full pt-28 pb-14 px-margin-mobile lg:px-margin flex-1 bg-[#F8FAFC]"><div class="flex flex-col w-full gap-space-xl">
+<!-- Dynamic Ambient Glow Backdrop (contained) -->
+<div class="relative overflow-hidden rounded-xl bg-white border border-slate-200 p-space-lg lg:p-space-xl shadow-sm">
+<div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-sky-500/5 blur-3xl pointer-events-none"></div>
+<div class="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-emerald-500/5 blur-3xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col xl:flex-row xl:items-end justify-between gap-space-lg">
+<div class="flex flex-col gap-space-xs max-w-3xl">
+<div class="flex items-center gap-space-sm">
+<span class="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-label-caps text-label-caps uppercase tracking-wider font-semibold">Zero-Knowledge Governance</span>
+<span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+<span class="text-slate-500 font-code-sm text-code-sm font-medium">Midnight Network Compact Verification v2.4</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-slate-900 tracking-tight font-bold">AI Training Compliance Policies &amp; ZK Rules</h1>
+<p class="font-body-lg text-body-lg text-slate-600">
+          Define mathematical verification constraints that auditors can verify without inspecting sensitive training corpora.
+        </p>
+</div>
+<div class="flex flex-wrap items-center gap-space-sm">
+<button class="flex items-center gap-space-xs px-space-md py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-sky-700 font-code-md text-code-md border border-slate-200 transition-all shadow-sm" id="btn-export-circuit">
+<span class="material-symbols-outlined text-lg">terminal</span>
+<span>policy_rules_circuit.zk</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-2 rounded-lg bg-emerald-600 text-white font-code-md text-code-md hover:bg-emerald-700 shadow-sm transition-all" id="btn-export-audit">
+<span class="material-symbols-outlined text-lg">verified_user</span>
+<span>Generate Regulatory Report</span>
+</button>
+</div>
+</div>
+<!-- Active Compliance Matrix Summary Strip -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-space-md mt-space-lg pt-space-lg border-t border-slate-100">
+<div class="flex flex-col gap-0.5">
+<span class="font-label-caps text-label-caps uppercase text-slate-400 font-semibold">Active Enforcement Rule</span>
+<span class="font-headline-md text-headline-md text-slate-900 font-bold">EU AI Act / FTC v2</span>
+</div>
+<div class="flex flex-col gap-0.5">
+<span class="font-label-caps text-label-caps uppercase text-slate-400 font-semibold">Enforced Merkle Bounds</span>
+<span class="font-headline-md text-headline-md text-emerald-600 font-mono font-bold">100% Authorized</span>
+</div>
+<div class="flex flex-col gap-0.5">
+<span class="font-label-caps text-label-caps uppercase text-slate-400 font-semibold">Embargo Strictness</span>
+<span class="font-headline-md text-headline-md text-sky-700 font-bold">Zero-Tolerance</span>
+</div>
+<div class="flex flex-col gap-0.5">
+<span class="font-label-caps text-label-caps uppercase text-slate-400 font-semibold">ZK Verification Cost</span>
+<span class="font-headline-md text-headline-md text-slate-900 font-mono font-bold">0.0014 tDUST</span>
+</div>
+</div>
+</div>
+<!-- Main Workspace: Asymmetric 12-Column Grid -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-gutter">
+<!-- LEFT COLUMN: Policy Presets & Interactive Rule Builder (7 Cols) -->
+<div class="xl:col-span-7 flex flex-col gap-space-lg">
+<!-- Policy Preset Selector Cards -->
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="font-label-caps text-label-caps uppercase tracking-wider text-slate-500 font-semibold">1. Presets &amp; Governance Blueprints</div>
+<span class="font-code-sm text-code-sm text-sky-700 font-semibold">3 Standards Configured</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-sm" id="policy-selector-group">
+<!-- Policy Card 1 (Active) -->
+<div class="policy-card group cursor-pointer p-space-md rounded-xl bg-white border-2 border-emerald-500 transition-all relative overflow-hidden shadow-sm" data-policy="commercial">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-code-sm text-code-sm text-emerald-700 flex items-center gap-1 font-mono font-semibold">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Standard 01
+              </span>
+<span class="px-2 py-0.5 text-xs rounded-full bg-emerald-100 text-emerald-800 font-mono text-[10px] font-bold">ACTIVE</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-slate-900 mb-1 font-bold">Strict Commercial Model</h2>
+<p class="font-body-sm text-body-sm text-slate-600 mb-space-sm leading-relaxed">EU AI Act &amp; FTC Section 5 aligned. Complete audit trail.</p>
+<div class="pt-space-xs border-t border-slate-100 flex flex-col gap-1 text-[11px] font-mono text-slate-500">
+<div>≥95% Commercially Clear</div>
+<div>0% Restricted Embargo</div>
+</div>
+</div>
+<!-- Policy Card 2 -->
+<div class="policy-card group cursor-pointer p-space-md rounded-xl bg-white border border-slate-200 hover:border-slate-300 transition-all relative overflow-hidden shadow-sm" data-policy="research">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-code-sm text-code-sm text-slate-500 flex items-center gap-1 font-mono">
+<span class="w-2 h-2 rounded-full bg-slate-300"></span> Standard 02
+              </span>
+<span class="px-2 py-0.5 text-xs rounded-full bg-slate-100 text-slate-600 font-mono text-[10px] font-medium">STANDBY</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-slate-900 mb-1 font-bold">Research &amp; Non-Commercial</h2>
+<p class="font-body-sm text-body-sm text-slate-600 mb-space-sm leading-relaxed">Academic use with ZK attribution and embargo on monetized weights.</p>
+<div class="pt-space-xs border-t border-slate-100 flex flex-col gap-1 text-[11px] font-mono text-slate-500">
+<div>CC-BY / Academic Only</div>
+<div>Attribution Hash Enforced</div>
+</div>
+</div>
+<!-- Policy Card 3 -->
+<div class="policy-card group cursor-pointer p-space-md rounded-xl bg-white border border-slate-200 hover:border-slate-300 transition-all relative overflow-hidden shadow-sm" data-policy="custom">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-code-sm text-code-sm text-slate-500 flex items-center gap-1 font-mono">
+<span class="w-2 h-2 rounded-full bg-slate-300"></span> Standard 03
+              </span>
+<span class="px-2 py-0.5 text-xs rounded-full bg-slate-100 text-slate-600 font-mono text-[10px] font-medium">TENANT</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-slate-900 mb-1 font-bold">Custom Fine-Tuning</h2>
+<p class="font-body-sm text-body-sm text-slate-600 mb-space-sm leading-relaxed">Zero external telemetry. 100% tenant-isolated proprietary datasets.</p>
+<div class="pt-space-xs border-t border-slate-100 flex flex-col gap-1 text-[11px] font-mono text-slate-500">
+<div>100% Tenant Enclave</div>
+<div>External Ingestion Blocked</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Policy Rule Builder & Logic Inspector -->
+<div class="p-space-lg rounded-xl bg-white border border-slate-200 flex flex-col gap-space-md shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-emerald-600">tune</span>
+<h3 class="font-headline-md text-headline-md text-slate-900 font-bold">Rule Builder &amp; Logic Inspector</h3>
+</div>
+<span class="font-code-sm text-code-sm text-emerald-800 px-2.5 py-0.5 bg-emerald-50 border border-emerald-200 rounded-full font-semibold">Halo2 Midnight Circuit</span>
+</div>
+<p class="font-body-sm text-body-sm text-slate-600">
+          Constraints compiled into arithmetic gates. If any rule evaluates to FALSE during ZK SNARK verification, the training proof verification key generates a cryptographic nullification.
+        </p>
+<!-- Rule List -->
+<div class="flex flex-col gap-space-sm">
+<!-- Rule 1: Threshold -->
+<div class="p-space-md rounded-lg bg-slate-50 border border-slate-200 flex flex-col gap-space-sm">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm">
+<button class="rule-toggle w-6 h-6 rounded bg-emerald-600 text-white flex items-center justify-center transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-base">check</span>
+</button>
+<div>
+<div class="font-headline-md text-headline-md text-slate-900 text-sm font-semibold">Threshold Rule: Minimum Authorized Commercial Data</div>
+<div class="font-body-sm text-body-sm text-slate-600">Proves the ratio of verified commercial licenses in the Merkle leaf tree.</div>
+</div>
+</div>
+<span class="font-mono text-emerald-700 font-bold text-base" id="threshold-val-display">95%</span>
+</div>
+<!-- Slider -->
+<div class="flex items-center gap-space-md pl-8">
+<input class="w-full accent-emerald-600 h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer" id="threshold-slider" max="100" min="50" type="range" value="95"/>
+<span class="font-code-sm text-code-sm text-slate-500 whitespace-nowrap font-medium">Target: ≥ 95%</span>
+</div>
+</div>
+<!-- Rule 2: Negative Constraint -->
+<div class="p-space-md rounded-lg bg-slate-50 border border-slate-200 flex items-start justify-between gap-space-md">
+<div class="flex items-start gap-space-sm">
+<button class="rule-toggle w-6 h-6 rounded bg-emerald-600 text-white flex items-center justify-center transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-base">check</span>
+</button>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-slate-900 text-sm font-semibold">Negative Constraint: Zero Embargoed or Restrictive Datasets</span>
+<span class="font-label-caps text-label-caps text-rose-700 bg-rose-50 border border-rose-200 px-1.5 py-0.5 rounded font-mono font-bold">IMMEDIATE FAIL TRIGGER</span>
+</div>
+<div class="font-body-sm text-body-sm text-slate-600">Nullifies entire training proof if any Merkle hash matches the Global Restrictive Corpus Blacklist.</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-rose-600 text-xl shrink-0">block</span>
+</div>
+<!-- Rule 3: Temporal Validity -->
+<div class="p-space-md rounded-lg bg-slate-50 border border-slate-200 flex items-start justify-between gap-space-md">
+<div class="flex items-start gap-space-sm">
+<button class="rule-toggle w-6 h-6 rounded bg-emerald-600 text-white flex items-center justify-center transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-base">check</span>
+</button>
+<div>
+<div class="font-headline-md text-headline-md text-slate-900 text-sm font-semibold">Temporal Validity: Active License Epoch Timestamp Range</div>
+<div class="font-body-sm text-body-sm text-slate-600">Ensures dataset license certificates had not expired before training cluster epoch timestamp.</div>
+</div>
+</div>
+<span class="font-code-sm text-code-sm text-emerald-700 font-mono font-semibold shrink-0">Δt &lt;= Exp_Date</span>
+</div>
+<!-- Rule 4: PII / IP Governance -->
+<div class="p-space-md rounded-lg bg-slate-50 border border-slate-200 flex items-start justify-between gap-space-md">
+<div class="flex items-start gap-space-sm">
+<button class="rule-toggle w-6 h-6 rounded bg-emerald-600 text-white flex items-center justify-center transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-base">check</span>
+</button>
+<div>
+<div class="font-headline-md text-headline-md text-slate-900 text-sm font-semibold">Jurisdiction / IP Governance: Exclude Unverified Web-Scraped PII</div>
+<div class="font-body-sm text-body-sm text-slate-600">Requires zero-knowledge provenance proof of GDPR Article 17 / California Consumer Privacy Act compliance.</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-sky-600 text-xl shrink-0">shield_person</span>
+</div>
+</div>
+<!-- Circuit Gates Summary Footer -->
+<div class="flex items-center justify-between pt-space-xs text-xs font-mono text-slate-500">
+<div class="flex items-center gap-space-sm">
+<span>Circuit Depth: <strong class="text-slate-800 font-bold">32,768 gates</strong></span>
+<span>•</span>
+<span>Halo2 Proof Size: <strong class="text-slate-800 font-bold">1.2 KB</strong></span>
+</div>
+<button class="text-sky-600 hover:text-sky-700 font-semibold transition-colors">Recompile Constraints</button>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: Interactive Simulation Sandbox & Verification Outcome (5 Cols) -->
+<div class="xl:col-span-5 flex flex-col gap-space-lg">
+<!-- Simulation Sandbox Panel -->
+<div class="p-space-lg rounded-xl bg-white border border-slate-200 flex flex-col gap-space-md shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-emerald-600">play_circle</span>
+<h3 class="font-headline-md text-headline-md text-slate-900 font-bold">Simulation Sandbox</h3>
+</div>
+<span class="font-label-caps text-label-caps uppercase px-2.5 py-0.5 bg-sky-50 text-sky-700 border border-sky-200 rounded-full font-semibold">Midnight Testnet</span>
+</div>
+<p class="font-body-sm text-body-sm text-slate-600">
+          Simulate verification of planned training runs against the configured policy rules before spending cluster compute time.
+        </p>
+<!-- Scenario Switcher Buttons -->
+<div class="grid grid-cols-2 gap-space-xs p-1 bg-slate-100 rounded-lg">
+<button class="py-2 px-space-sm rounded-lg font-code-sm text-code-sm font-semibold transition-all bg-white text-emerald-700 shadow-sm border border-slate-200" id="btn-scenario-clean">
+            Scenario A: Compliant Run
+          </button>
+<button class="py-2 px-space-sm rounded-lg font-code-sm text-code-sm font-medium transition-all text-slate-600 hover:text-slate-900" id="btn-scenario-violation">
+            Scenario B: Dataset C Breach
+          </button>
+</div>
+<!-- Dynamic Simulation Output Card -->
+<div class="p-space-md rounded-xl bg-slate-50 border border-slate-200 transition-all flex flex-col gap-space-md" id="sim-result-card">
+<div class="flex items-center justify-between p-3 rounded-lg bg-emerald-50 border border-emerald-200" id="sim-status-banner">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-2xl text-emerald-700" id="sim-icon">check_circle</span>
+<span class="font-headline-md text-headline-md text-emerald-900 font-bold" id="sim-status-title">POLICY PASS</span>
+</div>
+<span class="font-mono text-xs px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded font-bold" id="sim-score">100% Validated</span>
+</div>
+<div class="flex flex-col gap-space-xs text-xs font-mono">
+<div class="flex justify-between py-1.5 border-b border-slate-200">
+<span class="text-slate-500">Training Job ID</span>
+<span class="text-slate-900 font-semibold">RUN-2025-LLM-70B-ALPHA</span>
+</div>
+<div class="flex justify-between py-1.5 border-b border-slate-200">
+<span class="text-slate-500">Committed Token Count</span>
+<span class="text-slate-900 font-semibold">3.4 Trillion Tokens</span>
+</div>
+<div class="flex justify-between py-1.5 border-b border-slate-200">
+<span class="text-slate-500">Data Leaves Tested</span>
+<span class="text-slate-900 font-semibold">1,480 Merkle Partitions</span>
+</div>
+<div class="flex justify-between py-1.5" id="sim-flagged-row">
+<span class="text-slate-500">Flagged Elements</span>
+<span class="text-emerald-700 font-bold" id="sim-flagged-val">0 Violations</span>
+</div>
+</div>
+<!-- Visual Merkle Validation Trace (SVG) -->
+<div class="flex flex-col gap-1.5">
+<span class="font-label-caps text-label-caps text-slate-500 uppercase font-semibold">ZK Merkle Circuit Leaf State</span>
+<div class="h-16 w-full rounded-lg bg-white border border-slate-200 p-2 flex items-center justify-between gap-1 overflow-hidden" id="merkle-leaf-strip">
+<!-- Rendered dynamically -->
+</div>
+</div>
+<!-- Circuit Verification Proof Preview -->
+<div class="p-space-sm rounded-lg bg-white border border-slate-200 font-code-sm text-code-sm text-slate-600 flex flex-col gap-1 overflow-x-auto">
+<div class="text-[10px] text-slate-500 uppercase flex justify-between font-semibold">
+<span>Proof Commitment</span>
+<span class="text-sky-700 font-mono" id="proof-hash-short">halo2::snark::0x9f...e1</span>
+</div>
+<div class="text-[11px] font-mono text-emerald-700 font-semibold truncate" id="proof-full-hash">
+              0x8fa92305bf9002a249ff1929384bbad30018471bcca01f822
+            </div>
+</div>
+</div>
+<!-- Action CTA -->
+<button class="w-full py-2.5 rounded-lg bg-sky-600 text-white font-headline-md text-headline-md text-sm font-semibold flex items-center justify-center gap-2 hover:bg-sky-700 transition-all shadow-sm" id="btn-deploy-policy">
+<span class="material-symbols-outlined text-lg">publish</span>
+<span>Deploy Policy to Midnight Smart Contract</span>
+</button>
+</div>
+<!-- Regulatory Report & Compliance Export Panel -->
+<div class="p-space-lg rounded-xl bg-white border border-slate-200 flex flex-col gap-space-md shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-slate-500">description</span>
+<h3 class="font-headline-md text-headline-md text-slate-900 font-bold">Regulatory Artifacts</h3>
+</div>
+<span class="font-code-sm text-code-sm text-slate-500 font-medium">Immutable Audit Trail</span>
+</div>
+<p class="font-body-sm text-body-sm text-slate-600">
+          Cryptographically signed provenance packages formatted for the EU AI Office, FTC inquiries, and enterprise procurement audits.
+        </p>
+<div class="flex flex-col gap-space-xs">
+<div class="p-space-sm rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-between hover:bg-slate-100 hover:border-slate-300 transition-colors cursor-pointer group">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-sky-600">verified</span>
+<div>
+<div class="font-headline-md text-headline-md text-slate-900 text-xs font-semibold group-hover:text-sky-700 transition-colors">EU AI Act Conformity Declaration.pdf</div>
+<div class="font-code-sm text-code-sm text-slate-500 text-[11px]">Includes ZK-Proof Validity Certificate • Hash: 0x51c...fa2</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-400 group-hover:text-slate-800 text-sm">download</span>
+</div>
+<div class="p-space-sm rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-between hover:bg-slate-100 hover:border-slate-300 transition-colors cursor-pointer group">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-emerald-600">data_array</span>
+<div>
+<div class="font-headline-md text-headline-md text-slate-900 text-xs font-semibold group-hover:text-emerald-700 transition-colors">Training Run Merkle Root Manifest.json</div>
+<div class="font-code-sm text-code-sm text-slate-500 text-[11px]">Timestamp: Block #2,841,912 • Midnight Shielded Proof</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-400 group-hover:text-slate-800 text-sm">download</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Full Audit Trail / Policy Versioning Timeline Table -->
+<div class="p-space-lg rounded-xl bg-white border border-slate-200 flex flex-col gap-space-md shadow-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div class="flex flex-col gap-0.5">
+<h3 class="font-headline-md text-headline-md text-slate-900 font-bold">Enforced Training Run Audit Trail</h3>
+<p class="font-body-sm text-body-sm text-slate-600">Historical zero-knowledge compliance verification results executed across production clusters.</p>
+</div>
+<div class="flex items-center gap-space-sm">
+<span class="font-code-sm text-code-sm text-slate-500">Filter:</span>
+<span class="px-2.5 py-1 rounded-md bg-slate-100 border border-slate-200 text-xs text-slate-800 font-mono font-semibold">All Clusters (4)</span>
+</div>
+</div>
+<!-- Responsive Table -->
+<div class="overflow-x-auto rounded-lg border border-slate-200">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-100/90 border-b border-slate-200 font-label-caps text-label-caps uppercase text-slate-600 text-[11px] font-bold">
+<th class="py-3 px-space-md">Model Run &amp; Revision</th>
+<th class="py-3 px-space-md">Enforced Standard</th>
+<th class="py-3 px-space-md">Proof Type</th>
+<th class="py-3 px-space-md">Merkle Verification Hash</th>
+<th class="py-3 px-space-md">Timestamp</th>
+<th class="py-3 px-space-md text-right">Result</th>
+</tr>
+</thead>
+<tbody class="font-code-sm text-code-sm divide-y divide-slate-200 bg-white">
+<tr class="hover:bg-slate-50 transition-colors">
+<td class="py-3.5 px-space-md font-mono text-slate-900 font-semibold">LLM-Falcon-Core-v4</td>
+<td class="py-3.5 px-space-md text-slate-700">Strict Commercial (EU AI Act)</td>
+<td class="py-3.5 px-space-md text-sky-700 font-medium">Midnight Halo2 / SNARK</td>
+<td class="py-3.5 px-space-md font-mono text-slate-500 hover:text-sky-700 cursor-pointer transition-colors">0x3b89...8491c</td>
+<td class="py-3.5 px-space-md text-slate-600 font-mono">2025-02-24 14:28:10 UTC</td>
+<td class="py-3.5 px-space-md text-right">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-mono text-xs font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> VERIFIED
+              </span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 transition-colors">
+<td class="py-3.5 px-space-md font-mono text-slate-900 font-semibold">Vision-Emb-v2.1</td>
+<td class="py-3.5 px-space-md text-slate-700">Enterprise Custom Fine-Tuning</td>
+<td class="py-3.5 px-space-md text-sky-700 font-medium">Groth16 Shielded</td>
+<td class="py-3.5 px-space-md font-mono text-slate-500 hover:text-sky-700 cursor-pointer transition-colors">0xa72d...190e2</td>
+<td class="py-3.5 px-space-md text-slate-600 font-mono">2025-02-23 09:12:44 UTC</td>
+<td class="py-3.5 px-space-md text-right">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-mono text-xs font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> VERIFIED
+              </span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 transition-colors">
+<td class="py-3.5 px-space-md font-mono text-slate-900 font-semibold">CodeSynth-Instruct-v1</td>
+<td class="py-3.5 px-space-md text-slate-700">Strict Commercial (EU AI Act)</td>
+<td class="py-3.5 px-space-md text-sky-700 font-medium">Midnight Halo2 / SNARK</td>
+<td class="py-3.5 px-space-md font-mono text-rose-600 hover:text-rose-700 cursor-pointer transition-colors font-medium">0xcc04...528b1</td>
+<td class="py-3.5 px-space-md text-slate-600 font-mono">2025-02-22 18:40:02 UTC</td>
+<td class="py-3.5 px-space-md text-right">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200 font-mono text-xs font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-rose-600"></span> BREACHED (Dataset C)
+              </span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 transition-colors">
+<td class="py-3.5 px-space-md font-mono text-slate-900 font-semibold">BioMed-Diff-Alpha</td>
+<td class="py-3.5 px-space-md text-slate-700">Research &amp; Non-Commercial</td>
+<td class="py-3.5 px-space-md text-sky-700 font-medium">Halo2 Recursive</td>
+<td class="py-3.5 px-space-md font-mono text-slate-500 hover:text-sky-700 cursor-pointer transition-colors">0x911f...7728d</td>
+<td class="py-3.5 px-space-md text-slate-600 font-mono">2025-02-21 04:05:19 UTC</td>
+<td class="py-3.5 px-space-md text-right">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-mono text-xs font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> VERIFIED
+              </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Notification Toast Container -->
+<div class="fixed bottom-12 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-space-sm px-space-md py-3 rounded-xl bg-slate-900 text-white shadow-2xl border border-slate-800" id="action-toast">
+<span class="material-symbols-outlined text-emerald-400" id="toast-icon">check_circle</span>
+<span class="font-code-md text-code-md" id="toast-message">Action successful</span>
+</div>
+</div>
+<script>
+  (function() {
+    // 1. Interactive Slider Threshold Binding
+    const slider = document.getElementById('threshold-slider');
+    const display = document.getElementById('threshold-val-display');
+    if (slider && display) {
+      slider.addEventListener('input', (e) => {
+        display.textContent = e.target.value + '%';
+      });
+    }
+
+    // 2. Policy Card Selection
+    const policyCards = document.querySelectorAll('.policy-card');
+    policyCards.forEach(card => {
+      card.addEventListener('click', () => {
+        policyCards.forEach(c => {
+          c.className = 'policy-card group cursor-pointer p-space-md rounded-xl bg-white border border-slate-200 hover:border-slate-300 transition-all relative overflow-hidden shadow-sm';
+          const badge = c.querySelector('span[class*="font-mono text-[10px]"]');
+          if (badge) {
+            badge.className = 'px-2 py-0.5 text-xs rounded-full bg-slate-100 text-slate-600 font-mono text-[10px] font-medium';
+            badge.textContent = 'STANDBY';
+          }
+        });
+        card.className = 'policy-card group cursor-pointer p-space-md rounded-xl bg-white border-2 border-emerald-500 transition-all relative overflow-hidden shadow-sm';
+        const activeBadge = card.querySelector('span[class*="font-mono text-[10px]"]');
+        if (activeBadge) {
+          activeBadge.className = 'px-2 py-0.5 text-xs rounded-full bg-emerald-100 text-emerald-800 font-mono text-[10px] font-bold';
+          activeBadge.textContent = 'ACTIVE';
+        }
+        showToast('Switched to: ' + card.querySelector('h2').textContent);
+      });
+    });
+
+    // 3. Rule Builder Toggle Buttons
+    const toggles = document.querySelectorAll('.rule-toggle');
+    toggles.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const isChecked = btn.classList.contains('bg-emerald-600');
+        if (isChecked) {
+          btn.classList.remove('bg-emerald-600', 'text-white');
+          btn.classList.add('bg-slate-200', 'text-slate-500');
+          btn.innerHTML = '<span class="material-symbols-outlined text-base">close</span>';
+        } else {
+          btn.classList.add('bg-emerald-600', 'text-white');
+          btn.classList.remove('bg-slate-200', 'text-slate-500');
+          btn.innerHTML = '<span class="material-symbols-outlined text-base">check</span>';
+        }
+      });
+    });
+
+    // 4. Interactive Simulation Scenarios
+    const btnClean = document.getElementById('btn-scenario-clean');
+    const btnViolation = document.getElementById('btn-scenario-violation');
+    const simBanner = document.getElementById('sim-status-banner');
+    const simIcon = document.getElementById('sim-icon');
+    const simTitle = document.getElementById('sim-status-title');
+    const simScore = document.getElementById('sim-score');
+    const simFlaggedVal = document.getElementById('sim-flagged-val');
+    const proofShort = document.getElementById('proof-hash-short');
+    const proofFull = document.getElementById('proof-full-hash');
+    const leafStrip = document.getElementById('merkle-leaf-strip');
+
+    function renderLeaves(isBreach) {
+      if (!leafStrip) return;
+      leafStrip.innerHTML = '';
+      const totalLeaves = 28;
+      for (let i = 0; i < totalLeaves; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'h-full flex-1 rounded-sm transition-all duration-300';
+        if (isBreach && i === 19) {
+          // Flagged Dataset C leaf
+          bar.className += ' bg-rose-500 animate-pulse shadow-sm';
+          bar.title = 'Leaf #19: Dataset C (Embargoed Scraping Breach)';
+        } else {
+          bar.className += ' bg-emerald-500 hover:bg-emerald-600';
+          bar.title = 'Leaf #' + i + ': Valid ZK Commit';
+        }
+        leafStrip.appendChild(bar);
+      }
+    }
+
+    renderLeaves(false);
+
+    if (btnClean && btnViolation) {
+      btnClean.addEventListener('click', () => {
+        btnClean.className = 'py-2 px-space-sm rounded-lg font-code-sm text-code-sm font-semibold transition-all bg-white text-emerald-700 shadow-sm border border-slate-200';
+        btnViolation.className = 'py-2 px-space-sm rounded-lg font-code-sm text-code-sm font-medium transition-all text-slate-600 hover:text-slate-900';
+        
+        simBanner.className = 'flex items-center justify-between p-3 rounded-lg bg-emerald-50 border border-emerald-200';
+        simIcon.className = 'material-symbols-outlined text-2xl text-emerald-700';
+        simIcon.textContent = 'check_circle';
+        simTitle.className = 'font-headline-md text-headline-md text-emerald-900 font-bold';
+        simTitle.textContent = 'POLICY PASS';
+        simScore.className = 'font-mono text-xs px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded font-bold';
+        simScore.textContent = '100% Validated';
+        simFlaggedVal.className = 'text-emerald-700 font-bold';
+        simFlaggedVal.textContent = '0 Violations';
+        proofShort.textContent = 'halo2::snark::0x9f...e1';
+        proofFull.className = 'text-[11px] font-mono text-emerald-700 font-semibold truncate';
+        proofFull.textContent = '0x8fa92305bf9002a249ff1929384bbad30018471bcca01f822';
+        
+        renderLeaves(false);
+      });
+
+      btnViolation.addEventListener('click', () => {
+        btnViolation.className = 'py-2 px-space-sm rounded-lg font-code-sm text-code-sm font-semibold transition-all bg-white text-rose-700 shadow-sm border border-rose-200';
+        btnClean.className = 'py-2 px-space-sm rounded-lg font-code-sm text-code-sm font-medium transition-all text-slate-600 hover:text-slate-900';
+        
+        simBanner.className = 'flex items-center justify-between p-3 rounded-lg bg-rose-50 border border-rose-200';
+        simIcon.className = 'material-symbols-outlined text-2xl text-rose-700';
+        simIcon.textContent = 'error';
+        simTitle.className = 'font-headline-md text-headline-md text-rose-900 font-bold';
+        simTitle.textContent = 'BREACH REJECTED';
+        simScore.className = 'font-mono text-xs px-2.5 py-1 bg-rose-100 text-rose-800 rounded font-bold';
+        simScore.textContent = 'Nullified by Circuit';
+        simFlaggedVal.className = 'text-rose-700 font-bold';
+        simFlaggedVal.textContent = '1 Breach: Dataset C (Embargoed Web Scraping)';
+        proofShort.textContent = 'zk_eval::REJECT_GATE_NULL';
+        proofFull.className = 'text-[11px] font-mono text-rose-700 font-semibold truncate';
+        proofFull.textContent = 'NULL_PROOF_GATE_TRIGGERED_0x00000000000000000000000000';
+        
+        renderLeaves(true);
+      });
+    }
+
+    // 5. Action Buttons Toast Trigger
+    const btnExportCircuit = document.getElementById('btn-export-circuit');
+    const btnExportAudit = document.getElementById('btn-export-audit');
+    const btnDeployPolicy = document.getElementById('btn-deploy-policy');
+
+    function showToast(msg, isError = false) {
+      const toast = document.getElementById('action-toast');
+      const toastMsg = document.getElementById('toast-message');
+      const toastIcon = document.getElementById('toast-icon');
+      if (!toast || !toastMsg || !toastIcon) return;
+
+      toastMsg.textContent = msg;
+      if (isError) {
+        toastIcon.textContent = 'error';
+        toastIcon.className = 'material-symbols-outlined text-rose-400';
+      } else {
+        toastIcon.textContent = 'check_circle';
+        toastIcon.className = 'material-symbols-outlined text-emerald-400';
+      }
+
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 3500);
+    }
+
+    if (btnExportCircuit) {
+      btnExportCircuit.addEventListener('click', () => {
+        showToast('Exporting Halo2 Midnight Circuit parameter (policy_rules_circuit.zk)...');
+      });
+    }
+
+    if (btnExportAudit) {
+      btnExportAudit.addEventListener('click', () => {
+        showToast('Compiling Regulatory Compliance Proof Package...');
+      });
+    }
+
+    if (btnDeployPolicy) {
+      btnDeployPolicy.addEventListener('click', () => {
+        showToast('Deploying rule constraints to Midnight consensus height #2,841,921...');
+      });
+    }
+  })();
+</script></main><footer class="fixed bottom-0 left-0 right-0 h-10 bg-white border-t border-slate-200 z-40 flex items-center justify-between px-margin-mobile lg:px-margin font-code-sm text-code-sm text-slate-500 shadow-sm"><div class="flex items-center gap-space-lg"><span class="flex items-center gap-space-xs"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span>ZK Circuit Latency: <strong class="text-slate-800 font-mono font-bold">142ms</strong></span></span><span class="hidden sm:flex items-center gap-space-xs"><span>Proof Protocol: <strong class="text-sky-700 font-mono font-bold">Halo2 / Midnight SNARK</strong></span></span></div><div class="flex items-center gap-space-md"><span>Midnight Consensus Height: <strong class="text-emerald-700 font-mono font-bold">#2,841,920</strong></span><span class="hidden md:inline-block text-slate-300">|</span><span class="hidden md:inline-block text-slate-400">Zero-Knowledge Integrity Guaranteed</span></div></footer></div></body></html>

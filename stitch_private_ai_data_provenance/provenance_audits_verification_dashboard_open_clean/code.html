@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_dashboard" name="shell-type"/>
+<title>BlackBox AI - Provenance Audits &amp; Verification</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-surface": "#131b2e",
+            "primary": "#006948",
+            "primary-container": "#00855d",
+            "surface": "#faf8ff",
+            "surface-bright": "#faf8ff",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f2f3ff",
+            "surface-container": "#eaedff",
+            "secondary": "#006398",
+            "secondary-container": "#5bb8fe",
+            "outline": "#6d7a72",
+            "outline-variant": "#bccac0",
+            "error": "#ba1a1a",
+          },
+          fontFamily: {
+            sans: ['"Hanken Grotesk"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body { font-family: 'Hanken Grotesk', sans-serif; -webkit-font-smoothing: antialiased; }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+</head>
+<body class="bg-[#FAF8FF] text-[#131b2e] min-h-screen flex flex-col selection:bg-emerald-100 selection:text-emerald-900">
+<!-- Top Navigation Bar (Crisp, Airy, Minimal) -->
+<header class="sticky top-0 z-40 h-20 bg-white/85 backdrop-blur-xl border-b border-slate-200/70 px-6 lg:px-12 flex items-center justify-between">
+<div class="flex items-center gap-10">
+<!-- Brand Logo -->
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-sm shadow-emerald-600/20">
+<span class="material-symbols-outlined text-[22px]">shield_with_heart</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-bold text-lg tracking-tight text-slate-900">BlackBox AI</span>
+<span class="text-[11px] font-mono tracking-wider font-semibold uppercase px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/60">Midnight ZK</span>
+</div>
+</div>
+<!-- Main Navigation -->
+<nav class="hidden lg:flex items-center gap-1">
+<a class="px-4 py-2 rounded-lg text-sm font-semibold text-emerald-800 bg-emerald-50/80 transition-colors" href="#">Provenance Audits</a>
+<a class="px-4 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/60 transition-colors" href="#">Dataset Registry</a>
+<a class="px-4 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/60 transition-colors" href="#">ZK Verifier Engine</a>
+<a class="px-4 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/60 transition-colors" href="#">Compliance Policies</a>
+<a class="px-4 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/60 transition-colors" href="#">API &amp; Proofs</a>
+</nav>
+</div>
+<!-- Actions & User Profile -->
+<div class="flex items-center gap-3.5">
+<div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100/80 border border-slate-200/60 text-xs font-mono text-slate-600">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+<span>Midnight Testnet: <strong class="font-semibold text-emerald-700">Synced</strong></span>
+</div>
+<button class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm" id="open-verify-modal-btn">
+<span class="material-symbols-outlined text-[18px] text-emerald-600">verified</span>
+<span>Verify ZK Proof</span>
+</button>
+<button class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-emerald-700 hover:bg-emerald-800 text-white transition-all shadow-sm shadow-emerald-700/20" id="open-audit-modal-btn">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span>+ New Model Audit</span>
+</button>
+<div class="h-6 w-px bg-slate-200 mx-1"></div>
+<!-- User Chip -->
+<div class="flex items-center gap-3 pl-1">
+<div class="hidden md:flex flex-col text-right">
+<span class="text-xs font-bold text-slate-900 leading-tight">Dr. Alex Vance</span>
+<span class="text-[11px] font-mono text-slate-500">ZK Auditor</span>
+</div>
+<img alt="Avatar" class="w-9 h-9 rounded-full ring-2 ring-slate-200/70 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfuKF-sAKrFaJLvkzpFa01ut5TESpqfM_RKU_ldtz3m5urCwCTlut7gbQO_R64AikZB_O60OYVu-lje-nAOXjP0zZTNAsFEJ30IZ5nANVxTe49yJV2I2TvyNwX0aYDxRjscM-wDbiaIVLqPhqUSGiy-uE4P40a-1OUGc5e6GN5jptI0-Z0Jk7tXugn4HTBBohLvGfBBRSRMo43vxdMzbVoObHEcHQaMf-CD_WhxeoYHfNKRAwRevrU_A"/>
+</div>
+</div>
+</header>
+<!-- Main Container: Spacious, Airy, 7xl -->
+<main class="w-full max-w-7xl mx-auto px-6 sm:px-10 py-10 space-y-10 flex-1">
+<!-- Header & Executive Banner -->
+<section class="bg-white border border-slate-200/70 rounded-2xl shadow-sm p-8 lg:p-10 relative overflow-hidden">
+<!-- Subtle Decorative Ambient Light -->
+<div class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-emerald-50/70 blur-3xl pointer-events-none"></div>
+<div class="absolute right-64 -bottom-20 w-72 h-72 rounded-full bg-sky-50/60 blur-3xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+<div class="max-w-3xl space-y-3">
+<div class="flex flex-wrap items-center gap-2.5 text-xs">
+<span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 font-mono font-medium tracking-wide">Halo2 PLONK Verifier v2.4</span>
+<span class="text-slate-300">•</span>
+<span class="text-emerald-700 font-mono font-semibold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Zero Data Leakage Guarantee
+            </span>
+</div>
+<h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 leading-tight">
+            Private AI Training Data Provenance
+          </h1>
+<p class="text-base text-slate-600 leading-relaxed max-w-2xl font-normal">
+            Mathematically prove commercial copyright authorization, license compliance, and ethical data boundary adherence without revealing raw training data, enterprise weights, or proprietary trade secrets.
+          </p>
+</div>
+<!-- Quick Status Card -->
+<div class="shrink-0 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 bg-slate-50/80 border border-slate-200/70 rounded-xl p-4 lg:p-5">
+<div class="space-y-1">
+<div class="text-[11px] uppercase font-mono tracking-wider text-slate-500 font-semibold">Active Node</div>
+<div class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              midnight-eu-west-04
+            </div>
+<div class="text-xs font-mono text-slate-500">Relay #mn-098x • Shielded ZK</div>
+</div>
+<div class="hidden sm:block w-px h-10 bg-slate-200"></div>
+<button class="px-4 py-2.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-xs tracking-wide uppercase transition-all shadow-sm" onclick="document.getElementById('audit-modal').classList.remove('hidden')">
+            Launch Audit
+          </button>
+</div>
+</div>
+</section>
+<!-- KPI Metric Cards (4-Column Minimal Grid, No Clutter) -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Metric 1 -->
+<div class="bg-white border border-slate-200/70 rounded-2xl p-7 shadow-sm hover:shadow-md transition-shadow">
+<div class="text-xs uppercase font-mono tracking-wider text-slate-500 font-semibold">Total Models Audited</div>
+<div class="mt-3 flex items-baseline gap-2">
+<span class="text-4xl font-bold text-slate-900 tracking-tight">142</span>
+<span class="text-xs font-mono text-slate-500 uppercase">Models</span>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+<span class="text-emerald-700 font-medium font-mono flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">check_circle</span> 138 Compliant
+          </span>
+<span class="text-rose-600 font-medium font-mono">4 Violations</span>
+</div>
+</div>
+<!-- Metric 2 -->
+<div class="bg-white border border-slate-200/70 rounded-2xl p-7 shadow-sm hover:shadow-md transition-shadow">
+<div class="text-xs uppercase font-mono tracking-wider text-slate-500 font-semibold">ZK Commitments</div>
+<div class="mt-3 flex items-baseline gap-2">
+<span class="text-4xl font-bold text-slate-900 tracking-tight">1,840</span>
+<span class="text-xs font-mono text-emerald-600 font-semibold">+48 today</span>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-mono">
+<span>Merkle Depth: <strong class="text-slate-900">32</strong></span>
+<span class="text-slate-600">Shielded Roots</span>
+</div>
+</div>
+<!-- Metric 3 -->
+<div class="bg-white border border-slate-200/70 rounded-2xl p-7 shadow-sm hover:shadow-md transition-shadow">
+<div class="text-xs uppercase font-mono tracking-wider text-slate-500 font-semibold">Data Privacy Level</div>
+<div class="mt-3 flex items-baseline gap-2">
+<span class="text-4xl font-bold text-emerald-700 tracking-tight">100%</span>
+<span class="text-xs font-mono text-emerald-600 font-semibold uppercase">Shielded</span>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-500">
+          Raw corpora &amp; weights remain 100% local
+        </div>
+</div>
+<!-- Metric 4 -->
+<div class="bg-white border border-slate-200/70 rounded-2xl p-7 shadow-sm hover:shadow-md transition-shadow">
+<div class="text-xs uppercase font-mono tracking-wider text-slate-500 font-semibold">Verification Rate</div>
+<div class="mt-3 flex items-baseline gap-2">
+<span class="text-4xl font-bold text-slate-900 tracking-tight">99.8%</span>
+<span class="text-xs font-mono text-slate-500">1.2s avg</span>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-mono text-slate-500">
+<span>Constraints: <strong class="text-slate-900">1.2M</strong></span>
+<span class="text-emerald-700 font-medium">Deterministic</span>
+</div>
+</div>
+</section>
+<!-- Active Forensic Audit Section (The Core Story, Breathable & Clean) -->
+<section class="space-y-4">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-1">
+<div>
+<h2 class="text-xl font-bold text-slate-900 tracking-tight">Active Forensic Audit Case Study</h2>
+<p class="text-sm text-slate-500">Cryptographic audit proof run #8492 attested on Midnight Network</p>
+</div>
+<div class="flex items-center gap-2 text-xs font-mono text-slate-500">
+<span>Status:</span>
+<span class="px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200 font-medium">Policy Violation Detected</span>
+</div>
+</div>
+<div class="bg-white border border-slate-200/70 rounded-2xl p-7 lg:p-9 shadow-sm space-y-8">
+<!-- Banner Strip for Model Under Audit -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-slate-100">
+<div class="space-y-1.5">
+<div class="flex items-center gap-3">
+<h3 class="text-2xl font-bold text-slate-900">Model LLM-Alpha-v4</h3>
+<span class="text-xs font-mono px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 font-medium">Enterprise 70B MoE</span>
+</div>
+<p class="text-sm text-slate-500 font-mono">
+              Audited: Oct 24, 2024 • Merkle Root: <span class="text-slate-800 font-semibold">0x4a91...88de</span> • Rule: <span class="text-slate-800 font-medium">"No Restricted Datasets Used"</span>
+</p>
+</div>
+<!-- Evaluation Verdict Pill -->
+<div class="shrink-0 flex items-center gap-3 px-4 py-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-900">
+<span class="material-symbols-outlined text-rose-600 text-2xl">error</span>
+<div class="flex flex-col">
+<span class="text-[11px] font-mono uppercase tracking-wider text-rose-600 font-bold">Evaluation Verdict</span>
+<span class="text-sm font-bold text-rose-900">Non-Compliant (Policy Violation)</span>
+</div>
+</div>
+</div>
+<!-- 2-Column Forensic Breakdown -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Left: 3 Clean Dataset Verification Rows (7 cols) -->
+<div class="lg:col-span-7 space-y-4">
+<div class="text-xs uppercase font-mono tracking-wider text-slate-500 font-semibold">
+              Dataset Verification &amp; License Adherence
+            </div>
+<!-- Dataset A -->
+<div class="p-5 rounded-xl bg-slate-50/70 border border-slate-200/60 hover:border-slate-300 transition-colors space-y-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold">
+<span class="material-symbols-outlined text-base">check</span>
+</span>
+<span class="text-sm font-bold text-slate-900">Dataset A: Enterprise Web Crawl v2</span>
+</div>
+<span class="text-xs font-mono font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">Pass</span>
+</div>
+<div class="flex flex-wrap items-center gap-y-1 gap-x-4 text-xs text-slate-500 font-mono">
+<span>License: <strong class="text-slate-700">Commercial (Valid thru 2026)</strong></span>
+<span>•</span>
+<span>ZK Commitment: <span class="text-slate-800">0x8f2a...c4b1</span></span>
+</div>
+</div>
+<!-- Dataset B -->
+<div class="p-5 rounded-xl bg-slate-50/70 border border-slate-200/60 hover:border-slate-300 transition-colors space-y-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold">
+<span class="material-symbols-outlined text-base">check</span>
+</span>
+<span class="text-sm font-bold text-slate-900">Dataset B: Synthesized Reasoning Corpus v1</span>
+</div>
+<span class="text-xs font-mono font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">Pass</span>
+</div>
+<div class="flex flex-wrap items-center gap-y-1 gap-x-4 text-xs text-slate-500 font-mono">
+<span>License: <strong class="text-slate-700">Authorized Active Consent</strong></span>
+<span>•</span>
+<span>ZK Commitment: <span class="text-slate-800">0x3d9e...117a</span></span>
+</div>
+</div>
+<!-- Dataset C (Violation) -->
+<div class="p-5 rounded-xl bg-rose-50/40 border border-rose-200 space-y-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="w-6 h-6 rounded-full bg-rose-100 text-rose-700 flex items-center justify-center text-xs font-bold">
+<span class="material-symbols-outlined text-base">close</span>
+</span>
+<span class="text-sm font-bold text-rose-950">Dataset C: Internal Medical Records &amp; Source Data</span>
+</div>
+<span class="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-700 border border-rose-300">Violation</span>
+</div>
+<p class="text-xs text-rose-800 leading-relaxed">
+                Embargoed data detected via Merkle inclusion proof (<strong class="font-mono">#MED-EMBARGO-09</strong>). Blinded hash matches restricted health registry list.
+              </p>
+<div class="pt-2 border-t border-rose-200/60 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
+<span class="text-rose-700">Blinded Hash: <strong class="font-bold">0x9c41...ee02</strong></span>
+<span class="text-emerald-700 font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">lock</span> 0 bytes raw data leaked
+                </span>
+</div>
+</div>
+</div>
+<!-- Right: Clean ZK Proof Inspector Card (5 cols) -->
+<div class="lg:col-span-5 bg-slate-50/80 border border-slate-200/70 rounded-xl p-6 flex flex-col justify-between space-y-6">
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-emerald-700 text-lg">verified_user</span>
+<span class="text-sm font-bold text-slate-900">ZK Proof Inspector</span>
+</div>
+<span class="text-[11px] font-mono text-emerald-800 bg-emerald-100/70 px-2 py-0.5 rounded-md font-semibold">Epoch 912</span>
+</div>
+<!-- Proof Hash Box -->
+<div class="space-y-1.5">
+<span class="text-xs font-mono text-slate-500">Midnight Proof Transaction ID:</span>
+<div class="p-3 bg-white rounded-lg border border-slate-200 flex items-center justify-between gap-2">
+<span class="font-mono text-xs text-slate-800 truncate select-all">0x7a91bf99c0d3810f22ea67c8e492f1b4a3c2009e</span>
+<button class="text-slate-400 hover:text-slate-700 transition-colors p-1" title="Copy Proof">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+</button>
+</div>
+</div>
+<!-- Mathematical Guarantee Statement -->
+<div class="p-4 bg-white/70 rounded-lg border border-slate-200/70 text-xs text-slate-600 leading-relaxed space-y-2">
+<div class="font-semibold text-slate-900 flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base text-emerald-700">verified</span>
+                  Zero-Knowledge Mathematical Guarantee
+                </div>
+<p>
+                  Halo2 SNARK verification mathematically proved the policy restriction violation occurred during model pre-training <strong class="text-slate-900 font-medium">without BlackBox or external auditors ever accessing, reading, or revealing</strong> confidential medical records.
+                </p>
+</div>
+</div>
+<!-- Download Button -->
+<button class="w-full py-2.5 px-4 rounded-xl bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-semibold text-xs tracking-wide transition-all shadow-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-base text-slate-500">download</span>
+<span>Download Cryptographic Attestation</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Model Provenance Audit Ledger (Spacious, Airy, Decluttered Table) -->
+<section class="space-y-4">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-1">
+<div>
+<h2 class="text-xl font-bold text-slate-900 tracking-tight">Model Provenance Audit Ledger</h2>
+<p class="text-sm text-slate-500">Validated AI model training history recorded on Midnight ZK ledger</p>
+</div>
+<!-- Clean Search Input -->
+<div class="flex items-center gap-3">
+<div class="relative w-full sm:w-72">
+<span class="material-symbols-outlined absolute left-3.5 top-3 text-slate-400 text-lg">search</span>
+<input class="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200/80 rounded-xl text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent transition-all shadow-sm font-normal" placeholder="Search model or proof hash..." type="text"/>
+</div>
+<button class="p-2.5 bg-white border border-slate-200/80 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-50 shadow-sm transition-colors" title="Filter Records">
+<span class="material-symbols-outlined text-xl">tune</span>
+</button>
+</div>
+</div>
+<!-- Table Card -->
+<div class="bg-white border border-slate-200/70 rounded-2xl shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm border-collapse">
+<thead>
+<tr class="bg-slate-50/75 border-b border-slate-100 text-xs font-mono uppercase tracking-wider text-slate-500">
+<th class="py-4.5 px-6 font-semibold">AI Model Name</th>
+<th class="py-4.5 px-6 font-semibold">Training Date</th>
+<th class="py-4.5 px-6 font-semibold">Commitments</th>
+<th class="py-4.5 px-6 font-semibold">Policy Sets</th>
+<th class="py-4.5 px-6 font-semibold">Status</th>
+<th class="py-4.5 px-6 font-semibold">Proof Hash</th>
+<th class="py-4.5 px-6 font-semibold text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 text-slate-600">
+<!-- Row 1: OmniVision-Pro -->
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="py-4.5 px-6">
+<div class="flex items-center gap-3">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+<div>
+<div class="font-bold text-slate-900">OmniVision-Pro</div>
+<div class="text-xs font-mono text-slate-400">Multimodal-v2.1</div>
+</div>
+</div>
+</td>
+<td class="py-4.5 px-6 font-mono text-xs text-slate-600">2024-10-24 11:15</td>
+<td class="py-4.5 px-6 font-mono text-xs">
+<span class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 font-medium">14 Datasets</span>
+</td>
+<td class="py-4.5 px-6 text-xs text-slate-700 font-medium">
+                  100% Authorized • Temporal Validity
+                </td>
+<td class="py-4.5 px-6">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/60">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+                    Verified Compliant
+                  </span>
+</td>
+<td class="py-4.5 px-6 font-mono text-xs text-slate-700">0x3e18...92cf</td>
+<td class="py-4.5 px-6 text-right">
+<button class="px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-800 hover:bg-emerald-50 transition-colors border border-transparent hover:border-emerald-200">
+                    Inspect Proof
+                  </button>
+</td>
+</tr>
+<!-- Row 2: CodeSynth-70B -->
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="py-4.5 px-6">
+<div class="flex items-center gap-3">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+<div>
+<div class="font-bold text-slate-900">CodeSynth-70B</div>
+<div class="text-xs font-mono text-slate-400">CodeLM-Permissive</div>
+</div>
+</div>
+</td>
+<td class="py-4.5 px-6 font-mono text-xs text-slate-600">2024-10-23 18:40</td>
+<td class="py-4.5 px-6 font-mono text-xs">
+<span class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 font-medium">22 Datasets</span>
+</td>
+<td class="py-4.5 px-6 text-xs text-slate-700 font-medium">
+                  ≥95% Licensed • MIT/Apache2
+                </td>
+<td class="py-4.5 px-6">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/60">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+                    Verified Compliant
+                  </span>
+</td>
+<td class="py-4.5 px-6 font-mono text-xs text-slate-700">0x91d4...10ec</td>
+<td class="py-4.5 px-6 text-right">
+<button class="px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-800 hover:bg-emerald-50 transition-colors border border-transparent hover:border-emerald-200">
+                    Inspect Proof
+                  </button>
+</td>
+</tr>
+<!-- Row 3: MedChat-v2 (Non-Compliant) -->
+<tr class="bg-rose-50/20 hover:bg-rose-50/40 transition-colors">
+<td class="py-4.5 px-6">
+<div class="flex items-center gap-3">
+<span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+<div>
+<div class="font-bold text-rose-950">MedChat-v2</div>
+<div class="text-xs font-mono text-rose-500">Clinical-Instruct</div>
+</div>
+</div>
+</td>
+<td class="py-4.5 px-6 font-mono text-xs text-slate-600">2024-10-23 09:21</td>
+<td class="py-4.5 px-6 font-mono text-xs">
+<span class="px-2.5 py-1 rounded-md bg-rose-100/60 text-rose-800 font-medium">8 Datasets</span>
+</td>
+<td class="py-4.5 px-6 text-xs text-rose-900 font-medium">
+                  HIPAA Zero Leak • No Restricted Data
+                </td>
+<td class="py-4.5 px-6">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-rose-50 text-rose-700 border border-rose-200">
+<span class="material-symbols-outlined text-sm">cancel</span>
+                    Non-Compliant
+                  </span>
+</td>
+<td class="py-4.5 px-6 font-mono text-xs text-rose-700 font-medium">0xbb29...76aa</td>
+<td class="py-4.5 px-6 text-right">
+<button class="px-3 py-1.5 rounded-lg text-xs font-semibold text-rose-700 hover:bg-rose-100 transition-colors border border-transparent hover:border-rose-200">
+                    Inspect Proof
+                  </button>
+</td>
+</tr>
+<!-- Row 4: FinanceLM-13B -->
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="py-4.5 px-6">
+<div class="flex items-center gap-3">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+<div>
+<div class="font-bold text-slate-900">FinanceLM-13B</div>
+<div class="text-xs font-mono text-slate-400">Quantitative-Fin</div>
+</div>
+</div>
+</td>
+<td class="py-4.5 px-6 font-mono text-xs text-slate-600">2024-10-22 14:02</td>
+<td class="py-4.5 px-6 font-mono text-xs">
+<span class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 font-medium">31 Datasets</span>
+</td>
+<td class="py-4.5 px-6 text-xs text-slate-700 font-medium">
+                  100% Authorized • SEC-Reg Provenance
+                </td>
+<td class="py-4.5 px-6">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/60">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+                    Verified Compliant
+                  </span>
+</td>
+<td class="py-4.5 px-6 font-mono text-xs text-slate-700">0x40ef...d712</td>
+<td class="py-4.5 px-6 text-right">
+<button class="px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-800 hover:bg-emerald-50 transition-colors border border-transparent hover:border-emerald-200">
+                    Inspect Proof
+                  </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Footer / Pagination -->
+<div class="py-4 px-6 bg-slate-50/60 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-mono">
+<span>Showing 4 of 142 records</span>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 rounded-lg bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 transition-colors">Prev</button>
+<span class="text-slate-800 font-medium">Page 1 of 36</span>
+<button class="px-3 py-1.5 rounded-lg bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 transition-colors">Next</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Clean Footer Bar -->
+<footer class="mt-auto border-t border-slate-200/70 bg-white py-5 px-6 lg:px-12 text-xs font-mono text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-6">
+<span class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+        ZK Circuit Latency: <strong class="text-slate-800">142ms</strong>
+</span>
+<span class="hidden sm:inline-block text-slate-300">•</span>
+<span>Protocol: <strong class="text-slate-800">Halo2 / Midnight SNARK</strong></span>
+</div>
+<div class="flex items-center gap-3">
+<span>Consensus Height: <strong class="text-emerald-700">#2,841,920</strong></span>
+<span class="text-slate-300">|</span>
+<span>Provable Data Sovereignty</span>
+</div>
+</footer>
+<!-- Modal Dialog: Initiate ZK Model Audit -->
+<div class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-6" id="audit-modal">
+<div class="bg-white border border-slate-200 rounded-2xl p-8 w-full max-w-xl shadow-xl space-y-6 relative">
+<div class="flex items-center justify-between pb-4 border-b border-slate-100">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">verified_user</span>
+</div>
+<h3 class="text-lg font-bold text-slate-900">Initiate Model Provenance Audit</h3>
+</div>
+<button class="text-slate-400 hover:text-slate-700 p-1" onclick="document.getElementById('audit-modal').classList.add('hidden')">
+<span class="material-symbols-outlined text-xl">close</span>
+</button>
+</div>
+<p class="text-sm text-slate-600 leading-relaxed">
+        Execute client-side Halo2 ZK prover on Midnight DevNet. Your dataset raw hashes remain completely local and never transmit over the network.
+      </p>
+<form class="space-y-4" onsubmit="event.preventDefault(); triggerProofGen();">
+<div class="space-y-1.5">
+<label class="text-xs font-mono uppercase text-slate-500 font-semibold">Model Designation</label>
+<input class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-600" type="text" value="DeepReason-v1-Production"/>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="space-y-1.5">
+<label class="text-xs font-mono uppercase text-slate-500 font-semibold">Dataset Merkle Root</label>
+<input class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-600" type="text" value="0x51c4...e18b"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-xs font-mono uppercase text-slate-500 font-semibold">Policy Standard</label>
+<select class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-600">
+<option>100% Commercial Authorization</option>
+<option>EU AI Act Article 53 Standard</option>
+<option>No Restricted Datasets</option>
+</select>
+</div>
+</div>
+<div class="hidden p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2" id="gen-progress">
+<div class="flex justify-between text-xs font-mono">
+<span class="text-emerald-700 font-semibold animate-pulse">Computing Midnight Halo2 SNARK...</span>
+<span class="font-bold text-slate-900" id="progress-percent">0%</span>
+</div>
+<div class="w-full h-2 rounded-full bg-slate-200 overflow-hidden">
+<div class="h-full bg-emerald-600 transition-all duration-300" id="progress-bar" style="width: 0%"></div>
+</div>
+</div>
+<div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+<button class="px-4 py-2 rounded-xl border border-slate-200 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors" onclick="document.getElementById('audit-modal').classList.add('hidden')" type="button">
+            Cancel
+          </button>
+<button class="px-5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-sm transition-all shadow-sm flex items-center gap-1.5" id="start-audit-btn" type="submit">
+<span class="material-symbols-outlined text-base">bolt</span>
+<span>Generate &amp; Verify</span>
+</button>
+</div>
+</form>
+</div>
+</div>
+<script>
+    // Micro-interactions
+    const auditModal = document.getElementById('audit-modal');
+    const openAuditBtn = document.getElementById('open-audit-modal-btn');
+    const openVerifyBtn = document.getElementById('open-verify-modal-btn');
+    const genProgress = document.getElementById('gen-progress');
+    const progressBar = document.getElementById('progress-bar');
+    const progressPercent = document.getElementById('progress-percent');
+    const startAuditBtn = document.getElementById('start-audit-btn');
+
+    openAuditBtn?.addEventListener('click', () => {
+      auditModal.classList.remove('hidden');
+      auditModal.classList.add('flex');
+    });
+
+    openVerifyBtn?.addEventListener('click', () => {
+      auditModal.classList.remove('hidden');
+      auditModal.classList.add('flex');
+    });
+
+    window.triggerProofGen = function() {
+      genProgress.classList.remove('hidden');
+      startAuditBtn.disabled = true;
+      startAuditBtn.classList.add('opacity-50');
+
+      let current = 0;
+      const interval = setInterval(() => {
+        current += 25;
+        if (current <= 100) {
+          progressBar.style.width = current + '%';
+          progressPercent.textContent = current + '%';
+        }
+        if (current >= 100) {
+          clearInterval(interval);
+          setTimeout(() => {
+            alert("Halo2 Zero-Knowledge Proof successfully validated on Midnight Network!");
+            startAuditBtn.disabled = false;
+            startAuditBtn.classList.remove('opacity-50');
+            auditModal.classList.add('hidden');
+            auditModal.classList.remove('flex');
+            genProgress.classList.add('hidden');
+            progressBar.style.width = '0%';
+          }, 300);
+        }
+      }, 200);
+    };
+  </script>
+</body></html>

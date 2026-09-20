@@ -1,0 +1,384 @@
+<!DOCTYPE html><html class="light" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_dashboard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      "colors": {
+        "on-error-container": "#93000a",
+        "surface-container": "#f1f5f9",
+        "on-secondary-fixed": "#001d31",
+        "outline-variant": "#e2e8f0",
+        "surface": "#f8fafc",
+        "secondary-container": "#e0f2fe",
+        "tertiary": "#8d4b00",
+        "tertiary-container": "#fef3c7",
+        "on-primary-fixed": "#002114",
+        "surface-variant": "#f1f5f9",
+        "on-tertiary": "#ffffff",
+        "error": "#dc2626",
+        "secondary": "#0284c7",
+        "inverse-surface": "#0f172a",
+        "surface-dim": "#e2e8f0",
+        "on-primary-container": "#ffffff",
+        "on-background": "#0f172a",
+        "surface-container-lowest": "#ffffff",
+        "on-primary": "#ffffff",
+        "primary-fixed-dim": "#6ee7b7",
+        "primary-fixed": "#a7f3d0",
+        "primary": "#059669",
+        "inverse-on-surface": "#f8fafc",
+        "on-secondary-fixed-variant": "#0369a1",
+        "on-surface": "#0f172a",
+        "surface-container-highest": "#e2e8f0",
+        "inverse-primary": "#6ee7b7",
+        "surface-tint": "#059669",
+        "surface-container-low": "#ffffff",
+        "on-secondary-container": "#0369a1",
+        "primary-container": "#047857",
+        "surface-bright": "#ffffff",
+        "tertiary-fixed-dim": "#fcd34d",
+        "surface-container-high": "#f8fafc",
+        "on-tertiary-fixed-variant": "#78350f",
+        "tertiary-fixed": "#fef3c7",
+        "outline": "#94a3b8",
+        "secondary-fixed-dim": "#bae6fd",
+        "secondary-fixed": "#e0f2fe",
+        "on-tertiary-fixed": "#451a03",
+        "error-container": "#fee2e2",
+        "on-primary-fixed-variant": "#065f46",
+        "on-surface-variant": "#475569",
+        "on-error": "#ffffff",
+        "background": "#f8fafc",
+        "on-tertiary-container": "#78350f",
+        "on-secondary": "#ffffff"
+      },
+      "borderRadius": {
+        "DEFAULT": "0.125rem",
+        "lg": "0.375rem",
+        "xl": "0.5rem",
+        "full": "0.75rem"
+      },
+      "spacing": {
+        "margin-mobile": "1rem",
+        "space-sm": "0.5rem",
+        "space-xl": "2rem",
+        "gutter-mobile": "0.75rem",
+        "margin": "2rem",
+        "space-lg": "1.25rem",
+        "gutter": "1.25rem",
+        "space-md": "0.75rem",
+        "space-xs": "0.25rem"
+      },
+      "fontFamily": {
+        "label-code": [
+          "JetBrains Mono"
+        ],
+        "body-sm": [
+          "Hanken Grotesk"
+        ],
+        "headline-md": [
+          "Hanken Grotesk"
+        ],
+        "body-lg": [
+          "Hanken Grotesk"
+        ],
+        "headline-xl": [
+          "Hanken Grotesk"
+        ],
+        "display-lg-mobile": [
+          "Hanken Grotesk"
+        ],
+        "headline-xl-mobile": [
+          "Hanken Grotesk"
+        ],
+        "headline-sm": [
+          "Hanken Grotesk"
+        ],
+        "display-lg": [
+          "Hanken Grotesk"
+        ],
+        "body-md": [
+          "Hanken Grotesk"
+        ],
+        "label-caps": [
+          "JetBrains Mono"
+        ],
+        "headline-lg": [
+          "Hanken Grotesk"
+        ],
+        "code-sm": [
+          "JetBrains Mono"
+        ],
+        "code-md": [
+          "JetBrains Mono"
+        ]
+      },
+      "fontSize": {
+        "label-code": [
+          "0.8125rem",
+          {
+            "lineHeight": "1.25rem",
+            "letterSpacing": "-0.01em",
+            "fontWeight": "500"
+          }
+        ],
+        "code-sm": [
+          "0.75rem",
+          {
+            "lineHeight": "1rem",
+            "letterSpacing": "-0.005em",
+            "fontWeight": "500"
+          }
+        ],
+        "code-md": [
+          "0.875rem",
+          {
+            "lineHeight": "1.25rem",
+            "letterSpacing": "-0.01em",
+            "fontWeight": "500"
+          }
+        ],
+        "body-sm": [
+          "0.75rem",
+          {
+            "lineHeight": "1.125rem",
+            "letterSpacing": "0.01em",
+            "fontWeight": "400"
+          }
+        ],
+        "headline-md": [
+          "1.25rem",
+          {
+            "lineHeight": "1.75rem",
+            "letterSpacing": "-0.015em",
+            "fontWeight": "600"
+          }
+        ],
+        "body-lg": [
+          "1.125rem",
+          {
+            "lineHeight": "1.75rem",
+            "letterSpacing": "-0.01em",
+            "fontWeight": "400"
+          }
+        ],
+        "headline-xl": [
+          "2.25rem",
+          {
+            "lineHeight": "2.75rem",
+            "letterSpacing": "-0.025em",
+            "fontWeight": "700"
+          }
+        ],
+        "display-lg-mobile": [
+          "2.25rem",
+          {
+            "lineHeight": "2.75rem",
+            "letterSpacing": "-0.02em",
+            "fontWeight": "700"
+          }
+        ],
+        "headline-xl-mobile": [
+          "1.75rem",
+          {
+            "lineHeight": "2.25rem",
+            "letterSpacing": "-0.02em",
+            "fontWeight": "700"
+          }
+        ],
+        "headline-sm": [
+          "1rem",
+          {
+            "lineHeight": "1.5rem",
+            "letterSpacing": "-0.01em",
+            "fontWeight": "600"
+          }
+        ],
+        "display-lg": [
+          "3.5rem",
+          {
+            "lineHeight": "4rem",
+            "letterSpacing": "-0.03em",
+            "fontWeight": "700"
+          }
+        ],
+        "body-md": [
+          "0.875rem",
+          {
+            "lineHeight": "1.375rem",
+            "letterSpacing": "0em",
+            "fontWeight": "400"
+          }
+        ],
+        "label-caps": [
+          "0.6875rem",
+          {
+            "lineHeight": "1rem",
+            "letterSpacing": "0.08em",
+            "fontWeight": "600"
+          }
+        ],
+        "headline-lg": [
+          "1.75rem",
+          {
+            "lineHeight": "2.25rem",
+            "letterSpacing": "-0.02em",
+            "fontWeight": "600"
+          }
+        ]
+      }
+    }
+  }
+}</script></head><body class="bg-surface font-body-md text-body-md text-on-surface min-h-screen"><header class="fixed top-0 left-0 right-0 z-50 h-16 bg-white/95 backdrop-blur-xl border-b border-outline-variant flex items-center justify-between px-margin-mobile lg:px-margin shadow-sm"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-sm"><img alt="BlackBox AI ZK Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VVODXr1eMrajRjtNZWKNcI9ojnVxG6KRsvdNW1w2DyG5eb-dECb2jqM4UnIPBlkePQ41qdgn510hJUZ6uAPQsLTyaRTYc1s-TL7E0kTQMYUwdv_k0YvY3WM3Nk5lBVlFAk50utO-jUzeu8Mdk2dWoPTB01ATFkD0zPU6RKgX4NVMuNAeONBXJcDRHUNjSclgoD7RZAXAFqCZGqrOmFeZ-tCSZLW3NQmHbAvtd0VgZbh-khPbCwB173bGrA"><span class="font-headline-md text-headline-md tracking-tight text-slate-900">BlackBox AI</span><span class="font-label-caps text-label-caps uppercase px-space-xs py-0.5 rounded-lg bg-sky-50 text-sky-700 border border-sky-200">Midnight ZK</span></div><nav class="hidden xl:flex items-center gap-space-md h-16" data-active-classes="text-primary border-b-2 border-primary"><a class="text-slate-600 hover:text-slate-900 transition-colors font-body-md text-body-md px-space-xs h-full flex items-center font-medium" data-path="provenance-audits" href="#">Provenance Audits</a><a class="text-slate-600 hover:text-slate-900 transition-colors font-body-md text-body-md px-space-xs h-full flex items-center font-medium" data-path="dataset-registry" href="#">Dataset Registry</a><a aria-current="page" class="transition-colors font-body-md px-space-xs h-full flex items-center text-primary border-b-2 border-primary font-semibold" data-path="zero-knowledge-verifier" href="#">Zero-Knowledge Verifier</a><a class="text-slate-600 hover:text-slate-900 transition-colors font-body-md text-body-md px-space-xs h-full flex items-center font-medium" data-path="compliance-policies" href="#">Compliance Policies</a><a class="text-slate-600 hover:text-slate-900 transition-colors font-body-md text-body-md px-space-xs h-full flex items-center font-medium" data-path="api-and-proofs" href="#">API &amp; Proofs</a></nav></div><div class="flex items-center gap-space-md"><div class="hidden md:flex items-center gap-space-xs px-space-sm py-1 rounded-lg bg-slate-50 border border-slate-200"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span><span class="font-code-sm text-code-sm text-slate-600">Midnight Testnet: <span class="text-emerald-600 font-medium">Synced</span></span></div><button class="flex items-center gap-space-xs bg-primary text-white font-code-md text-code-md px-space-md py-1.5 rounded-lg hover:bg-emerald-700 transition-all shadow-sm"><span class="material-symbols-outlined text-base">verified</span><span class="">Verify ZK Proof</span></button><button class="relative p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"><span class="material-symbols-outlined">notifications</span><span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-sky-500 ring-2 ring-white"></span></button><div class="flex items-center gap-space-sm pl-space-sm border-l border-slate-200"><div class="hidden sm:flex flex-col text-right"><span class="font-body-sm text-body-sm font-semibold text-slate-900">Dr. Alex Vance</span><span class="font-code-sm text-code-sm text-sky-700">Cryptographic Auditor</span></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover border border-slate-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfuKF-sAKrFaJLvkzpFa01ut5TESpqfM_RKU_ldtz3m5urCwCTlut7gbQO_R64AikZB_O60OYVu-lje-nAOXjP0zZTNAsFEJ30IZ5nANVxTe49yJV2I2TvyNwX0aYDxRjscM-wDbiaIVLqPhqUSGiy-uE4P40a-1OUGc5e6GN5jptI0-Z0Jk7tXugn4HTBBohLvGfBBRSRMo43vxdMzbVoObHEcHQaMf-CD_WhxeoYHfNKRAwRevrU_A"></div></div></header><aside class="fixed left-0 top-16 bottom-10 w-64 bg-white border-r border-slate-100 z-40 hidden lg:flex flex-col justify-between py-5"><div class="px-4 flex flex-col gap-6"><div class="font-label-caps text-[11px] uppercase tracking-wider text-slate-400 font-semibold px-3">Auditor Command</div><nav class="flex flex-col gap-1"><a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors font-body-md text-sm font-medium" data-path="provenance-audits" href="#"><span class="material-symbols-outlined text-lg text-slate-400">policy</span><span class="">Audits Overview</span></a><a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors font-body-md text-sm font-medium" data-path="dataset-registry" href="#"><span class="material-symbols-outlined text-lg text-slate-400">dataset</span><span class="">Dataset Registry</span></a><a aria-current="page" class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors bg-emerald-50 text-emerald-700 font-semibold text-sm" data-path="zero-knowledge-verifier" href="#"><span class="material-symbols-outlined text-lg text-emerald-600">lock_reset</span><span class="">ZK Circuit Engine</span><span class="ml-auto w-1.5 h-1.5 rounded-full bg-emerald-500"></span></a><a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors font-body-md text-sm font-medium" data-path="compliance-policies" href="#"><span class="material-symbols-outlined text-lg text-slate-400">gavel</span><span class="">Compliance Guard</span></a><a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors font-body-md text-sm font-medium" data-path="api-and-proofs" href="#"><span class="material-symbols-outlined text-lg text-slate-400">key</span><span class="">RPC &amp; Proof API</span></a></nav></div><div class="px-4 flex flex-col gap-2 pt-4 border-t border-slate-100"><div class="flex items-center justify-between px-2"><span class="font-label-caps text-[10px] uppercase text-slate-400 tracking-wider font-medium">Midnight Node</span><span class="flex items-center gap-1.5 text-[11px] text-emerald-600 font-medium font-mono"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>#mn-098x</span></div><div class="flex items-center justify-between px-2 text-xs text-slate-500"><span class="text-[11px]">Gas Mode</span><span class="font-mono text-[11px] text-slate-700 font-medium">Shielded ZK</span></div></div></aside><div class="lg:pl-64 flex flex-col min-h-screen"><div class="fixed top-16 left-0 lg:left-64 right-0 h-10 bg-white/90 backdrop-blur-md border-b border-outline-variant z-30 flex items-center px-margin-mobile lg:px-margin gap-space-xs font-code-sm text-code-sm text-slate-500"><span class="material-symbols-outlined text-sm text-slate-400">home</span><span class="">/</span><span class="text-slate-400">BlackBox AI Core</span><span class="">/</span><span class="text-sky-700 font-medium">Live Provenance Session</span></div><main class="w-full pt-28 pb-14 px-margin-mobile lg:px-margin flex-1 bg-surface"><div class="flex flex-col w-full">
+<!-- Header Notification / Banner -->
+<div class="relative overflow-hidden rounded-xl bg-white border border-outline-variant p-space-md shadow-sm mb-space-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md">
+<div class="absolute -right-16 -top-16 w-48 h-48 bg-emerald-100/50 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex items-center gap-space-md relative z-10">
+<div class="w-10 h-10 rounded-lg bg-emerald-50 border border-emerald-200 flex items-center justify-center text-primary shadow-sm">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-caps text-label-caps uppercase text-sky-700 font-semibold">Zero Knowledge Protocol Suite</span>
+<span class="inline-block w-1 h-1 rounded-full bg-slate-300"></span>
+<span class="font-code-sm text-code-sm text-slate-500">Halo2 + Midnight SNARK</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-slate-900 tracking-tight">Auditor ZK Proof Verifier — Cryptographic AI Integrity</h1>
+</div>
+</div>
+<div class="flex items-center gap-space-xs relative z-10 self-stretch md:self-auto justify-end">
+<div class="px-space-sm py-1 rounded-lg bg-slate-50 border border-slate-200 text-slate-600 font-code-sm text-code-sm flex items-center gap-1.5 shadow-sm">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+<span class="">Midnight Block Attestation:</span>
+<span class="text-emerald-700 font-mono font-semibold">#2,841,920</span>
+</div>
+</div>
+</div>
+<!-- Intro Statement -->
+<div class="mb-space-lg max-w-4xl">
+<p class="font-body-lg text-body-lg text-slate-600 leading-relaxed">
+      Verify mathematical proofs of AI training data compliance directly against the Midnight network. No raw training samples, confidential dataset IP, or proprietary licensing contracts are ever transferred or revealed to verify legal and ethical compliance.
+    </p>
+</div>
+<!-- Bento Grid Canvas -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start"><div class="xl:col-span-7 flex flex-col gap-8"><div class="rounded-xl bg-white border border-slate-200/80 p-8 shadow-sm flex flex-col gap-6"><div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-5"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-sky-50 text-secondary flex items-center justify-center"><span class="material-symbols-outlined text-xl">deployed_code</span></div><div><h3 class="font-headline-md text-base text-slate-900 font-semibold tracking-tight">Proof Payload &amp; Enclave Commitment</h3><p class="font-body-sm text-slate-500">Blinded Pedersen root &amp; cryptographic artifact</p></div></div><span class="font-code-sm text-sky-700 bg-sky-50 border border-sky-100 px-3 py-1 rounded-full font-medium w-fit text-xs">EU AI Act Verified Profile</span></div><div class="grid grid-cols-1 sm:grid-cols-2 gap-6"><div class="flex flex-col gap-2"><label class="font-code-sm text-xs text-slate-500 flex items-center justify-between"><span class="">Commitment Merkle Root</span><button class="text-secondary hover:underline font-medium text-xs" id="btn-load-sample">Sample Run</button></label><div class="relative"><input class="w-full bg-slate-50/70 border border-slate-200 text-slate-800 font-mono text-xs px-3.5 py-2.5 rounded-lg focus:outline-none focus:border-primary focus:bg-white transition-colors" id="proof-hash-input" type="text" value="0x7a91bf3409ae21d98cc7b5e492f"><span class="absolute right-3 top-2.5 text-emerald-600 text-base material-symbols-outlined">verified</span></div></div><div class="flex flex-col gap-2"><label class="font-code-sm text-xs text-slate-500">Training Run Artifact</label><div class="w-full bg-slate-50/70 border border-slate-200 px-3.5 py-2 rounded-lg flex items-center justify-between group cursor-pointer hover:bg-slate-100/80 transition-all"><div class="flex items-center gap-2.5 truncate"><span class="material-symbols-outlined text-slate-400 text-lg group-hover:text-primary transition-colors">receipt_long</span><span class="font-mono text-xs text-slate-700 truncate" id="file-name-label">zk_proof_training_audit_run_8492.json</span></div><span class="font-mono text-[11px] text-slate-500 bg-white border border-slate-200 px-2 py-0.5 rounded font-medium shrink-0">64.2 KB</span></div></div></div><div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-100 text-xs text-slate-500"><div class="flex items-center gap-2"><span class="text-slate-400">Circuit Prover:</span><span class="font-mono font-medium text-slate-800">Halo2-KZG-v4</span></div><div class="flex items-center gap-2"><span class="text-slate-400">Model Checksum:</span><span class="font-mono font-medium text-sky-700">sha256:88e0b...3d</span></div><div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500"></span><span class="font-medium text-emerald-700">100% Shielded Non-Exposure</span></div></div></div><div class="rounded-xl bg-white border border-slate-200/80 p-8 shadow-sm flex flex-col gap-6"><div class="flex items-center justify-between border-b border-slate-100 pb-5"><div><h2 class="font-headline-md text-xl text-slate-900 tracking-tight font-semibold">Active Policy Rule Constraints</h2><p class="font-body-sm text-slate-500 mt-1">Evaluated inside Midnight confidential VM without training data disclosure</p></div><button class="px-4 py-2 rounded-lg bg-primary text-white font-body-md text-sm font-medium flex items-center gap-2 shadow-sm hover:bg-emerald-700 active:scale-95 transition-all" id="btn-reverify"><span class="material-symbols-outlined text-base">autorenew</span><span class="">Execute Verifier</span></button></div><div class="divide-y divide-slate-100" id="policy-rules-container"><div class="py-5 first:pt-0 flex flex-col sm:flex-row sm:items-center justify-between gap-4 group transition-colors hover:bg-slate-50/50 -mx-4 px-4 rounded-lg"><div class="flex items-start gap-4"><div class="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5"><span class="material-symbols-outlined text-xl">fact_check</span></div><div class="flex flex-col gap-1"><div class="flex items-center gap-2.5 flex-wrap"><span class="font-semibold text-slate-900 text-sm">Rule 1: 100% of Training Data Authorized</span><span class="text-[11px] font-mono uppercase px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-medium">Strict Mandate</span></div><p class="font-body-sm text-slate-500 text-xs leading-relaxed">Verifies ZK inclusion against signed consent attestations in Midnight registry.</p></div></div><div class="flex items-center justify-between sm:justify-end gap-5 shrink-0 pl-13 sm:pl-0"><div class="flex flex-col sm:items-end"><span class="text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2.5 py-1 rounded-full flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> PASS</span><span class="text-[11px] text-slate-400 mt-0.5 font-mono">0 unauthorized tokens</span></div><button class="rule-toggle-btn w-8 h-8 rounded-lg text-slate-400 hover:text-slate-800 hover:bg-slate-100 flex items-center justify-center transition-colors"><span class="material-symbols-outlined text-base">tune</span></button></div></div><div class="py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 group transition-colors hover:bg-slate-50/50 -mx-4 px-4 rounded-lg"><div class="flex items-start gap-4"><div class="w-9 h-9 rounded-lg bg-sky-50 text-sky-700 flex items-center justify-center shrink-0 mt-0.5"><span class="material-symbols-outlined text-xl">workspace_premium</span></div><div class="flex flex-col gap-1"><div class="flex items-center gap-2.5 flex-wrap"><span class="font-semibold text-slate-900 text-sm">Rule 2: At Least 95% Commercial Licensing</span><span class="text-[11px] font-mono uppercase px-2 py-0.5 rounded bg-sky-50 text-sky-700 font-medium">Commercial Tier</span></div><p class="font-body-sm text-slate-500 text-xs leading-relaxed">Zero-knowledge range proof verifies commercial dataset licensing rights.</p></div></div><div class="flex items-center justify-between sm:justify-end gap-5 shrink-0 pl-13 sm:pl-0"><div class="flex flex-col sm:items-end"><span class="text-xs font-semibold text-sky-700 bg-sky-50 border border-sky-200/60 px-2.5 py-1 rounded-full">98.4% MET</span><span class="text-[11px] text-slate-400 mt-0.5 font-mono">&gt;= 95% threshold</span></div><button class="rule-toggle-btn w-8 h-8 rounded-lg text-slate-400 hover:text-slate-800 hover:bg-slate-100 flex items-center justify-center transition-colors"><span class="material-symbols-outlined text-base">tune</span></button></div></div><div class="py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 group transition-colors hover:bg-slate-50/50 -mx-4 px-4 rounded-lg" id="rule-3-card"><div class="flex items-start gap-4"><div class="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5" id="rule-3-icon-wrapper"><span class="material-symbols-outlined text-xl" id="rule-3-icon">shield_check</span></div><div class="flex flex-col gap-1"><div class="flex items-center gap-2.5 flex-wrap"><span class="font-semibold text-slate-900 text-sm">Rule 3: No Restricted Dataset Used</span><span class="text-[11px] font-mono uppercase px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">Non-Membership</span></div><p class="font-body-sm text-slate-500 text-xs leading-relaxed">Cryptographic accumulator validates zero matches with embargoed repositories.</p></div></div><div class="flex items-center justify-between sm:justify-end gap-4 shrink-0 pl-13 sm:pl-0"><div class="flex flex-col sm:items-end"><span class="text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2.5 py-1 rounded-full" id="rule-3-status">EXCLUDED</span><span class="text-[11px] text-slate-400 mt-0.5 font-mono" id="rule-3-subtext">0 blacklist matches</span></div><button class="px-3 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 font-code-sm text-xs transition-colors" id="toggle-restricted-demo" title="Simulate embargoed dataset injection">Simulate</button></div></div><div class="py-5 last:pb-0 flex flex-col sm:flex-row sm:items-center justify-between gap-4 group transition-colors hover:bg-slate-50/50 -mx-4 px-4 rounded-lg"><div class="flex items-start gap-4"><div class="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5"><span class="material-symbols-outlined text-xl">alarm_on</span></div><div class="flex flex-col gap-1"><div class="flex items-center gap-2.5 flex-wrap"><span class="font-semibold text-slate-900 text-sm">Rule 4: Valid Licenses at Time of Training</span><span class="text-[11px] font-mono uppercase px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-medium">Temporal Anchor</span></div><p class="font-body-sm text-slate-500 text-xs leading-relaxed">Verifies timestamp non-revocation against historical Midnight block epochs.</p></div></div><div class="flex items-center justify-between sm:justify-end gap-5 shrink-0 pl-13 sm:pl-0"><div class="flex flex-col sm:items-end"><span class="text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2.5 py-1 rounded-full">VALIDATED</span><span class="text-[11px] text-slate-400 mt-0.5 font-mono">Epoch #2.1M - #2.8M</span></div><button class="rule-toggle-btn w-8 h-8 rounded-lg text-slate-400 hover:text-slate-800 hover:bg-slate-100 flex items-center justify-center transition-colors"><span class="material-symbols-outlined text-base">tune</span></button></div></div></div></div></div><div class="xl:col-span-5 flex flex-col gap-8"><div class="rounded-xl bg-white border border-slate-200/80 p-8 shadow-sm flex flex-col gap-5"><div class="flex items-center justify-between"><span class="font-headline-md text-sm uppercase text-slate-400 font-medium tracking-wider">Circuit Enclave Flow</span><span class="font-code-sm text-xs text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full flex items-center gap-1.5 font-medium"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Zero-Exposure Active</span></div><div class="relative w-full rounded-lg bg-slate-50/60 border border-slate-200/70 p-4 overflow-hidden"><svg class="w-full h-auto text-slate-900" fill="none" viewBox="0 0 460 210" xmlns="http://www.w3.org/2000/svg"><path d="M 0,35 L 460,35 M 0,105 L 460,105 M 0,175 L 460,175" stroke="#e2e8f0" stroke-dasharray="3 3"></path><path d="M 115,0 L 115,210 M 230,0 L 230,210 M 345,0 L 345,210" stroke="#e2e8f0" stroke-dasharray="3 3"></path><rect fill="#ffffff" height="70" rx="8" stroke="#e2e8f0" stroke-width="1.5" width="100" x="15" y="25"></rect><text class="font-headline-md fill-slate-800 text-[10px] font-bold" text-anchor="middle" x="65" y="48">Private Dataset</text><text class="font-code-sm fill-sky-700 text-[8px] font-medium" text-anchor="middle" x="65" y="64">Enclave Vault</text><rect fill="#f8fafc" height="12" rx="3" width="80" x="25" y="74"></rect><text class="font-code-sm fill-slate-400 text-[7px]" text-anchor="middle" x="65" y="83">CONFIDENTIAL</text><rect fill="#ffffff" height="60" rx="8" stroke="#e2e8f0" stroke-width="1.5" width="100" x="15" y="125"></rect><text class="font-headline-md fill-slate-800 text-[10px] font-bold" text-anchor="middle" x="65" y="148">Commitment</text><text class="font-code-sm fill-slate-500 text-[8px]" text-anchor="middle" x="65" y="164">Pedersen Blinded</text><circle class="fill-emerald-500" cx="65" cy="173" r="3"></circle><path d="M 115,60 C 145,60 145,95 175,95" stroke="#0284c7" stroke-dasharray="4 2" stroke-width="1.5"></path><path d="M 115,155 C 145,155 145,115 175,115" stroke="#059669" stroke-width="1.5"></path><rect fill="#f0fdf4" height="120" rx="10" stroke="#059669" stroke-opacity="0.6" stroke-width="1.5" width="120" x="175" y="45"></rect><circle cx="235" cy="80" fill="#dcfce7" r="20"></circle><path d="M 230,73 L 235,85 L 243,73" stroke="#059669" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path><text class="font-headline-md fill-slate-900 text-[11px] font-bold" text-anchor="middle" x="235" y="116">Midnight ZK</text><text class="font-code-sm fill-sky-800 text-[8px] font-medium" text-anchor="middle" x="235" y="130">halo2_midnight_verifier</text><text class="font-code-sm fill-slate-500 text-[8px]" text-anchor="middle" x="235" y="145">Constraints: 419,204</text><path d="M 295,105 L 345,105" stroke="#059669" stroke-width="1.5"></path><polygon fill="#059669" points="345,102 352,105 345,108"></polygon><rect fill="#ffffff" height="100" rx="8" stroke="#059669" stroke-width="1.5" width="90" x="355" y="55"></rect><circle cx="400" cy="85" fill="#f0fdf4" r="14"></circle><path d="M 395,85 L 399,89 L 406,81" stroke="#059669" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path><text class="font-headline-md fill-slate-900 text-[10px] font-bold" text-anchor="middle" x="400" y="118">Auditor Result</text><text class="font-code-sm fill-emerald-700 text-[9px] font-bold" text-anchor="middle" x="400" y="132">PROOF TRUE</text><text class="font-code-sm fill-slate-400 text-[7px]" text-anchor="middle" x="400" y="144">0 Knowledge Leaked</text></svg></div><div class="flex items-center justify-between text-slate-500 font-code-sm text-xs"><div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-secondary text-sm">vpn_key</span><span class="">Auditor: Public Output Only</span></div><span class="text-emerald-700 font-medium">Mathematically Guaranteed</span></div></div><div class="rounded-xl bg-slate-900 p-6 shadow-sm flex flex-col gap-3"><div class="flex items-center justify-between pb-3 border-b border-slate-800"><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span><span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block"></span><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span><span class="font-mono text-xs text-slate-300 pl-1.5">midnight-cli --verifier-v2</span></div><span class="font-mono text-xs text-slate-500" id="terminal-clock">17:25:13 UTC</span></div><div class="font-mono text-xs text-slate-300 flex flex-col gap-2 py-1 min-h-[160px] overflow-y-auto" id="console-stream"><div class=""><span class="text-sky-400 font-bold">$</span> midnight-verifier --proof <span class="text-white">0x7a91bf...492f</span> --policy <span class="text-teal-300">strict_commercial_v2</span></div><div class="text-slate-500">&gt; Fetching cryptographic CRS from Midnight Block #2,841,920...</div><div class="text-slate-400">&gt; Pairing verification point: <span class="text-sky-300">e(P1, Q1) * e(P2, Q2) == 1</span></div><div class="text-slate-400">&gt; Evaluating polynomial degree D=2^18 against 419,204 constraint gates...</div><div class="text-emerald-400 flex items-center gap-1.5 font-medium"><span class="material-symbols-outlined text-sm">verified_user</span><span class="">ZK-PROOF VERIFIED PASS: Validated without training set exposure.</span></div><div class="text-sky-300/90">&gt; Attestation root recorded into ephemeral memory. Ready for signed export.</div></div><div class="pt-3 flex items-center justify-between text-slate-500 font-mono text-xs border-t border-slate-800"><span class="">Latency: 142ms</span><span class="text-emerald-400 font-medium">Status: SYNC_CONFIRMED</span></div></div><div class="rounded-xl bg-white border border-slate-200/80 p-8 shadow-sm flex flex-col gap-4"><div class="flex items-center justify-between"><h3 class="font-headline-md text-base text-slate-900 font-semibold">Regulatory Audit Certificate</h3><span class="font-code-sm text-xs text-sky-700 bg-sky-50 border border-sky-100 px-2.5 py-0.5 rounded-full font-medium">EU AI Act / FTC</span></div><p class="font-body-sm text-slate-500 text-xs leading-relaxed">Generate an immutable cryptographic certification file containing Midnight zero-knowledge attestations for regulatory compliance boards.</p><div class="grid grid-cols-2 gap-3 pt-2"><button class="px-4 py-2.5 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800 font-body-md text-xs font-medium flex items-center justify-center gap-2 transition-all shadow-sm" id="btn-export-pdf"><span class="material-symbols-outlined text-base text-slate-600">picture_as_pdf</span><span class="">Export Certificate</span></button><button class="px-4 py-2.5 rounded-lg bg-sky-50/60 hover:bg-sky-50 border border-sky-200/80 text-sky-700 font-body-md text-xs font-medium flex items-center justify-center gap-2 transition-all shadow-sm" id="btn-copy-attestation"><span class="material-symbols-outlined text-base">content_copy</span><span id="copy-attestation-text" class="">Copy ZK Payload</span></button></div></div></div></div>
+<!-- Interactive Script -->
+<script>
+    (function() {
+      // Clock updater
+      const clockEl = document.getElementById('terminal-clock');
+      setInterval(() => {
+        if(clockEl) {
+          const now = new Date();
+          clockEl.textContent = now.toTimeString().split(' ')[0] + ' UTC';
+        }
+      }, 1000);
+
+      // Simulation of Tampered/Restricted Dataset inclusion
+      const toggleRestrictedBtn = document.getElementById('toggle-restricted-demo');
+      const rule3Status = document.getElementById('rule-3-status');
+      const rule3Subtext = document.getElementById('rule-3-subtext');
+      const rule3IconWrapper = document.getElementById('rule-3-icon-wrapper');
+      const consoleStream = document.getElementById('console-stream');
+      let isViolated = false;
+
+      if(toggleRestrictedBtn) {
+        toggleRestrictedBtn.addEventListener('click', () => {
+          isViolated = !isViolated;
+          if(isViolated) {
+            // Violated state
+            rule3Status.textContent = "VIOLATION DETECTED";
+            rule3Status.className = "font-code-md text-code-md text-rose-600 font-semibold";
+            rule3Subtext.textContent = "1 restricted set matched via ZK proof";
+            rule3IconWrapper.className = "w-8 h-8 rounded-lg bg-rose-50 border border-rose-200 text-rose-600 flex items-center justify-center flex-shrink-0 mt-0.5";
+            toggleRestrictedBtn.textContent = "Reset to Valid";
+            toggleRestrictedBtn.className = "px-2.5 py-1 rounded bg-rose-100 border border-rose-200 text-rose-700 font-code-sm text-code-sm transition-colors";
+
+            // Append violation to log
+            const logEntry = document.createElement('div');
+            logEntry.className = "text-rose-400 flex items-center gap-1 font-semibold";
+            logEntry.innerHTML = '<span class="material-symbols-outlined text-sm">crisis_alert</span> [ALERT] Set non-membership check failed: Restricted entity 0xec49...10 was referenced.';
+            consoleStream.appendChild(logEntry);
+            consoleStream.scrollTop = consoleStream.scrollHeight;
+          } else {
+            // Valid state
+            rule3Status.textContent = "EXCLUDED";
+            rule3Status.className = "font-code-md text-code-md text-emerald-600 font-semibold";
+            rule3Subtext.textContent = "0 blacklist matches";
+            rule3IconWrapper.className = "w-8 h-8 rounded-lg bg-emerald-50 border border-emerald-200 text-primary flex items-center justify-center flex-shrink-0 mt-0.5";
+            toggleRestrictedBtn.textContent = "Simulate";
+            toggleRestrictedBtn.className = "px-2.5 py-1 rounded bg-slate-100 border border-slate-200 text-slate-700 hover:bg-slate-200 hover:text-slate-900 font-code-sm text-code-sm transition-colors";
+
+            const logEntry = document.createElement('div');
+            logEntry.className = "text-emerald-400 flex items-center gap-1 font-medium";
+            logEntry.innerHTML = '<span class="material-symbols-outlined text-sm">verified</span> Re-verified clean non-membership root: 0 blacklist intersections.';
+            consoleStream.appendChild(logEntry);
+            consoleStream.scrollTop = consoleStream.scrollHeight;
+          }
+        });
+      }
+
+      // Re-verify execution button trigger
+      const reverifyBtn = document.getElementById('btn-reverify');
+      if(reverifyBtn) {
+        reverifyBtn.addEventListener('click', () => {
+          reverifyBtn.classList.add('opacity-70', 'cursor-wait');
+          const originalText = reverifyBtn.innerHTML;
+          reverifyBtn.innerHTML = '<span class="material-symbols-outlined text-base animate-spin">refresh</span> Verifying Circuit...';
+
+          setTimeout(() => {
+            reverifyBtn.classList.remove('opacity-70', 'cursor-wait');
+            reverifyBtn.innerHTML = originalText;
+            
+            const log = document.createElement('div');
+            log.className = "text-sky-300";
+            log.textContent = `> Re-check complete at Midnight Height #2,841,920. 4/4 constraints verified in 129ms.`;
+            consoleStream.appendChild(log);
+            consoleStream.scrollTop = consoleStream.scrollHeight;
+          }, 600);
+        });
+      }
+
+      // Copy Attestation button feedback
+      const copyBtn = document.getElementById('btn-copy-attestation');
+      const copyText = document.getElementById('copy-attestation-text');
+      if(copyBtn && copyText) {
+        copyBtn.addEventListener('click', () => {
+          navigator.clipboard?.writeText('0x7a91bf3409ae21d98cc7b5e492f-halo2-midnight-certified');
+          copyText.textContent = "Copied Attestation!";
+          setTimeout(() => {
+            copyText.textContent = "Copy ZK Payload";
+          }, 2000);
+        });
+      }
+
+      // Export PDF micro-interaction
+      const exportPdfBtn = document.getElementById('btn-export-pdf');
+      if(exportPdfBtn) {
+        exportPdfBtn.addEventListener('click', () => {
+          const orig = exportPdfBtn.innerHTML;
+          exportPdfBtn.innerHTML = '<span class="material-symbols-outlined text-base text-emerald-600">download_done</span> Exported!';
+          setTimeout(() => {
+            exportPdfBtn.innerHTML = orig;
+          }, 2000);
+        });
+      }
+
+      // Load Sample Run
+      const loadSampleBtn = document.getElementById('btn-load-sample');
+      const hashInput = document.getElementById('proof-hash-input');
+      if(loadSampleBtn && hashInput) {
+        loadSampleBtn.addEventListener('click', () => {
+          hashInput.value = "0x" + Array.from({length: 32}, () => Math.floor(Math.random() * 16).toString(16)).join('');
+          const log = document.createElement('div');
+          log.className = "text-slate-400";
+          log.textContent = `> Switched proof commitment target to ${hashInput.value.substring(0, 16)}...`;
+          consoleStream.appendChild(log);
+          consoleStream.scrollTop = consoleStream.scrollHeight;
+        });
+      }
+    })();
+  </script>
+</div></main><footer class="fixed bottom-0 left-0 right-0 h-10 bg-white border-t border-outline-variant z-40 flex items-center justify-between px-margin-mobile lg:px-margin font-code-sm text-code-sm text-slate-500 shadow-[0_-1px_2px_rgba(0,0,0,0.02)]"><div class="flex items-center gap-space-lg"><span class="flex items-center gap-space-xs"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span class="">ZK Circuit Latency: <strong class="text-slate-900 font-mono">142ms</strong></span></span><span class="hidden sm:flex items-center gap-space-xs"><span class="">Proof Protocol: <strong class="text-sky-700 font-mono">Halo2 / Midnight SNARK</strong></span></span></div><div class="flex items-center gap-space-md"><span class="">Midnight Consensus Height: <strong class="text-emerald-700 font-mono font-semibold">#2,841,920</strong></span><span class="hidden md:inline-block text-slate-300">|</span><span class="hidden md:inline-block text-slate-500">Zero-Knowledge Integrity Guaranteed</span></div></footer></div>
+
+</body></html>

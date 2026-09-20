@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      "colors": {
+        "on-tertiary-fixed-variant": "#930013",
+        "on-tertiary": "#68000a",
+        "on-background": "#dfe2ee",
+        "tertiary-container": "#ff7a73",
+        "surface-container-highest": "#31353e",
+        "surface-container": "#1c2028",
+        "secondary": "#4cd7f6",
+        "primary-fixed": "#6ffbbe",
+        "on-tertiary-container": "#79000e",
+        "outline-variant": "#3c4a42",
+        "secondary-container": "#03b5d3",
+        "surface-container-low": "#181c24",
+        "surface-bright": "#353942",
+        "secondary-fixed": "#acedff",
+        "on-secondary": "#003640",
+        "outline": "#86948a",
+        "on-tertiary-fixed": "#410004",
+        "on-primary": "#003824",
+        "surface-variant": "#31353e",
+        "on-primary-fixed-variant": "#005236",
+        "surface-tint": "#4edea3",
+        "tertiary": "#ffb3ad",
+        "background": "#0f131c",
+        "tertiary-fixed-dim": "#ffb3ad",
+        "surface": "#0f131c",
+        "on-secondary-container": "#00424e",
+        "surface-container-high": "#262a33",
+        "primary-fixed-dim": "#4edea3",
+        "on-secondary-fixed": "#001f26",
+        "tertiary-fixed": "#ffdad7",
+        "primary-container": "#10b981",
+        "on-primary-fixed": "#002113",
+        "inverse-surface": "#dfe2ee",
+        "error-container": "#93000a",
+        "surface-dim": "#0f131c",
+        "surface-container-lowest": "#0a0e16",
+        "primary": "#4edea3",
+        "on-error": "#690005",
+        "inverse-on-surface": "#2c3039",
+        "error": "#ffb4ab",
+        "on-secondary-fixed-variant": "#004e5c",
+        "on-surface-variant": "#bbcabf",
+        "on-error-container": "#ffdad6",
+        "inverse-primary": "#006c49",
+        "secondary-fixed-dim": "#4cd7f6",
+        "on-surface": "#dfe2ee",
+        "on-primary-container": "#00422b"
+      },
+      "borderRadius": {
+        "DEFAULT": "0.125rem",
+        "lg": "0.25rem",
+        "xl": "0.5rem",
+        "full": "0.75rem"
+      },
+      "spacing": {
+        "space-xs": "0.25rem",
+        "margin": "2rem",
+        "gutter-lg": "2rem",
+        "space-sm": "0.5rem",
+        "space-lg": "1.5rem",
+        "margin-mobile": "1rem",
+        "gutter-sm": "1rem",
+        "gutter": "1.5rem",
+        "space-md": "1rem",
+        "space-xl": "2.5rem"
+      },
+      "fontFamily": {
+        "headline-lg-mobile": [
+          "Plus Jakarta Sans"
+        ],
+        "body-lg": [
+          "Inter"
+        ],
+        "headline-md": [
+          "Plus Jakarta Sans"
+        ],
+        "headline-lg": [
+          "Plus Jakarta Sans"
+        ],
+        "code-sm": [
+          "JetBrains Mono"
+        ],
+        "code-md": [
+          "JetBrains Mono"
+        ],
+        "headline-xl": [
+          "Plus Jakarta Sans"
+        ],
+        "label-caps": [
+          "JetBrains Mono"
+        ],
+        "body-sm": [
+          "Inter"
+        ],
+        "body-md": [
+          "Inter"
+        ],
+        "display-lg": [
+          "Plus Jakarta Sans"
+        ]
+      },
+      "fontSize": {
+        "headline-lg-mobile": [
+          "1.5rem",
+          {
+            "lineHeight": "2rem",
+            "letterSpacing": "-0.015em",
+            "fontWeight": "600"
+          }
+        ],
+        "body-lg": [
+          "1.125rem",
+          {
+            "lineHeight": "1.75rem",
+            "fontWeight": "400"
+          }
+        ],
+        "headline-md": [
+          "1.25rem",
+          {
+            "lineHeight": "1.75rem",
+            "letterSpacing": "-0.01em",
+            "fontWeight": "600"
+          }
+        ],
+        "headline-lg": [
+          "1.75rem",
+          {
+            "lineHeight": "2.25rem",
+            "letterSpacing": "-0.015em",
+            "fontWeight": "600"
+          }
+        ],
+        "code-sm": [
+          "0.75rem",
+          {
+            "lineHeight": "1rem",
+            "letterSpacing": "-0.005em",
+            "fontWeight": "500"
+          }
+        ],
+        "code-md": [
+          "0.875rem",
+          {
+            "lineHeight": "1.25rem",
+            "letterSpacing": "-0.01em",
+            "fontWeight": "500"
+          }
+        ],
+        "headline-xl": [
+          "2.25rem",
+          {
+            "lineHeight": "2.75rem",
+            "letterSpacing": "-0.02em",
+            "fontWeight": "600"
+          }
+        ],
+        "label-caps": [
+          "0.6875rem",
+          {
+            "lineHeight": "0.875rem",
+            "letterSpacing": "0.08em",
+            "fontWeight": "600"
+          }
+        ],
+        "body-sm": [
+          "0.75rem",
+          {
+            "lineHeight": "1.125rem",
+            "fontWeight": "400"
+          }
+        ],
+        "body-md": [
+          "0.875rem",
+          {
+            "lineHeight": "1.375rem",
+            "fontWeight": "400"
+          }
+        ],
+        "display-lg": [
+          "3rem",
+          {
+            "lineHeight": "3.5rem",
+            "letterSpacing": "-0.025em",
+            "fontWeight": "700"
+          }
+        ]
+      }
+    }
+  }
+}</script></head><body class="bg-surface font-body-md text-body-md text-on-surface min-h-screen"><header class="fixed top-0 left-0 right-0 z-50 h-16 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-outline-variant/30 flex items-center justify-between px-margin-mobile lg:px-margin"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-sm"><img alt="BlackBox AI ZK Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VVODXr1eMrajRjtNZWKNcI9ojnVxG6KRsvdNW1w2DyG5eb-dECb2jqM4UnIPBlkePQ41qdgn510hJUZ6uAPQsLTyaRTYc1s-TL7E0kTQMYUwdv_k0YvY3WM3Nk5lBVlFAk50utO-jUzeu8Mdk2dWoPTB01ATFkD0zPU6RKgX4NVMuNAeONBXJcDRHUNjSclgoD7RZAXAFqCZGqrOmFeZ-tCSZLW3NQmHbAvtd0VgZbh-khPbCwB173bGrA"/><span class="font-headline-md text-headline-md tracking-tight text-on-surface">BlackBox AI</span><span class="font-label-caps text-label-caps uppercase px-space-xs py-0.5 rounded-lg bg-surface-container-high text-secondary border border-secondary/30">Midnight ZK</span></div><nav class="hidden xl:flex items-center gap-space-md h-16" data-active-classes="text-primary border-b-2 border-primary"><a aria-current="page" class="transition-colors font-body-md px-space-xs h-full flex items-center text-primary border-b-2 border-primary" data-path="provenance-audits" href="#">Provenance Audits</a><a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md px-space-xs h-full flex items-center" data-path="dataset-registry" href="#">Dataset Registry</a><a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md px-space-xs h-full flex items-center" data-path="zero-knowledge-verifier" href="#">Zero-Knowledge Verifier</a><a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md px-space-xs h-full flex items-center" data-path="compliance-policies" href="#">Compliance Policies</a><a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md px-space-xs h-full flex items-center" data-path="api-and-proofs" href="#">API &amp; Proofs</a></nav></div><div class="flex items-center gap-space-md"><div class="hidden md:flex items-center gap-space-xs px-space-sm py-1 rounded-lg bg-surface-container border border-outline-variant/40"><span class="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_rgba(78,222,163,0.6)]"></span><span class="font-code-sm text-code-sm text-on-surface-variant">Midnight Testnet: <span class="text-primary">Synced</span></span></div><button class="flex items-center gap-space-xs bg-primary text-on-primary font-code-md text-code-md px-space-md py-1.5 rounded-lg hover:bg-primary-container hover:text-on-primary-container transition-all shadow-[0_0_12px_rgba(16,185,129,0.2)]"><span class="material-symbols-outlined text-base">verified</span><span>Verify ZK Proof</span></button><button class="relative p-1.5 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-lg transition-colors"><span class="material-symbols-outlined">notifications</span><span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-secondary ring-2 ring-surface"></span></button><div class="flex items-center gap-space-sm pl-space-sm border-l border-outline-variant/30"><div class="hidden sm:flex flex-col text-right"><span class="font-body-sm text-body-sm font-semibold text-on-surface">Dr. Alex Vance</span><span class="font-code-sm text-code-sm text-secondary">Cryptographic Auditor</span></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover border border-outline-variant/50" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfuKF-sAKrFaJLvkzpFa01ut5TESpqfM_RKU_ldtz3m5urCwCTlut7gbQO_R64AikZB_O60OYVu-lje-nAOXjP0zZTNAsFEJ30IZ5nANVxTe49yJV2I2TvyNwX0aYDxRjscM-wDbiaIVLqPhqUSGiy-uE4P40a-1OUGc5e6GN5jptI0-Z0Jk7tXugn4HTBBohLvGfBBRSRMo43vxdMzbVoObHEcHQaMf-CD_WhxeoYHfNKRAwRevrU_A"/></div></div></header><aside class="fixed left-0 top-16 bottom-10 w-64 bg-surface-container-lowest border-r border-outline-variant/30 z-40 hidden lg:flex flex-col justify-between py-space-md"><div class="px-space-md flex flex-col gap-space-lg"><div class="font-label-caps text-label-caps uppercase text-outline tracking-wider px-space-xs">Auditor Command</div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-surface-container-high text-primary font-semibold"><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg transition-all bg-surface-container-high text-primary font-semibold" data-path="provenance-audits" href="#"><span class="material-symbols-outlined text-xl">policy</span>Audits Overview</a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all font-body-md text-body-md" data-path="dataset-registry" href="#"><span class="material-symbols-outlined text-xl">dataset</span>Dataset Registry</a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all font-body-md text-body-md" data-path="zero-knowledge-verifier" href="#"><span class="material-symbols-outlined text-xl">lock_reset</span>ZK Circuit Engine</a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all font-body-md text-body-md" data-path="compliance-policies" href="#"><span class="material-symbols-outlined text-xl">gavel</span>Compliance Guard</a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all font-body-md text-body-md" data-path="api-and-proofs" href="#"><span class="material-symbols-outlined text-xl">key</span>RPC &amp; Proof API</a></nav></div><div class="px-space-md flex flex-col gap-space-xs pt-space-md border-t border-outline-variant/20"><div class="font-label-caps text-label-caps text-outline uppercase px-space-xs">Active Midnight Node</div><div class="bg-surface-container p-space-sm rounded-lg border border-outline-variant/30 flex flex-col gap-1"><div class="flex items-center justify-between font-code-sm text-code-sm"><span class="text-on-surface-variant">Relay ID</span><span class="text-secondary font-mono">#mn-098x</span></div><div class="flex items-center justify-between font-code-sm text-code-sm"><span class="text-on-surface-variant">Gas Mode</span><span class="text-primary">Shielded ZK</span></div></div></div></aside><div class="lg:pl-64 flex flex-col min-h-screen"><div class="fixed top-16 left-0 lg:left-64 right-0 h-10 bg-surface-container-low/70 backdrop-blur-md border-b border-outline-variant/20 z-30 flex items-center px-margin-mobile lg:px-margin gap-space-xs font-code-sm text-code-sm text-on-surface-variant"><span class="material-symbols-outlined text-sm text-outline">home</span><span>/</span><span class="text-outline">BlackBox AI Core</span><span>/</span><span class="text-secondary">Live Provenance Session</span></div><main class="w-full pt-28 pb-14 px-margin-mobile lg:px-margin flex-1 bg-surface"><div class="flex flex-col w-full gap-space-lg">
+<!-- Executive Statement Banner (Dark Cyber Minimalist / Midnight ZK Theme) -->
+<div class="relative overflow-hidden bg-surface-container-low rounded-xl p-space-lg shadow-xl">
+<div class="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-secondary/10 blur-3xl pointer-events-none"></div>
+<div class="absolute -left-20 -bottom-20 w-80 h-80 rounded-full bg-primary/10 blur-3xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col xl:flex-row xl:items-center justify-between gap-space-lg">
+<div class="flex flex-col gap-space-xs max-w-4xl">
+<div class="flex items-center gap-space-xs">
+<span class="inline-flex items-center justify-center p-1 rounded bg-secondary/15 text-secondary">
+<span class="material-symbols-outlined text-sm">enhanced_encryption</span>
+</span>
+<span class="font-label-caps text-label-caps uppercase text-secondary tracking-widest">Midnight ZK Privacy Architecture</span>
+<span class="text-outline">/</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">Halo2 PLONK Verifier v2.4</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">
+          Private AI Training Data Provenance
+        </h1>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+          Prove commercial licensing, regulatory compliance, and copyright alignment without revealing confidential training corpora, proprietary weights, or competitive trade secrets. Validated mathematically via Midnight zero-knowledge circuits.
+        </p>
+</div>
+<div class="flex items-center gap-space-sm self-start xl:self-center shrink-0">
+<div class="px-space-md py-space-sm rounded-lg bg-surface-container flex items-center gap-space-sm shadow-md">
+<span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps uppercase text-outline">Network Protocol</span>
+<span class="font-code-sm text-code-sm text-on-surface font-semibold">Midnight Compact DevNet</span>
+</div>
+</div>
+<button class="px-space-md py-2.5 rounded-lg bg-primary text-on-primary font-code-md text-code-md flex items-center gap-space-xs shadow-md transition-all hover:bg-primary-container hover:text-on-primary-container" id="open-audit-modal-btn">
+<span class="material-symbols-outlined text-lg">add_moderator</span>
+<span>New Model Audit</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Key Metrics Row (Bento Grid) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- Metric 1: Models Audited -->
+<div class="bg-surface-container-low rounded-xl p-space-md shadow-md flex flex-col justify-between relative overflow-hidden group">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps uppercase text-outline">Evaluated Assets</span>
+<span class="font-headline-md text-headline-md text-on-surface mt-1">Total Models Audited</span>
+</div>
+<div class="p-2 rounded bg-surface-container text-secondary">
+<span class="material-symbols-outlined text-xl">token</span>
+</div>
+</div>
+<div class="mt-space-md flex items-baseline gap-space-xs">
+<span class="font-display-lg text-display-lg text-on-surface font-bold leading-none">142</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant font-mono">MODELS</span>
+</div>
+<div class="mt-space-sm pt-space-xs flex items-center justify-between text-body-sm">
+<span class="flex items-center gap-1 text-primary font-code-sm font-semibold">
+<span class="material-symbols-outlined text-sm">check_circle</span> 138 Compliant
+        </span>
+<span class="flex items-center gap-1 text-tertiary-container font-code-sm font-semibold">
+<span class="material-symbols-outlined text-sm">error</span> 4 Violations
+        </span>
+</div>
+</div>
+<!-- Metric 2: ZK Commitments -->
+<div class="bg-surface-container-low rounded-xl p-space-md shadow-md flex flex-col justify-between relative overflow-hidden group">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps uppercase text-outline">Midnight Ledger</span>
+<span class="font-headline-md text-headline-md text-on-surface mt-1">ZK Commitments</span>
+</div>
+<div class="p-2 rounded bg-surface-container text-primary">
+<span class="material-symbols-outlined text-xl">account_tree</span>
+</div>
+</div>
+<div class="mt-space-md flex items-baseline gap-space-xs">
+<span class="font-display-lg text-display-lg text-on-surface font-bold leading-none">1,840</span>
+<span class="font-code-sm text-code-sm text-primary font-mono">+48 today</span>
+</div>
+<div class="mt-space-sm pt-space-xs flex items-center justify-between text-body-sm font-code-sm">
+<span class="text-on-surface-variant">Merkle Tree Depth: <strong class="text-on-surface">32</strong></span>
+<span class="text-secondary">Shielded Roots</span>
+</div>
+</div>
+<!-- Metric 3: Zero Data Leakage -->
+<div class="bg-surface-container-low rounded-xl p-space-md shadow-md flex flex-col justify-between relative overflow-hidden group">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps uppercase text-outline">Provable Secrecy</span>
+<span class="font-headline-md text-headline-md text-on-surface mt-1">Data Privacy Level</span>
+</div>
+<div class="p-2 rounded bg-surface-container text-primary">
+<span class="material-symbols-outlined text-xl">shield</span>
+</div>
+</div>
+<div class="mt-space-md flex items-baseline gap-space-xs">
+<span class="font-display-lg text-display-lg text-primary font-bold leading-none">100%</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant font-mono">SHIELDED</span>
+</div>
+<div class="mt-space-sm pt-space-xs flex items-center text-body-sm font-code-sm text-on-surface-variant">
+<span>Raw text, weights &amp; IP stay strictly local</span>
+</div>
+</div>
+<!-- Metric 4: Proof Performance -->
+<div class="bg-surface-container-low rounded-xl p-space-md shadow-md flex flex-col justify-between relative overflow-hidden group">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps uppercase text-outline">Halo2 Circuit Health</span>
+<span class="font-headline-md text-headline-md text-on-surface mt-1">Verification Rate</span>
+</div>
+<div class="p-2 rounded bg-surface-container text-secondary">
+<span class="material-symbols-outlined text-xl">speed</span>
+</div>
+</div>
+<div class="mt-space-md flex items-baseline gap-space-xs">
+<span class="font-display-lg text-display-lg text-on-surface font-bold leading-none">99.8%</span>
+<span class="font-code-sm text-code-sm text-secondary font-mono">1.2s avg</span>
+</div>
+<div class="mt-space-sm pt-space-xs flex items-center justify-between text-body-sm font-code-sm">
+<span class="text-on-surface-variant">Constraints: <strong class="text-on-surface">1.2M</strong></span>
+<span class="text-primary font-semibold">Deterministic</span>
+</div>
+</div>
+</div>
+<!-- Featured Focus Area: Detailed Interactive Model Audit Case Study -->
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-xl">manage_search</span>
+<span class="font-headline-md text-headline-md text-on-surface font-semibold">Active Forensic Deep-Dive</span>
+<span class="font-label-caps text-label-caps uppercase px-space-xs py-0.5 rounded bg-surface-container-high text-on-surface-variant">Run #8492</span>
+</div>
+<div class="flex items-center gap-space-xs font-code-sm text-code-sm text-outline">
+<span>Verifier Node:</span>
+<span class="font-mono text-secondary">midnight-eu-west-04</span>
+</div>
+</div>
+<!-- Main Case Study Card -->
+<div class="bg-surface-container-low rounded-xl p-space-lg shadow-xl flex flex-col gap-space-lg">
+<!-- Top Strip: Model Identity & Violation Alert Banner -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md pb-space-md bg-surface-container rounded-lg p-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center text-on-surface shadow-inner shrink-0">
+<span class="material-symbols-outlined text-2xl text-secondary">neurology</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-md text-headline-md font-bold text-on-surface">LLM-Alpha-v4</span>
+<span class="font-code-sm text-code-sm text-outline">Enterprise 70B Mixture-of-Experts</span>
+</div>
+<div class="flex flex-wrap items-center gap-space-sm mt-0.5 font-code-sm text-code-sm text-on-surface-variant">
+<span>Audited: <span class="text-on-surface">Oct 24, 2024 - 14:32 UTC</span></span>
+<span>•</span>
+<span>Dataset Merkle Root: <span class="text-secondary font-mono">0x4a91...88de</span></span>
+<span>•</span>
+<span>License Policy: <span class="text-on-surface font-semibold">No Restricted Datasets Used</span></span>
+</div>
+</div>
+</div>
+<!-- Evaluation Outcome Pill -->
+<div class="flex items-center gap-space-sm px-space-md py-2.5 rounded-lg bg-on-tertiary-fixed-variant text-on-background shadow-md shrink-0">
+<span class="material-symbols-outlined text-2xl text-tertiary">cancel</span>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps uppercase text-tertiary font-bold tracking-wider">Evaluation Verdict</span>
+<span class="font-code-md text-code-md font-bold text-on-background">NON-COMPLIANT: Training Policy Violated</span>
+</div>
+</div>
+</div>
+<!-- Core 2-Column Forensic Breakdown -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg">
+<!-- Left: Dataset Cryptographic Commitments (7 Columns) -->
+<div class="xl:col-span-7 flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps uppercase text-outline tracking-wider">Provenance Commitments &amp; License Checks</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">3 Datasets Attested via ZK</span>
+</div>
+<!-- Dataset A: Compliant -->
+<div class="bg-surface-container rounded-lg p-space-md flex flex-col gap-space-xs transition-all hover:bg-surface-container-high">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-base">check_circle</span>
+<span class="font-body-md text-body-md font-semibold text-on-surface">Dataset A: Enterprise Web Crawl v2</span>
+</div>
+<span class="px-2 py-0.5 rounded font-code-sm text-code-sm bg-surface-container-highest text-primary font-medium">
+                Commercially Licensed
+              </span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-1 text-code-sm font-code-sm text-on-surface-variant">
+<div>Licensor: <span class="text-on-surface font-semibold">OpenWeb Consortium</span></div>
+<div>Validity: <span class="text-primary font-semibold">Active thru 2026</span></div>
+<div class="truncate">ZK Commitment: <span class="text-secondary font-mono">0x8f2a...c4b1</span></div>
+</div>
+</div>
+<!-- Dataset B: Compliant -->
+<div class="bg-surface-container rounded-lg p-space-md flex flex-col gap-space-xs transition-all hover:bg-surface-container-high">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-base">check_circle</span>
+<span class="font-body-md text-body-md font-semibold text-on-surface">Dataset B: Synthesized Reasoning Corpus v1</span>
+</div>
+<span class="px-2 py-0.5 rounded font-code-sm text-code-sm bg-surface-container-highest text-primary font-medium">
+                Commercially Licensed
+              </span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-1 text-code-sm font-code-sm text-on-surface-variant">
+<div>Licensor: <span class="text-on-surface font-semibold">Cognition Data Ltd</span></div>
+<div>Validity: <span class="text-primary font-semibold">Authorized Active</span></div>
+<div class="truncate">ZK Commitment: <span class="text-secondary font-mono">0x3d9e...117a</span></div>
+</div>
+</div>
+<!-- Dataset C: Non-Compliant / Restricted -->
+<div class="bg-surface-container rounded-lg p-space-md flex flex-col gap-space-xs bg-gradient-to-r from-on-tertiary-fixed-variant/20 via-surface-container to-surface-container">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-tertiary text-base">warning</span>
+<span class="font-body-md text-body-md font-semibold text-tertiary">Dataset C: Internal Medical Records &amp; Source Data</span>
+</div>
+<span class="px-2 py-0.5 rounded font-code-sm text-code-sm bg-error-container text-error font-semibold">
+                RESTRICTED EMBARGO
+              </span>
+</div>
+<p class="font-body-sm text-body-sm text-tertiary-container mt-1">
+              Violation detected: Training set contains blinded identifier belonging to HIPAA-restricted registry subset (#MED-EMBARGO-09). Explicitly breaches defined audit rule <em>"No Restricted Datasets Used"</em>.
+            </p>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-2 pt-2 text-code-sm font-code-sm text-on-surface-variant bg-surface-container-lowest/40 rounded p-2">
+<div>Blinded Hash: <span class="text-tertiary font-mono">0x9c41...ee02</span></div>
+<div>Embargo Status: <span class="text-error font-semibold">Active Ban</span></div>
+<div>Data Leakage: <span class="text-primary font-semibold">0 bytes leaked</span></div>
+</div>
+</div>
+</div>
+<!-- Right: Midnight Proof Inspector (5 Columns) -->
+<div class="xl:col-span-5 flex flex-col justify-between bg-surface-container rounded-lg p-space-md shadow-inner">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-lg">verified_user</span>
+<span class="font-headline-md text-headline-md text-on-surface">ZK Proof Inspector</span>
+</div>
+<span class="font-label-caps text-label-caps uppercase text-secondary px-space-xs py-0.5 bg-surface-container-highest rounded">Halo2 Midnight SNARK</span>
+</div>
+<!-- Visual Cryptographic Pipeline SVG -->
+<div class="p-space-sm bg-surface-container-lowest rounded-lg">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-caps text-label-caps uppercase text-outline">Zero-Knowledge Verification Topology</span>
+<span class="font-code-sm text-code-sm text-primary font-mono">STATUS: MATHEMATICALLY SOUND</span>
+</div>
+<svg class="w-full h-20 text-on-surface" viewbox="0 0 420 90">
+<!-- Node 1: Private Dataset -->
+<rect fill="#1c2028" height="50" rx="6" stroke="#3c4a42" stroke-width="1.5" width="105" x="10" y="20"></rect>
+<text fill="#dfe2ee" font-family="JetBrains Mono" font-size="10" font-weight="600" text-anchor="middle" x="62" y="42">Raw Dataset</text>
+<text fill="#86948a" font-family="JetBrains Mono" font-size="9" text-anchor="middle" x="62" y="56">Private (Client)</text>
+<!-- Arrow 1 -->
+<path d="M 115 45 L 155 45" stroke="#4cd7f6" stroke-dasharray="3 3" stroke-width="2"></path>
+<circle cx="135" cy="45" fill="#4cd7f6" r="3"></circle>
+<!-- Node 2: Midnight ZK Circuit -->
+<rect fill="#181c24" height="60" rx="6" stroke="#4cd7f6" stroke-width="1.5" width="110" x="155" y="15"></rect>
+<text fill="#4cd7f6" font-family="JetBrains Mono" font-size="10" font-weight="bold" text-anchor="middle" x="210" y="40">ZK SNARK</text>
+<text fill="#dfe2ee" font-family="JetBrains Mono" font-size="9" text-anchor="middle" x="210" y="55">Constraint Check</text>
+<!-- Arrow 2 -->
+<path d="M 265 45 L 305 45" stroke="#4edea3" stroke-width="2"></path>
+<polygon fill="#4edea3" points="305,45 297,41 297,49"></polygon>
+<!-- Node 3: On-Chain Public Verification -->
+<rect fill="#1c2028" height="50" rx="6" stroke="#4edea3" stroke-width="1.5" width="105" x="305" y="20"></rect>
+<text fill="#4edea3" font-family="JetBrains Mono" font-size="10" font-weight="600" text-anchor="middle" x="357" y="42">Proof Verifier</text>
+<text fill="#bbcabf" font-family="JetBrains Mono" font-size="9" text-anchor="middle" x="357" y="56">Violation Flagged</text>
+</svg>
+</div>
+<!-- Code/Hash Snippet -->
+<div class="flex flex-col gap-1 bg-surface-container-lowest p-space-sm rounded-lg font-code-sm text-code-sm">
+<div class="flex justify-between text-outline">
+<span>Proof Transaction ID (Midnight):</span>
+<span class="text-primary">Epoch 912</span>
+</div>
+<div class="flex items-center justify-between text-secondary font-mono bg-surface-container-high px-2 py-1 rounded">
+<span class="truncate">0x7a91bf99c0d3810f22ea67c8e492f1b4a3c2009e</span>
+<button class="text-on-surface-variant hover:text-on-surface p-1" title="Copy Proof Hash">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+</button>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 leading-relaxed">
+                Crucial guarantee: The external auditor confirmed the exact restricted dataset licensing violation <strong>without ever accessing, downloading, or reading</strong> confidential medical entries or trade secrets.
+              </p>
+</div>
+</div>
+<div class="flex items-center justify-between gap-space-sm pt-space-sm mt-space-sm bg-surface-container-low p-2 rounded">
+<span class="font-code-sm text-code-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-secondary">verified</span> Halo2 Proof Verified
+            </span>
+<button class="px-space-sm py-1 rounded bg-secondary-container text-on-secondary-container font-code-sm text-code-sm font-semibold hover:bg-secondary transition-colors">
+              Download Cryptographic Attestation
+            </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Provenance Audits Table Section -->
+<div class="flex flex-col gap-space-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold">Model Provenance Audit Ledger</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Validated training history attested on Midnight ledger</p>
+</div>
+<div class="flex items-center gap-space-xs">
+<div class="relative">
+<input class="bg-surface-container-lowest text-on-surface placeholder:text-outline font-code-sm text-code-sm px-space-md py-1.5 rounded-lg w-64 focus:outline-none focus:ring-1 focus:ring-secondary" placeholder="Search proof or model..." type="text"/>
+<span class="material-symbols-outlined absolute right-2.5 top-2 text-outline text-lg">search</span>
+</div>
+<button class="p-1.5 rounded-lg bg-surface-container-high text-on-surface-variant hover:text-on-surface" title="Filter Audits">
+<span class="material-symbols-outlined text-xl">tune</span>
+</button>
+</div>
+</div>
+<!-- Table Canvas -->
+<div class="bg-surface-container-low rounded-xl overflow-hidden shadow-xl">
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-md text-body-md border-collapse">
+<thead>
+<tr class="bg-surface-container-lowest text-outline font-label-caps text-label-caps uppercase tracking-wider">
+<th class="py-space-md px-space-md">AI Model Name</th>
+<th class="py-space-md px-space-md">Training Date</th>
+<th class="py-space-md px-space-md">ZK Commitments</th>
+<th class="py-space-md px-space-md">Policy Sets Evaluated</th>
+<th class="py-space-md px-space-md">Compliance Status</th>
+<th class="py-space-md px-space-md">Midnight Proof Hash</th>
+<th class="py-space-md px-space-md text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-transparent font-code-sm text-code-sm">
+<!-- Row 1: OmniVision-Pro (Compliant) -->
+<tr class="bg-surface-container-low hover:bg-surface-container transition-colors">
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<div class="flex flex-col">
+<span class="font-headline-md text-body-md font-semibold text-on-surface">OmniVision-Pro</span>
+<span class="text-outline font-mono text-xs">Multimodal-v2.1</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md text-on-surface-variant">2024-10-24 11:15</td>
+<td class="py-space-md px-space-md">
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-secondary font-mono">14 Datasets</span>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-wrap gap-1">
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-xs text-on-surface">100% Authorized</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-xs text-on-surface">Temporal Validity</span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-1 rounded bg-primary/10 text-primary font-medium">
+<span class="material-symbols-outlined text-sm">check_circle</span> Verified Compliant
+                </span>
+</td>
+<td class="py-space-md px-space-md font-mono text-secondary truncate max-w-xs">
+                0x3e18...92cf
+              </td>
+<td class="py-space-md px-space-md text-right">
+<button class="px-space-sm py-1 rounded bg-surface-container-highest text-secondary hover:bg-secondary hover:text-on-secondary transition-colors font-semibold">
+                  Inspect ZK Proof
+                </button>
+</td>
+</tr>
+<!-- Row 2: CodeSynth-70B (Compliant) -->
+<tr class="bg-surface-container hover:bg-surface-container-high transition-colors">
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<div class="flex flex-col">
+<span class="font-headline-md text-body-md font-semibold text-on-surface">CodeSynth-70B</span>
+<span class="text-outline font-mono text-xs">CodeLM-Permissive</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md text-on-surface-variant">2024-10-23 18:40</td>
+<td class="py-space-md px-space-md">
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-secondary font-mono">22 Datasets</span>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-wrap gap-1">
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-xs text-on-surface">≥95% Licensed</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-xs text-on-surface">MIT/Apache2 Attested</span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-1 rounded bg-primary/10 text-primary font-medium">
+<span class="material-symbols-outlined text-sm">check_circle</span> Verified Compliant
+                </span>
+</td>
+<td class="py-space-md px-space-md font-mono text-secondary truncate max-w-xs">
+                0x91d4...10ec
+              </td>
+<td class="py-space-md px-space-md text-right">
+<button class="px-space-sm py-1 rounded bg-surface-container-highest text-secondary hover:bg-secondary hover:text-on-secondary transition-colors font-semibold">
+                  Inspect ZK Proof
+                </button>
+</td>
+</tr>
+<!-- Row 3: MedChat-v2 (Non-Compliant) -->
+<tr class="bg-surface-container-low hover:bg-surface-container transition-colors">
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<div class="flex flex-col">
+<span class="font-headline-md text-body-md font-semibold text-tertiary">MedChat-v2</span>
+<span class="text-outline font-mono text-xs">Clinical-Instruct</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md text-on-surface-variant">2024-10-23 09:21</td>
+<td class="py-space-md px-space-md">
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-secondary font-mono">8 Datasets</span>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-wrap gap-1">
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-xs text-on-surface">HIPAA Zero Leak</span>
+<span class="px-1.5 py-0.5 rounded bg-error-container text-xs text-error font-medium">No Restricted Datasets</span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-1 rounded bg-error-container text-error font-medium">
+<span class="material-symbols-outlined text-sm">cancel</span> Non-Compliant ❌
+                </span>
+</td>
+<td class="py-space-md px-space-md font-mono text-tertiary truncate max-w-xs">
+                0xbb29...76aa
+              </td>
+<td class="py-space-md px-space-md text-right">
+<button class="px-space-sm py-1 rounded bg-surface-container-highest text-tertiary hover:bg-tertiary hover:text-on-tertiary transition-colors font-semibold">
+                  Inspect ZK Proof
+                </button>
+</td>
+</tr>
+<!-- Row 4: FinanceLM-13B (Compliant) -->
+<tr class="bg-surface-container hover:bg-surface-container-high transition-colors">
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<div class="flex flex-col">
+<span class="font-headline-md text-body-md font-semibold text-on-surface">FinanceLM-13B</span>
+<span class="text-outline font-mono text-xs">Quantitative-Fin</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md text-on-surface-variant">2024-10-22 14:02</td>
+<td class="py-space-md px-space-md">
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-secondary font-mono">31 Datasets</span>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-wrap gap-1">
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-xs text-on-surface">100% Authorized</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-xs text-on-surface">SEC-Reg Provenance</span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-1 rounded bg-primary/10 text-primary font-medium">
+<span class="material-symbols-outlined text-sm">check_circle</span> Verified Compliant
+                </span>
+</td>
+<td class="py-space-md px-space-md font-mono text-secondary truncate max-w-xs">
+                0x40ef...d712
+              </td>
+<td class="py-space-md px-space-md text-right">
+<button class="px-space-sm py-1 rounded bg-surface-container-highest text-secondary hover:bg-secondary hover:text-on-secondary transition-colors font-semibold">
+                  Inspect ZK Proof
+                </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-space-sm bg-surface-container-lowest flex items-center justify-between text-code-sm font-code-sm text-outline">
+<span>Showing 4 of 142 AI Provenance Records</span>
+<div class="flex items-center gap-space-xs">
+<button class="px-2 py-1 rounded bg-surface-container-high text-on-surface-variant hover:text-on-surface">Prev</button>
+<span class="text-on-surface">Page 1 of 36</span>
+<button class="px-2 py-1 rounded bg-surface-container-high text-on-surface-variant hover:text-on-surface">Next</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Modal / Drawer Triggered Overlay for New Audit Session -->
+<div class="fixed inset-0 z-50 bg-surface-container-lowest/80 backdrop-blur-md hidden items-center justify-center p-space-md" id="audit-modal">
+<div class="bg-surface-container-low rounded-xl p-space-lg w-full max-w-2xl shadow-2xl flex flex-col gap-space-md relative">
+<div class="flex items-center justify-between pb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-2xl">shield_locked</span>
+<h3 class="font-headline-md text-headline-md text-on-surface font-semibold">Initiate Zero-Knowledge Model Audit</h3>
+</div>
+<button class="text-outline hover:text-on-surface" id="close-audit-modal-btn">
+<span class="material-symbols-outlined text-2xl">close</span>
+</button>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+        Upload or bind your model weights hash and private dataset commitments. The Midnight ZK Circuit runs locally in your isolated sandbox without transferring raw training data to BlackBox servers.
+      </p>
+<form class="flex flex-col gap-space-md" id="zk-audit-form" onsubmit="event.preventDefault(); triggerProofGen();">
+<div class="flex flex-col gap-1">
+<label class="font-label-caps text-label-caps uppercase text-outline">AI Model Designation</label>
+<input class="bg-surface-container-lowest text-on-surface font-code-md text-code-md px-space-md py-2 rounded focus:outline-none focus:ring-1 focus:ring-secondary" type="text" value="DeepReason-v1-Production"/>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<div class="flex flex-col gap-1">
+<label class="font-label-caps text-label-caps uppercase text-outline">Dataset Merkle Root Hash</label>
+<input class="bg-surface-container-lowest font-code-md text-code-md text-secondary px-space-md py-2 rounded focus:outline-none focus:ring-1 focus:ring-secondary" type="text" value="0x51c4...e18b"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-caps text-label-caps uppercase text-outline">Compliance Rule Policy</label>
+<select class="bg-surface-container-lowest text-on-surface font-code-md text-code-md px-space-md py-2 rounded focus:outline-none focus:ring-1 focus:ring-secondary">
+<option>100% Commercial Authorization</option>
+<option>EU AI Act Article 53 Standard</option>
+<option>No Restricted/Embargoed Data</option>
+<option>Custom Enterprise ZK Rule</option>
+</select>
+</div>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container flex items-center gap-space-sm text-code-sm font-code-sm text-primary">
+<span class="material-symbols-outlined">lock</span>
+<span>Zero-Knowledge Proof Isolation active: No plain text leaves your environment.</span>
+</div>
+<div class="hidden flex-col gap-2 p-space-sm rounded bg-surface-container-lowest" id="gen-progress">
+<div class="flex justify-between text-code-sm font-code-sm">
+<span class="text-secondary animate-pulse">Computing Midnight Halo2 SNARK...</span>
+<span class="text-primary" id="progress-percent">0%</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-secondary transition-all duration-300" id="progress-bar" style="width: 0%"></div>
+</div>
+</div>
+<div class="flex items-center justify-end gap-space-sm pt-space-sm">
+<button class="px-space-md py-2 rounded-lg bg-surface-container text-on-surface font-code-md text-code-md hover:bg-surface-container-high" id="cancel-audit-btn" type="button">
+            Cancel
+          </button>
+<button class="px-space-md py-2 rounded-lg bg-primary text-on-primary font-code-md text-code-md font-semibold hover:bg-primary-container hover:text-on-primary-container shadow-md flex items-center gap-1" id="start-audit-btn" type="submit">
+<span class="material-symbols-outlined text-base">bolt</span>
+<span>Generate &amp; Verify Proof</span>
+</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+<script>
+  // Simple interactive micro-interactions for modal and proof simulation
+  const modal = document.getElementById('audit-modal');
+  const openBtn = document.getElementById('open-audit-modal-btn');
+  const closeBtn = document.getElementById('close-audit-modal-btn');
+  const cancelBtn = document.getElementById('cancel-audit-btn');
+  const startAuditBtn = document.getElementById('start-audit-btn');
+  const genProgress = document.getElementById('gen-progress');
+  const progressBar = document.getElementById('progress-bar');
+  const progressPercent = document.getElementById('progress-percent');
+
+  openBtn?.addEventListener('click', () => {
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  });
+
+  const closeModal = () => {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    genProgress.classList.add('hidden');
+    progressBar.style.width = '0%';
+    progressPercent.textContent = '0%';
+  };
+
+  closeBtn?.addEventListener('click', closeModal);
+  cancelBtn?.addEventListener('click', closeModal);
+
+  window.triggerProofGen = function() {
+    genProgress.classList.remove('hidden');
+    startAuditBtn.disabled = true;
+    startAuditBtn.classList.add('opacity-50');
+
+    let current = 0;
+    const interval = setInterval(() => {
+      current += 25;
+      if (current <= 100) {
+        progressBar.style.width = current + '%';
+        progressPercent.textContent = current + '%';
+      }
+      if (current >= 100) {
+        clearInterval(interval);
+        setTimeout(() => {
+          alert("Zero-Knowledge Proof verified on Midnight Network! Model DeepReason-v1 compliant.");
+          startAuditBtn.disabled = false;
+          startAuditBtn.classList.remove('opacity-50');
+          closeModal();
+        }, 400);
+      }
+    }, 250);
+  };
+</script></main><footer class="fixed bottom-0 left-0 right-0 h-10 bg-surface-container-lowest border-t border-outline-variant/30 z-40 flex items-center justify-between px-margin-mobile lg:px-margin font-code-sm text-code-sm text-on-surface-variant"><div class="flex items-center gap-space-lg"><span class="flex items-center gap-space-xs"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span><span>ZK Circuit Latency: <strong class="text-on-surface font-mono">142ms</strong></span></span><span class="hidden sm:flex items-center gap-space-xs"><span>Proof Protocol: <strong class="text-secondary font-mono">Halo2 / Midnight SNARK</strong></span></span></div><div class="flex items-center gap-space-md"><span>Midnight Consensus Height: <strong class="text-primary font-mono">#2,841,920</strong></span><span class="hidden md:inline-block text-outline">|</span><span class="hidden md:inline-block text-outline">Zero-Knowledge Integrity Guaranteed</span></div></footer></div></body></html>
