@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "compile": "compact compile contracts/BlackBox.compact contracts/managed/blackbox-ai",
-    "typecheck": "npx tsc --noEmit || true",
+    "typecheck": "tsc --noEmit",
     "build": "npm --prefix frontend run build",
     "setup": "npx tsx src/setup.ts",
     "deploy": "npx tsx src/deploy.ts",

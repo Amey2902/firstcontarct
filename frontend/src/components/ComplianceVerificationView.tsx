@@ -25,7 +25,7 @@ export interface AuditRecord {
 
 interface ComplianceVerificationViewProps {
   datasets: RegisteredDataset[];
-  onAuditComplete: (audit: AuditRecord) => void;
+  onAuditComplete: (audit: AuditRecord) => Promise<void> | void;
   walletAddress: string | null;
 }
 
@@ -111,8 +111,8 @@ export const ComplianceVerificationView: React.FC<ComplianceVerificationViewProp
         zkCircuit: 'BlackBox.verifyCompliance(modelHash, datasetId, proofCommitment)',
       };
 
+      await onAuditComplete(newAudit);
       setCurrentResult(newAudit);
-      onAuditComplete(newAudit);
     } catch (err) {
       console.error('Verification error:', err);
     } finally {

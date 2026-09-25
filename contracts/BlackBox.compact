@@ -44,6 +44,7 @@ module BlackBox {
     commitmentId: Bytes<32>,
     trainer: Bytes<32>,
     datasetCount: Uint<8>,
+    datasetIds: Vector<32, Bytes<32>>,
     modelHash: Bytes<32>,
     trainingTimestamp: Uint<64>,
     committedAt: Uint<64>
@@ -200,6 +201,7 @@ module BlackBox {
       commitmentId: commitmentId,
       trainer: trainer,
       datasetCount: datasetCount,
+      datasetIds: datasetIds,
       modelHash: modelHash,
       trainingTimestamp: trainingTimestamp,
       committedAt: now
@@ -232,18 +234,39 @@ module BlackBox {
     var restrictedCount: Uint<8> = 0;
     var expiredCount: Uint<8> = 0;
 
-    // Witnesses for private validation
+    // Witnesses for private validation (Invariants 4 & 5)
     const dataHashes = trainingDataHashes();
     const licenses = datasetLicenses();
 
     // Evaluate private compliance across datasets
     for i in 0..32 {
       if (i < count) {
-        // Evaluate license classification (0=Commercial, 1=OpenSource, 2=Proprietary, 3=Restricted)
-        // Check restricted
-        // Check validity period against training timestamp
-        authorizedCount = authorizedCount + 1;
-        licensedCount = licensedCount + 1;
+        const dsId = commitment.datasetIds[i];
+        assert datasetRegistry.member(dsId) "Referenced dataset not in registry";
+        const ds = datasetRegistry.lookup(dsId);
+
+        // Invariant 1: Owner Authorization
+        if (ds.authorizationStatus == 1) {
+          authorizedCount = authorizedCount + 1;
+        }
+
+        // Invariant 2: License Compatibility (0=Commercial, 1=OpenSource, 2=Proprietary, 3=Restricted)
+        if (ds.licenseType != 3) {
+          licensedCount = licensedCount + 1;
+        } else {
+          restrictedCount = restrictedCount + 1;
+        }
+
+        // Invariant 3: Temporal Validity Window
+        if (commitment.trainingTimestamp < ds.validFrom || commitment.trainingTimestamp > ds.validUntil) {
+          expiredCount = expiredCount + 1;
+        }
+
+        // Invariant 4: Cryptographic Dataset Integrity (Private witness check)
+        assert dataHashes[i] == ds.contentHash "Cryptographic content hash mismatch";
+
+        // Invariant 5: License Proof Witness Verification (Private witness check)
+        assert licenses[i] == ds.licenseHash "Cryptographic license commitment mismatch";
       }
     }
 
